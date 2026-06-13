@@ -4,47 +4,39 @@
 
 body {
   background-color: #0d1117;
-  color: white;
+  color: #F1F5F9;
   overscroll-behavior: none;
   -webkit-font-smoothing: antialiased;
 }
 
 .match-card {
-  background-color: #1a1f2e;
+  background-color: #1E293B;
   border-radius: 1rem;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid #334155;
   margin-bottom: 0.75rem;
   overflow: hidden;
   transition: all 0.2s;
+}
+
+.match-card:hover {
+  border-color: #4ADE80;
+  transform: translateY(-2px);
 }
 
 .live-pulse {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #ef4444;
+  background: #EF4444;
   animation: pulse-red 1.5s infinite;
   display: inline-block;
   flex-shrink: 0;
 }
 
-.ticker-animate {
-  animation: ticker 40s linear infinite;
-  display: flex;
-  width: max-content;
-}
-
-.pitch-lines {
-  background-image: 
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-
 .section-title {
   font-size: 1rem;
   font-weight: 700;
-  color: white;
+  color: #F1F5F9;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -57,7 +49,7 @@ body {
   padding: 2px 8px;
   border-radius: 20px;
   background: rgba(239,68,68,0.2);
-  color: #f87171;
+  color: #FCA5A5;
   border: 1px solid rgba(239,68,68,0.3);
   display: inline-flex;
   align-items: center;
@@ -69,8 +61,8 @@ body {
   font-weight: 700;
   padding: 2px 8px;
   border-radius: 20px;
-  background: rgba(255,255,255,0.05);
-  color: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.08);
+  color: #94A3B8;
   display: inline-flex;
   align-items: center;
 }
@@ -80,11 +72,24 @@ body {
   font-weight: 700;
   padding: 2px 8px;
   border-radius: 20px;
-  background: rgba(74,222,128,0.1);
-  color: #4ade80;
-  border: 1px solid rgba(74,222,128,0.2);
+  background: rgba(74,222,128,0.15);
+  color: #4ADE80;
+  border: 1px solid rgba(74,222,128,0.25);
   display: inline-flex;
   align-items: center;
+}
+
+.pitch-lines {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.ticker-animate {
+  animation: ticker 40s linear infinite;
+  display: flex;
+  width: max-content;
 }
 
 @keyframes pulse-red {
