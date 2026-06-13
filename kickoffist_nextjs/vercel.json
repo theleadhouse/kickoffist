@@ -2,15 +2,5 @@
   "framework": "nextjs",
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
-  "installCommand": "npm install",
-  "env": {
-    "FOOTBALL_DATA_API_KEY": "@football_data_api_key",
-    "THESPORTSDB_KEY": "@thesportsdb_key"
-  },
-  "crons": [
-    {
-      "path": "/api/today",
-      "schedule": "*/1 * * * *"
-    }
-  ]
+  "installCommand": "npm install"
 }
