@@ -1,17 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Match } from "@/lib/types";
-import MatchCard from "./MatchCard";
+import PortalMatchCard from "./PortalMatchCard";
 
-interface Props {
-  initialMatches: Match[];
-}
-
-export default function LiveSection({ initialMatches }: Props) {
+export default function LiveSection({ initialMatches }: { initialMatches: Match[] }) {
   const [matches, setMatches] = useState<Match[]>(initialMatches);
 
   useEffect(() => {
-    // Auto-refresh live matches every 15 seconds
     const poll = async () => {
       try {
         const r = await fetch("/api/live");
@@ -20,24 +15,23 @@ export default function LiveSection({ initialMatches }: Props) {
         if (d.matches) setMatches(d.matches);
       } catch {}
     };
-
-    const t = setInterval(poll, 15000);
-    return () => clearInterval(t);
+    const id = setInterval(poll, 15000);
+    return () => clearInterval(id);
   }, []);
 
-  if (matches.length === 0) return null;
+  if (!matches.length) return null;
 
   return (
-    <section className="mb-8">
-      <div className="flex items-center gap-2 mb-4">
-        <span className="live-pulse" />
-        <h2 className="text-base font-bold text-slate-900">Live Now</h2>
-        <span className="text-[11px] font-bold bg-red-50 text-red-600 border border-red-200 px-2 py-0.5 rounded-full">
-          {matches.length} match{matches.length !== 1 ? "es" : ""}
-        </span>
-        <span className="ml-auto text-[10px] text-slate-400">Updates every 15s</span>
+    <div className="mb-3">
+      <div className="sh">
+        <span className="live-dot" />
+        <span className="text-red-400">LIVE NOW</span>
+        <span className="badge-live ml-1">{matches.length}</span>
+        <span className="ml-auto text-[10px] text-[#6e7681]">Auto-refresh 15s</span>
       </div>
-      {matches.map(m => <MatchCard key={m.id} match={m} />)}
-    </section>
+      <div className="space-y-1.5">
+        {matches.map(m => <PortalMatchCard key={m.id} match={m} />)}
+      </div>
+    </div>
   );
 }

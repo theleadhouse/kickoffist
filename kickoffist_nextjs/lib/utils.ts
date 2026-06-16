@@ -1,159 +1,124 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { toZonedTime, format as tzFormat } from "date-fns-tz";
-import { format, isToday, isTomorrow } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-const IST = "Asia/Kolkata";
+const IST_OFFSET = 5.5 * 60 * 60 * 1000; // +5:30
 
-// ─── IST CONVERSIONS ─────────────────────────────────────────────────────────
+// ─── IST HELPERS ─────────────────────────────────────────────────────────────
 
-/** Convert UTC ISO string to IST time like "03:30 AM" */
+function toIST(utc: string): Date {
+  return new Date(new Date(utc).getTime() + IST_OFFSET);
+}
+
 export function toISTTime(utc: string): string {
   try {
-    const d = toZonedTime(new Date(utc), IST);
-    return tzFormat(d, "hh:mm aa", { timeZone: IST }).toUpperCase();
-  } catch {
-    return "--:--";
-  }
+    const d = toIST(utc);
+    const h = d.getUTCHours();
+    const m = d.getUTCMinutes();
+    const h12 = h % 12 || 12;
+    const ampm = h < 12 ? "AM" : "PM";
+    return `${h12}:${String(m).padStart(2, "0")} ${ampm}`;
+  } catch { return "--:--"; }
 }
 
-/** Convert UTC ISO string to IST date string "2026-06-13" */
 export function toISTDate(utc: string): string {
   try {
-    const d = toZonedTime(new Date(utc), IST);
-    return tzFormat(d, "yyyy-MM-dd", { timeZone: IST });
-  } catch {
-    return "";
-  }
+    const d = toIST(utc);
+    const y = d.getUTCFullYear();
+    const mo = String(d.getUTCMonth() + 1).padStart(2, "0");
+    const day = String(d.getUTCDate()).padStart(2, "0");
+    return `${y}-${mo}-${day}`;
+  } catch { return ""; }
 }
 
-/** Get today's date in IST as "2026-06-13" */
 export function todayIST(): string {
-  const d = toZonedTime(new Date(), IST);
-  return tzFormat(d, "yyyy-MM-dd", { timeZone: IST });
+  return toISTDate(new Date().toISOString());
 }
 
-/** Get tomorrow's date in IST */
 export function tomorrowIST(): string {
-  const d = toZonedTime(new Date(Date.now() + 86400000), IST);
-  return tzFormat(d, "yyyy-MM-dd", { timeZone: IST });
+  return toISTDate(new Date(Date.now() + 86400000).toISOString());
 }
 
-/** Get current IST time as HH:MM */
 export function currentISTClock(): string {
-  const d = toZonedTime(new Date(), IST);
-  return tzFormat(d, "HH:mm", { timeZone: IST });
+  const d = toIST(new Date().toISOString());
+  return `${String(d.getUTCHours()).padStart(2,"0")}:${String(d.getUTCMinutes()).padStart(2,"0")}`;
 }
 
-/** Format IST date to readable label */
 export function toISTDateLabel(utc: string): string {
   try {
-    const d = toZonedTime(new Date(utc), IST);
-    const localDate = new Date(
-      d.getFullYear(), d.getMonth(), d.getDate()
-    );
-    if (isToday(localDate)) return "Today";
-    if (isTomorrow(localDate)) return "Tomorrow";
-    return format(localDate, "EEE, d MMM");
-  } catch {
-    return "";
-  }
+    const istDate = toISTDate(utc);
+    const today   = todayIST();
+    const tmrw    = tomorrowIST();
+    if (istDate === today) return "Today";
+    if (istDate === tmrw)  return "Tomorrow";
+    const d = toIST(utc);
+    const DAYS  = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    return `${DAYS[d.getUTCDay()]}, ${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`;
+  } catch { return ""; }
 }
 
-// ─── FLAG EMOJI MAP ───────────────────────────────────────────────────────────
+// ─── FLAGS ───────────────────────────────────────────────────────────────────
 const FLAGS: Record<string, string> = {
-  "Mexico": "🇲🇽", "South Africa": "🇿🇦", "South Korea": "🇰🇷",
-  "Korea Republic": "🇰🇷", "Czechia": "🇨🇿", "Czech Republic": "🇨🇿",
-  "Canada": "🇨🇦", "Bosnia-Herzegovina": "🇧🇦", "Bosnia and Herzegovina": "🇧🇦",
-  "USA": "🇺🇸", "United States": "🇺🇸", "Paraguay": "🇵🇾", "Qatar": "🇶🇦",
-  "Switzerland": "🇨🇭", "Brazil": "🇧🇷", "Morocco": "🇲🇦", "Haiti": "🇭🇹",
-  "Scotland": "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "Australia": "🇦🇺", "Turkey": "🇹🇷", "Germany": "🇩🇪",
-  "Curacao": "🇨🇼", "Curaçao": "🇨🇼", "Netherlands": "🇳🇱", "Japan": "🇯🇵",
-  "Ivory Coast": "🇨🇮", "Côte d'Ivoire": "🇨🇮", "Ecuador": "🇪🇨", "Sweden": "🇸🇪",
-  "Tunisia": "🇹🇳", "Spain": "🇪🇸", "Cape Verde": "🇨🇻", "Cabo Verde": "🇨🇻",
-  "Belgium": "🇧🇪", "Egypt": "🇪🇬", "Saudi Arabia": "🇸🇦", "Uruguay": "🇺🇾",
-  "Iran": "🇮🇷", "IR Iran": "🇮🇷", "New Zealand": "🇳🇿", "France": "🇫🇷",
-  "Senegal": "🇸🇳", "Iraq": "🇮🇶", "Norway": "🇳🇴", "Argentina": "🇦🇷",
-  "Algeria": "🇩🇿", "Austria": "🇦🇹", "Jordan": "🇯🇴", "Portugal": "🇵🇹",
-  "DR Congo": "🇨🇩", "England": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Croatia": "🇭🇷", "Ghana": "🇬🇭",
-  "Panama": "🇵🇦", "Uzbekistan": "🇺🇿", "Colombia": "🇨🇴", "India": "🇮🇳",
-  "Manchester United": "🔴", "Arsenal": "🔴", "Manchester City": "🔵",
-  "Liverpool": "🔴", "Chelsea": "🔵", "Tottenham": "⚪", "Aston Villa": "🟣",
+  "Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Korea Republic":"🇰🇷",
+  "Czechia":"🇨🇿","Czech Republic":"🇨🇿","Canada":"🇨🇦","Bosnia-Herzegovina":"🇧🇦",
+  "Bosnia and Herzegovina":"🇧🇦","Bosnia & Herz.":"🇧🇦","USA":"🇺🇸","United States":"🇺🇸",
+  "Paraguay":"🇵🇾","Qatar":"🇶🇦","Switzerland":"🇨🇭","Brazil":"🇧🇷","Morocco":"🇲🇦",
+  "Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","Australia":"🇦🇺","Turkey":"🇹🇷","Türkiye":"🇹🇷",
+  "Germany":"🇩🇪","Curacao":"🇨🇼","Curaçao":"🇨🇼","Netherlands":"🇳🇱","Japan":"🇯🇵",
+  "Ivory Coast":"🇨🇮","Côte d'Ivoire":"🇨🇮","Ecuador":"🇪🇨","Sweden":"🇸🇪","Tunisia":"🇹🇳",
+  "Spain":"🇪🇸","Cape Verde":"🇨🇻","Cabo Verde":"🇨🇻","Belgium":"🇧🇪","Egypt":"🇪🇬",
+  "Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","Iran":"🇮🇷","IR Iran":"🇮🇷","New Zealand":"🇳🇿",
+  "France":"🇫🇷","Senegal":"🇸🇳","Iraq":"🇮🇶","Norway":"🇳🇴","Argentina":"🇦🇷",
+  "Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","DR Congo":"🇨🇩",
+  "England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦","Uzbekistan":"🇺🇿",
+  "Colombia":"🇨🇴","India":"🇮🇳","TBD":"⚽",
 };
 
-export function getFlag(teamName: string): string {
-  return FLAGS[teamName] || "🏳️";
+export function getFlag(name: string): string {
+  return FLAGS[name] || "🏳️";
 }
 
-// ─── FLAG API URL ─────────────────────────────────────────────────────────────
-const COUNTRY_CODES: Record<string, string> = {
-  "Brazil": "BR", "Morocco": "MA", "Argentina": "AR", "Algeria": "DZ",
-  "England": "GB-ENG", "Croatia": "HR", "Germany": "DE", "France": "FR",
-  "Spain": "ES", "Portugal": "PT", "Netherlands": "NL", "Belgium": "BE",
-  "Japan": "JP", "South Korea": "KR", "Korea Republic": "KR",
-  "Mexico": "MX", "USA": "US", "United States": "US", "Canada": "CA",
-  "Australia": "AU", "Uruguay": "UY", "Iran": "IR", "IR Iran": "IR",
-  "Saudi Arabia": "SA", "Ecuador": "EC", "Switzerland": "CH",
-  "Senegal": "SN", "Denmark": "DK", "Poland": "PL", "Ghana": "GH",
-  "Cameroon": "CM", "Serbia": "RS", "Wales": "GB-WLS", "Qatar": "QA",
-  "South Africa": "ZA", "Czechia": "CZ", "Tunisia": "TN", "Sweden": "SE",
-  "Norway": "NO", "Turkey": "TR", "Egypt": "EG", "Iraq": "IQ",
-  "Jordan": "JO", "Panama": "PA", "Haiti": "HT", "Paraguay": "PY",
-  "Colombia": "CO", "Austria": "AT", "India": "IN", "Scotland": "GB-SCT",
-};
+export function getFlagUrl(name: string): string { return ""; }
 
-export function getFlagUrl(teamName: string): string {
-  const code = COUNTRY_CODES[teamName];
-  if (!code) return "";
-  return `https://flagsapi.com/${code.split("-")[0]}/flat/64.png`;
-}
-
-// ─── COMPETITION CONFIG ───────────────────────────────────────────────────────
+// ─── COMPETITIONS ─────────────────────────────────────────────────────────────
 export const COMPETITIONS = {
-  WC:  { id: 2000, name: "FIFA World Cup 2026", code: "WC",  icon: "🏆", color: "amber",  borderColor: "border-l-amber-500" },
-  PL:  { id: 2021, name: "Premier League",       code: "PL",  icon: "⚽", color: "purple", borderColor: "border-l-purple-600" },
-  CL:  { id: 2001, name: "Champions League",     code: "CL",  icon: "⭐", color: "blue",   borderColor: "border-l-blue-600" },
-  ISL: { id: 7025, name: "ISL",                  code: "ISL", icon: "🇮🇳", color: "green",  borderColor: "border-l-green-600" },
+  WC:  { id:2000, name:"FIFA World Cup",  code:"WC",  icon:"🏆", color:"amber",  borderColor:"border-l-amber-500" },
+  PL:  { id:2021, name:"Premier League",  code:"PL",  icon:"⚽", color:"purple", borderColor:"border-l-purple-600" },
+  CL:  { id:2001, name:"Champions League",code:"CL",  icon:"⭐", color:"blue",   borderColor:"border-l-blue-600" },
+  ISL: { id:7025, name:"ISL",             code:"ISL", icon:"🇮🇳", color:"green",  borderColor:"border-l-green-600" },
 };
 
-// ─── COUNTDOWN HELPER ─────────────────────────────────────────────────────────
+// ─── COUNTDOWN ────────────────────────────────────────────────────────────────
 export function getCountdown(utcDate: string): string | null {
   const diff = new Date(utcDate).getTime() - Date.now();
-  if (diff <= 0) return null;
+  if (diff <= 0 || diff > 48 * 3600000) return null;
   const h = Math.floor(diff / 3600000);
   const m = Math.floor((diff % 3600000) / 60000);
   const s = Math.floor((diff % 60000) / 1000);
-  if (h > 48) return null;
   if (h === 0 && m === 0) return `${s}s`;
-  if (h === 0) return `${m}m ${s}s`;
+  if (h === 0) return `${m}m`;
   return `${h}h ${m}m`;
 }
 
-// ─── CALENDAR HELPERS ─────────────────────────────────────────────────────────
-export function generateGoogleCalURL(match: { home: string; away: string; utcDate: string; competition: string }): string {
-  const start = new Date(match.utcDate);
-  const end = new Date(start.getTime() + 7200000);
-  const fmt = (d: Date) => d.toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
-  const title = `⚽ ${match.home} vs ${match.away}`;
-  const details = `${match.competition} — KickoffIST.com`;
-  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${fmt(start)}/${fmt(end)}&details=${encodeURIComponent(details)}`;
+// ─── CALENDAR ─────────────────────────────────────────────────────────────────
+export function generateGoogleCalURL(m: { home:string; away:string; utcDate:string; competition:string }): string {
+  const s = new Date(m.utcDate);
+  const e = new Date(s.getTime() + 7200000);
+  const fmt = (d: Date) => d.toISOString().replace(/[-:]/g,"").slice(0,15)+"Z";
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`⚽ ${m.home} vs ${m.away}`)}&dates=${fmt(s)}/${fmt(e)}&details=${encodeURIComponent(m.competition+" — KickoffIST.com")}`;
 }
 
-export function generateICS(match: { home: string; away: string; utcDate: string; competition: string }): string {
-  const start = new Date(match.utcDate);
-  const end = new Date(start.getTime() + 7200000);
-  const fmt = (d: Date) => d.toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
-  return [
-    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//KickoffIST//EN",
-    "BEGIN:VEVENT",
-    `SUMMARY:⚽ ${match.home} vs ${match.away}`,
-    `DTSTART:${fmt(start)}`, `DTEND:${fmt(end)}`,
-    `DESCRIPTION:${match.competition} — KickoffIST.com`,
-    `URL:https://kickoffist.com`,
-    "END:VEVENT", "END:VCALENDAR"
-  ].join("\n");
+export function generateICS(m: { home:string; away:string; utcDate:string; competition:string }): string {
+  const s = new Date(m.utcDate);
+  const e = new Date(s.getTime() + 7200000);
+  const fmt = (d: Date) => d.toISOString().replace(/[-:]/g,"").slice(0,15)+"Z";
+  return `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:⚽ ${m.home} vs ${m.away}\nDTSTART:${fmt(s)}\nDTEND:${fmt(e)}\nDESCRIPTION:${m.competition}\nEND:VEVENT\nEND:VCALENDAR`;
 }
+
+// kept for compat
+export function todayLabel(): string { return todayIST(); }
+export function tomorrowLabel(): string { return tomorrowIST(); }

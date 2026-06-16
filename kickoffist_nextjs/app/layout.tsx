@@ -1,27 +1,27 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import BottomNav from "@/components/BottomNav";
 import TopBar from "@/components/TopBar";
-import NewsTicker from "@/components/NewsTicker";
+import BottomNav from "@/components/BottomNav";
+import LiveTicker from "@/components/LiveTicker";
 
-const inter = Inter({ subsets: ["latin"], weight: ["400","600","800","900"] });
+const inter = Inter({ subsets: ["latin"], weight: ["400","500","600","700","800"] });
 
 export const metadata: Metadata = {
-  title: "KickoffIST — India's Football Calendar",
-  description: "Live scores, fixtures and results — all in Indian Standard Time.",
-  themeColor: "#0d1117",
+  title: "KickoffIST — Live Football Scores in IST | FIFA World Cup 2026",
+  description: "Live scores, fixtures, results and standings from FIFA World Cup 2026 in Indian Standard Time.",
+  themeColor: "#0f1923",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-[#0d1117] text-white antialiased min-h-screen`}>
+      <body className={inter.className}>
         <TopBar />
-        <NewsTicker />
-        <main className="max-w-lg mx-auto px-4 pt-4 pb-28 min-h-screen">
+        <div className="max-w-[1100px] mx-auto px-3 pt-2 pb-20">
+          <LiveTicker />
           {children}
-        </main>
+        </div>
         <BottomNav />
       </body>
     </html>

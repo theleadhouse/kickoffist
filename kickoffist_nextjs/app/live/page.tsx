@@ -1,41 +1,38 @@
-import { getLiveMatches } from "@/lib/api";
+import { getLiveMatches, getStaticWCMatches } from "@/lib/api";
 import LiveSection from "@/components/LiveSection";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Live Football Scores in IST | KickoffIST",
-  description: "Live football scores right now, updated every 15 seconds. All times in IST.",
-};
-
-export const dynamic = "force-dynamic"; // Always fresh
+import PortalMatchCard from "@/components/PortalMatchCard";
+export const dynamic = "force-dynamic";
 
 export default async function LivePage() {
-  const matches = await getLiveMatches();
+  const live = await getLiveMatches();
+  const recent = getStaticWCMatches().filter(m => m.status === "FINISHED").slice(-5).reverse();
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
-          <span className="live-pulse" />
-          Live Scores
-        </h1>
-        <p className="text-sm text-slate-500 mt-1">Updates every 15 seconds in IST</p>
+      <div className="sh mt-2">
+        <span className="live-dot" />
+        <span className="text-red-400">LIVE SCORES</span>
+        <span className="ml-auto text-[10px] text-[#6e7681]">Auto-updates every 15 seconds</span>
       </div>
 
-      {matches.length > 0 ? (
-        <LiveSection initialMatches={matches} />
+      {live.length > 0 ? (
+        <LiveSection initialMatches={live} />
       ) : (
-        <div className="text-center py-16">
-          <div className="text-5xl mb-4">🏟️</div>
-          <div className="font-bold text-slate-900 mb-2">No live matches right now</div>
-          <div className="text-sm text-slate-500 mb-6">
-            This page refreshes automatically. Come back when a match is in progress.
-          </div>
-          <a href="/today" className="bg-green-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">
-            See Today's Schedule
-          </a>
+        <div className="bg-[#161b22] border border-[#21262d] rounded-lg p-6 text-center mb-4">
+          <div className="text-3xl mb-2">🏟️</div>
+          <div className="text-sm font-bold text-slate-300 mb-1">No live matches right now</div>
+          <div className="text-[11px] text-[#6e7681] mb-3">This page refreshes automatically every 15 seconds</div>
+          <a href="/today" className="text-[11px] font-bold text-[#3fb950] hover:underline">See today&apos;s schedule →</a>
         </div>
       )}
+
+      <div className="sh mt-2">
+        <span>🏁</span>
+        <span>RECENT RESULTS</span>
+      </div>
+      <div className="space-y-1.5">
+        {recent.map(m => <PortalMatchCard key={m.id} match={m} />)}
+      </div>
     </div>
   );
 }

@@ -1,12 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: [
-      { protocol: "https", hostname: "flagsapi.com" },
-      { protocol: "https", hostname: "crests.football-data.org" },
-      { protocol: "https", hostname: "www.thesportsdb.com" },
-    ],
+    domains: ['crests.football-data.org'],
   },
 };
-
 module.exports = nextConfig;

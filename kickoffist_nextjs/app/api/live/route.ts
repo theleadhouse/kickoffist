@@ -1,25 +1,17 @@
 import { NextResponse } from "next/server";
 import { getLiveMatches } from "@/lib/api";
 
-export const runtime = "edge";
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET() {
   try {
     const matches = await getLiveMatches();
     return NextResponse.json(
-      { matches, updatedAt: new Date().toISOString() },
-      {
-        headers: {
-          "Cache-Control": "no-store",
-          "Access-Control-Allow-Origin": "*",
-        },
-      }
+      { matches, ts: new Date().toISOString() },
+      { headers: { "Cache-Control": "no-store, must-revalidate" } }
     );
-  } catch (err) {
-    return NextResponse.json(
-      { matches: [], error: "Failed to fetch live matches" },
-      { status: 200 } // Return 200 so client doesn't break
-    );
+  } catch (e) {
+    return NextResponse.json({ matches: [], error: String(e) }, { status: 200 });
   }
 }

@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "14.2.5",
+    "next": "15.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "date-fns": "^3.6.0",
@@ -17,6 +17,9 @@
     "clsx": "^2.1.1",
     "tailwind-merge": "^2.5.2",
     "lucide-react": "^0.454.0",
+    "@radix-ui/react-badge": "^1.0.0",
+    "@radix-ui/react-tabs": "^1.1.1",
+    "@radix-ui/react-dialog": "^1.1.2",
     "class-variance-authority": "^0.7.0"
   },
   "devDependencies": {
@@ -28,6 +31,6 @@
     "autoprefixer": "^10.4.20",
     "postcss": "^8",
     "eslint": "^8",
-    "eslint-config-next": "14.2.5"
+    "eslint-config-next": "15.0.0"
   }
 }
