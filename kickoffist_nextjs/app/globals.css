@@ -2,109 +2,93 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── GOOGLE FONTS ── */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap');
+
 *{-webkit-tap-highlight-color:transparent;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 
-/* ── ESPN DARK + CRICBUZZ DENSE BASE ── */
 body{
-  background:#0e1117;
-  color:#e4e9f0;
-  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:#0a0a0f;
+  color:#e8eaf0;
+  font-family:'Inter',system-ui,sans-serif;
   font-size:13px;
   -webkit-font-smoothing:antialiased;
   min-height:100vh;
+  line-height:1.5;
 }
 
-/* Background: subtle pitch-green radial like ESPN */
+/* Subtle noise texture on background */
 body::before{
   content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   background:
-    radial-gradient(ellipse 70% 40% at 50% 0%,rgba(0,100,60,.07) 0%,transparent 60%),
-    radial-gradient(ellipse 50% 30% at 100% 100%,rgba(0,80,200,.04) 0%,transparent 50%);
+    radial-gradient(ellipse 80% 50% at 50% -10%,rgba(255,153,51,.04) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 40% at 0% 100%,rgba(19,136,8,.03) 0%,transparent 50%);
 }
 main,header,footer{position:relative;z-index:1;}
 
-/* ── CRICBUZZ SCORE CARD ── */
+/* ── MATCH CARD ── */
 .mc{
-  background:linear-gradient(135deg,rgba(255,255,255,.045) 0%,rgba(255,255,255,.02) 100%);
+  background:rgba(255,255,255,.04);
   border:1px solid rgba(255,255,255,.07);
-  border-radius:8px;
-  transition:all .15s ease;
+  border-radius:10px;
   overflow:hidden;
+  transition:all .15s ease;
 }
 .mc:hover{
-  border-color:rgba(255,255,255,.13);
-  background:rgba(255,255,255,.06);
+  background:rgba(255,255,255,.07);
+  border-color:rgba(255,255,255,.12);
   transform:translateY(-1px);
-  box-shadow:0 4px 16px rgba(0,0,0,.3);
+  box-shadow:0 4px 20px rgba(0,0,0,.3);
 }
 .mc.mc-live{
-  border-color:rgba(239,68,68,.25);
-  background:linear-gradient(135deg,rgba(239,68,68,.07) 0%,rgba(239,68,68,.02) 100%);
-}
-.mc.mc-live:hover{border-color:rgba(239,68,68,.4);}
-
-/* ── LIVE PULSE ── */
-.live-dot{
-  width:7px;height:7px;border-radius:50%;
-  background:#ef4444;display:inline-block;flex-shrink:0;
-  animation:pulse-r 1.4s ease infinite;
-}
-@keyframes pulse-r{
-  0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(239,68,68,.5);}
-  50%{opacity:.5;transform:scale(.8);box-shadow:0 0 0 5px rgba(239,68,68,0);}
+  border-color:rgba(239,68,68,.3);
+  background:rgba(239,68,68,.04);
 }
 
-/* ── BBC SPORT SECTION HEADERS ── */
+/* ── SECTION HEADERS — BBC SPORT STYLE ── */
 .sh{
-  font-size:10px;font-weight:800;text-transform:uppercase;
-  letter-spacing:.1em;color:rgba(255,255,255,.35);
-  display:flex;align-items:center;gap:7px;
-  padding:10px 0 7px;
+  font-family:'Barlow Condensed','Oswald',sans-serif;
+  font-size:11px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.1em;color:rgba(255,255,255,.4);
+  display:flex;align-items:center;gap:8px;
+  padding:10px 0 8px;
   border-bottom:2px solid rgba(255,255,255,.06);
   margin-bottom:8px;
 }
-.sh-line{flex:1;height:1px;background:rgba(255,255,255,.05);}
+.sh-line{flex:1;height:1px;background:rgba(255,255,255,.04);}
 
-/* ── GOAL.COM BADGES ── */
+/* ── STATUS BADGES ── */
 .badge-live{
-  background:rgba(239,68,68,.18);color:#f87171;
+  background:rgba(239,68,68,.15);color:#f87171;
   border:1px solid rgba(239,68,68,.3);
-  font-size:9px;font-weight:900;padding:2px 7px;border-radius:3px;
+  font-size:9px;font-weight:900;padding:2px 7px;border-radius:4px;
   display:inline-flex;align-items:center;gap:3px;letter-spacing:.06em;
-  text-transform:uppercase;
+  text-transform:uppercase;font-family:'Barlow Condensed','Oswald',sans-serif;
 }
 .badge-ft{
-  background:rgba(255,255,255,.06);color:rgba(255,255,255,.3);
+  background:rgba(255,255,255,.06);color:rgba(255,255,255,.35);
   border:1px solid rgba(255,255,255,.08);
-  font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;
+  font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;
+  font-family:'Barlow Condensed','Oswald',sans-serif;letter-spacing:.04em;
 }
 .badge-up{
-  background:rgba(59,130,246,.1);color:#60a5fa;
-  border:1px solid rgba(59,130,246,.2);
-  font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;
+  background:rgba(255,153,51,.1);color:#FF9933;
+  border:1px solid rgba(255,153,51,.25);
+  font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;
+  font-family:'Barlow Condensed','Oswald',sans-serif;letter-spacing:.04em;
 }
 .badge-grp{
-  background:rgba(245,158,11,.08);color:#fbbf24;
-  border:1px solid rgba(245,158,11,.15);
-  font-size:8px;font-weight:800;padding:1px 5px;border-radius:3px;
+  background:rgba(255,153,51,.08);color:#FF9933;
+  font-size:8px;font-weight:800;padding:1px 6px;border-radius:3px;
   letter-spacing:.06em;text-transform:uppercase;
+  font-family:'Barlow Condensed','Oswald',sans-serif;
 }
 
-/* ── ESPN NAV TABS ── */
-.tab-btn{
-  font-size:11px;font-weight:700;color:rgba(255,255,255,.35);
-  padding:8px 14px;border-bottom:2px solid transparent;
-  white-space:nowrap;cursor:pointer;transition:all .15s;flex-shrink:0;
-  text-transform:uppercase;letter-spacing:.04em;
-}
-.tab-btn.on{color:#fff;border-bottom-color:#ef4444;}
-.tab-btn:hover{color:rgba(255,255,255,.75);}
-
-/* ── CRICBUZZ STANDINGS ── */
+/* ── STANDINGS ── */
 .st-row{
   display:flex;align-items:center;gap:5px;
-  padding:5px 10px;font-size:11px;
+  padding:6px 10px;font-size:11px;
   border-bottom:1px solid rgba(255,255,255,.04);
   transition:background .1s;
 }
@@ -113,26 +97,43 @@ main,header,footer{position:relative;z-index:1;}
 .st-q{width:3px;height:16px;border-radius:2px;background:rgba(255,255,255,.08);flex-shrink:0;}
 .st-q.q{background:#22c55e;}
 
-/* ── TICKER ── */
-@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.ticker-track{animation:ticker 55s linear infinite;display:flex;width:max-content;}
-.ticker-track:hover{animation-play-state:paused;}
-
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar{width:3px;height:3px;}
-::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:2px;}
-
-/* ── CARD BASE ── */
+/* ── CARD ── */
 .card{
   background:rgba(255,255,255,.04);
   border:1px solid rgba(255,255,255,.07);
   border-radius:10px;
 }
 
+/* ── LIVE DOT ── */
+.live-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:#ef4444;display:inline-block;flex-shrink:0;
+  animation:pulse-r 1.4s ease infinite;
+}
+@keyframes pulse-r{
+  0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(239,68,68,.5);}
+  50%{opacity:.5;transform:scale(.8);box-shadow:0 0 0 6px rgba(239,68,68,0);}
+}
+
+/* ── NAV TABS ── */
+.tab-btn{
+  font-family:'Barlow Condensed','Oswald',sans-serif;
+  font-size:11px;font-weight:800;color:rgba(255,255,255,.35);
+  padding:8px 14px;border-bottom:2px solid transparent;
+  white-space:nowrap;cursor:pointer;transition:all .15s;flex-shrink:0;
+  text-transform:uppercase;letter-spacing:.08em;text-decoration:none;display:block;
+}
+.tab-btn.on{color:#FF9933;border-bottom-color:#FF9933;}
+.tab-btn:hover{color:rgba(255,255,255,.75);}
+
 /* ── GOAL SCORERS ── */
 .goalscorer{
-  font-size:9px;color:rgba(255,255,255,.4);
-  display:inline-flex;align-items:center;gap:3px;
+  font-size:10px;color:rgba(255,255,255,.45);
+  display:inline-flex;align-items:center;gap:4px;
 }
-.goalscorer .min{color:rgba(255,255,255,.25);}
+.goalscorer .min{color:rgba(255,255,255,.25);font-size:9px;}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:3px;height:3px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px;}

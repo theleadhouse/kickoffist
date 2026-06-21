@@ -1,155 +1,135 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Match } from "@/lib/types";
-import { getCountdown, generateGoogleCalURL } from "@/lib/utils";
+import { getCountdown } from "@/lib/utils";
 
 export default function PortalMatchCard({ match, showDate=false }: { match:Match; showDate?:boolean }) {
-  const [countdown, setCountdown] = useState<string|null>(null);
   const [expanded, setExpanded] = useState(false);
+  const [countdown, setCountdown] = useState<string|null>(null);
 
-  const isLive     = match.status === "LIVE";
-  const isFinished = match.status === "FINISHED";
-  const isUpcoming = match.status === "UPCOMING";
-  const homeWin    = isFinished && (match.score.home??0) > (match.score.away??0);
-  const awayWin    = isFinished && (match.score.away??0) > (match.score.home??0);
-  const isDraw     = isFinished && match.score.home === match.score.away && match.score.home !== null;
+  const isLive     = match.status==="LIVE";
+  const isFinished = match.status==="FINISHED";
+  const isUpcoming = match.status==="UPCOMING";
+  const hScore     = match.score.home??null;
+  const aScore     = match.score.away??null;
+  const homeWin    = isFinished && hScore!==null && aScore!==null && hScore>aScore;
+  const awayWin    = isFinished && hScore!==null && aScore!==null && aScore>hScore;
 
-  useEffect(() => {
-    if (!isUpcoming) return;
-    const tick = () => setCountdown(getCountdown(match.utcDate));
-    tick();
-    const id = setInterval(tick, 30000);
-    return () => clearInterval(id);
-  }, [match.utcDate, isUpcoming]);
+  useEffect(()=>{
+    if(!isUpcoming) return;
+    const tick=()=>setCountdown(getCountdown(match.utcDate));
+    tick(); const id=setInterval(tick,30000); return()=>clearInterval(id);
+  },[match.utcDate,isUpcoming]);
 
-  const homeGoals = match.goals?.filter(g => g.team === match.homeTeam.name) || [];
-  const awayGoals = match.goals?.filter(g => g.team === match.awayTeam.name) || [];
+  const hGoals=match.goals?.filter(g=>g.team===match.homeTeam.name)||[];
+  const aGoals=match.goals?.filter(g=>g.team===match.awayTeam.name)||[];
 
-  return (
-    <div className={`mc ${isLive?"mc-live":""} mb-1.5`} onClick={()=>setExpanded(!expanded)}>
+  return(
+    <div
+      className={`mc mb-2 ${isLive?"mc-live":""}`}
+      onClick={()=>(isFinished||isLive)&&setExpanded(!expanded)}
+      style={{cursor:(isFinished||isLive)?"pointer":"default"}}
+    >
+      <div style={{display:"flex",alignItems:"stretch",minHeight:"70px"}}>
+        {/* Status strip */}
+        <div style={{width:"3px",flexShrink:0,background:isLive?"#ef4444":isFinished?"rgba(74,222,128,.5)":"rgba(255,153,51,.3)"}}/>
 
-      {/* MAIN ROW */}
-      <div className="flex items-stretch min-h-[68px]">
-
-        {/* Left status strip */}
-        <div className={`w-[3px] flex-shrink-0 ${isLive?"bg-red-500":isFinished?"bg-green-600/50":"bg-blue-500/30"}`} />
-
-        {/* Competition meta */}
-        <div className="w-[64px] flex-shrink-0 flex flex-col items-center justify-center py-2 px-1 gap-1 border-r border-white/5 bg-black/10">
-          <span className="text-[8px] text-center leading-tight text-white/30 font-medium px-0.5">
+        {/* Group/competition tag */}
+        <div style={{width:"68px",flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"8px 4px",gap:"5px",borderRight:"1px solid rgba(255,255,255,.05)",background:"rgba(0,0,0,.1)"}}>
+          <span style={{fontSize:"8px",color:"rgba(255,255,255,.3)",fontWeight:"600",textAlign:"center",lineHeight:1.2}}>
             {match.competition.name.replace("FIFA ","").replace(" 2026","")}
           </span>
-          {match.group && <span className="badge-grp">{match.group.replace("Group ","Grp ")}</span>}
-          <div className="mt-0.5">
-            {isLive && <span className="badge-live"><span className="live-dot w-1 h-1"/>{match.minute?`${match.minute}'`:"LIVE"}</span>}
-            {isFinished && <span className="badge-ft">FT</span>}
-            {isUpcoming && showDate && match.istDateLabel && (
-              <span className="badge-up text-[8px]">{match.istDateLabel.slice(0,6)}</span>
-            )}
-          </div>
+          {match.group&&<span className="badge-grp">{match.group.replace("Group ","Grp ")}</span>}
+          {isLive&&<span className="badge-live"><span className="live-dot" style={{width:"5px",height:"5px"}}/>{match.minute?`${match.minute}'`:"LIVE"}</span>}
+          {isFinished&&<span className="badge-ft">FT</span>}
+          {isUpcoming&&showDate&&match.istDateLabel&&<span className="badge-up" style={{fontSize:"8px"}}>{match.istDateLabel.slice(0,6)}</span>}
         </div>
 
-        {/* Teams + Scores — CRICBUZZ DENSE STYLE */}
-        <div className="flex-1 min-w-0 py-2 px-3">
-          {/* Home team */}
-          <div className="flex items-center gap-2 mb-[7px]">
-            <span className="text-[18px] leading-none w-[22px] text-center flex-shrink-0">{match.homeTeam.flag||"🏳️"}</span>
-            <span className={`flex-1 text-[13px] font-bold truncate leading-tight ${homeWin?"text-green-400":isDraw?"text-white/80":isFinished?"text-white/55":"text-white"}`}>
-              {match.homeTeam.name}
-            </span>
-            {(isLive||isFinished) && match.score.home!==null && (
-              <span className={`text-[18px] font-black tabular-nums leading-none flex-shrink-0 ${homeWin?"text-green-400":isDraw?"text-white":"text-white/70"}`}>
-                {match.score.home}
-              </span>
+        {/* Teams + scores — FotMob dense style */}
+        <div style={{flex:1,minWidth:0,padding:"10px 12px"}}>
+          {/* Home */}
+          <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"8px"}}>
+            <span style={{fontSize:"20px",lineHeight:1,width:"24px",textAlign:"center",flexShrink:0}}>{match.homeTeam.flag||"🏳️"}</span>
+            <span style={{flex:1,fontSize:"14px",fontWeight:"700",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",
+              color:homeWin?"#4ade80":(isFinished&&!homeWin&&!awayWin)?"rgba(255,255,255,.7)":isFinished?"rgba(255,255,255,.45)":"#fff",
+              fontFamily:"'Barlow Condensed','Oswald',sans-serif",letterSpacing:".02em",
+            }}>{match.homeTeam.name}</span>
+            {(isLive||isFinished)&&hScore!==null&&(
+              <span style={{fontSize:"22px",fontWeight:"900",color:homeWin?"#4ade80":"#fff",fontFamily:"'Barlow Condensed','Oswald',sans-serif",flexShrink:0,lineHeight:1}}>{hScore}</span>
             )}
           </div>
-          {/* Away team */}
-          <div className="flex items-center gap-2">
-            <span className="text-[18px] leading-none w-[22px] text-center flex-shrink-0">{match.awayTeam.flag||"🏳️"}</span>
-            <span className={`flex-1 text-[13px] font-bold truncate leading-tight ${awayWin?"text-green-400":isDraw?"text-white/80":isFinished?"text-white/55":"text-white"}`}>
-              {match.awayTeam.name}
-            </span>
-            {(isLive||isFinished) && match.score.away!==null && (
-              <span className={`text-[18px] font-black tabular-nums leading-none flex-shrink-0 ${awayWin?"text-green-400":isDraw?"text-white":"text-white/70"}`}>
-                {match.score.away}
-              </span>
+          {/* Away */}
+          <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
+            <span style={{fontSize:"20px",lineHeight:1,width:"24px",textAlign:"center",flexShrink:0}}>{match.awayTeam.flag||"🏳️"}</span>
+            <span style={{flex:1,fontSize:"14px",fontWeight:"700",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",
+              color:awayWin?"#4ade80":(isFinished&&!homeWin&&!awayWin)?"rgba(255,255,255,.7)":isFinished?"rgba(255,255,255,.45)":"#fff",
+              fontFamily:"'Barlow Condensed','Oswald',sans-serif",letterSpacing:".02em",
+            }}>{match.awayTeam.name}</span>
+            {(isLive||isFinished)&&aScore!==null&&(
+              <span style={{fontSize:"22px",fontWeight:"900",color:awayWin?"#4ade80":"#fff",fontFamily:"'Barlow Condensed','Oswald',sans-serif",flexShrink:0,lineHeight:1}}>{aScore}</span>
             )}
           </div>
-
           {/* Venue */}
-          {(match.venue||match.city) && (
-            <div className="mt-1.5 text-[9px] text-white/25 truncate">
+          {(match.venue||match.city)&&(
+            <div style={{marginTop:"5px",fontSize:"9px",color:"rgba(255,255,255,.2)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
               📍 {[match.venue,match.city].filter(Boolean).join(" · ")}
             </div>
           )}
         </div>
 
-        {/* Right: Time / Live min */}
-        <div className="flex-shrink-0 flex flex-col items-end justify-center py-2 px-3 border-l border-white/5 min-w-[60px]">
-          {isUpcoming ? (
-            <div className="text-right">
-              {/* GOAL.COM BIG TIME */}
-              <div className="text-[15px] font-black text-amber-400 tabular-nums leading-none">{match.istTime}</div>
-              <div className="text-[8px] text-white/25 mt-0.5">IST</div>
-              {countdown && <div className="text-[8px] text-amber-400/50 mt-0.5">in {countdown}</div>}
-              <a
-                href={generateGoogleCalURL({home:match.homeTeam.name,away:match.awayTeam.name,utcDate:match.utcDate,competition:match.competition.name})}
-                target="_blank" rel="noopener noreferrer"
-                onClick={e=>e.stopPropagation()}
-                className="text-[10px] text-white/20 hover:text-blue-400 transition-colors mt-1 block"
-                title="Add to Google Calendar"
-              >📅</a>
+        {/* Right: time */}
+        <div style={{flexShrink:0,display:"flex",flexDirection:"column",alignItems:"flex-end",justifyContent:"center",padding:"10px 14px",borderLeft:"1px solid rgba(255,255,255,.05)",minWidth:"64px"}}>
+          {isUpcoming?(
+            <div style={{textAlign:"right"}}>
+              <div style={{fontSize:"16px",fontWeight:"900",color:"#FF9933",fontFamily:"'Barlow Condensed','Oswald',sans-serif",lineHeight:1,letterSpacing:".02em"}}>{match.istTime}</div>
+              <div style={{fontSize:"8px",color:"rgba(255,255,255,.2)",marginTop:"2px"}}>IST</div>
+              {countdown&&<div style={{fontSize:"9px",color:"rgba(255,153,51,.5)",marginTop:"2px"}}>in {countdown}</div>}
             </div>
-          ) : isLive ? (
-            <div className="text-right">
-              <div className="flex items-center gap-1 justify-end">
-                <span className="live-dot w-1.5 h-1.5"/>
-                <span className="text-[9px] font-black text-red-400">LIVE</span>
+          ):isLive?(
+            <div style={{textAlign:"right"}}>
+              <div style={{display:"flex",alignItems:"center",gap:"4px",justifyContent:"flex-end"}}>
+                <span className="live-dot"/>
+                <span style={{fontSize:"9px",fontWeight:"900",color:"#f87171",fontFamily:"'Barlow Condensed','Oswald',sans-serif"}}>LIVE</span>
               </div>
-              {match.minute && <div className="text-[16px] font-black text-red-300 tabular-nums leading-none mt-0.5">{match.minute}&apos;</div>}
+              {match.minute&&<div style={{fontSize:"18px",fontWeight:"900",color:"#f87171",fontFamily:"'Barlow Condensed','Oswald',sans-serif",lineHeight:1,marginTop:"4px"}}>{match.minute}&apos;</div>}
             </div>
-          ) : (
-            <div className="text-right">
-              <div className="text-[10px] text-white/25">{match.istTime}</div>
-              <div className="text-[8px] text-white/15">IST</div>
-              <div className="text-[9px] text-white/15 mt-1">{expanded?"▲":"▼"}</div>
+          ):(
+            <div style={{textAlign:"right"}}>
+              <div style={{fontSize:"10px",color:"rgba(255,255,255,.25)"}}>{match.istTime}</div>
+              <div style={{fontSize:"8px",color:"rgba(255,255,255,.15)"}}>IST</div>
+              {(isFinished||isLive)&&<div style={{fontSize:"10px",color:"rgba(255,255,255,.2)",marginTop:"4px"}}>{expanded?"▲":"▼"}</div>}
             </div>
           )}
         </div>
       </div>
 
-      {/* EXPANDED: BBC SPORT GOALSCORER STYLE */}
-      {expanded && (isFinished||isLive) && (
-        <div className="border-t border-white/5 bg-black/20 px-3 py-2">
-          {(homeGoals.length>0||awayGoals.length>0) ? (
-            <div className="flex gap-3">
-              <div className="flex-1">
-                {homeGoals.map((g,i)=>(
-                  <div key={i} className="goalscorer mb-0.5">
-                    <span>⚽</span>
-                    <span className="text-green-400/80 font-semibold">{g.player}</span>
+      {/* Expanded goalscorers */}
+      {expanded&&(isFinished||isLive)&&(
+        <div style={{borderTop:"1px solid rgba(255,255,255,.05)",background:"rgba(0,0,0,.2)",padding:"10px 12px"}}>
+          {(hGoals.length>0||aGoals.length>0)?(
+            <div style={{display:"flex",gap:"12px"}}>
+              <div style={{flex:1}}>
+                {hGoals.map((g,i)=>(
+                  <div key={i} className="goalscorer" style={{marginBottom:"3px"}}>
+                    <span style={{color:"#4ade80",fontSize:"10px"}}>⚽</span>
+                    <span style={{color:"rgba(255,255,255,.7)",fontWeight:"600"}}>{g.player}</span>
                     <span className="min">{g.minute}&apos;</span>
                   </div>
                 ))}
               </div>
-              <div className="flex-1 text-right">
-                {awayGoals.map((g,i)=>(
-                  <div key={i} className="goalscorer mb-0.5 justify-end">
+              <div style={{flex:1,textAlign:"right"}}>
+                {aGoals.map((g,i)=>(
+                  <div key={i} className="goalscorer" style={{marginBottom:"3px",justifyContent:"flex-end"}}>
                     <span className="min">{g.minute}&apos;</span>
-                    <span className="text-green-400/80 font-semibold">{g.player}</span>
-                    <span>⚽</span>
+                    <span style={{color:"rgba(255,255,255,.7)",fontWeight:"600"}}>{g.player}</span>
+                    <span style={{color:"#4ade80",fontSize:"10px"}}>⚽</span>
                   </div>
                 ))}
               </div>
             </div>
-          ) : (
-            <div className="text-[9px] text-white/20 text-center">No goalscorer data available</div>
+          ):(
+            <div style={{fontSize:"9px",color:"rgba(255,255,255,.2)",textAlign:"center"}}>Goalscorer data not available</div>
           )}
-          <div className="flex items-center gap-3 mt-2 text-[8px] text-white/20 flex-wrap">
-            {match.venue&&<span>🏟️ {match.venue}</span>}
-            {match.city&&<span>📍 {match.city}</span>}
-            <span>{match.competition.name}</span>
-          </div>
         </div>
       )}
     </div>

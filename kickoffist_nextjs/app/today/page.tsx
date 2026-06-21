@@ -8,7 +8,7 @@ import Link from "next/link";
 export const revalidate = 60;
 
 export default async function TodayPage() {
-  const [todayMatches, tomorrowMatches, allMatches, liveMatches] = await Promise.all([
+  const [today, tomorrow, all, live] = await Promise.all([
     getStaticTodayMatches(),
     getStaticTomorrowMatches(),
     getStaticWCMatches(),
@@ -16,127 +16,123 @@ export default async function TodayPage() {
   ]);
 
   const now = Date.now();
-  const upcoming = allMatches
-    .filter(m => m.status === "UPCOMING" && new Date(m.utcDate).getTime() > now + 24*3600*1000)
-    .slice(0, 6);
+  const upcoming = all.filter(m=>m.status==="UPCOMING"&&new Date(m.utcDate).getTime()>now+24*3600*1000).slice(0,6);
+  const recent   = all.filter(m=>m.status==="FINISHED").sort((a,b)=>new Date(b.utcDate).getTime()-new Date(a.utcDate).getTime()).slice(0,10);
+  const played   = all.filter(m=>m.status==="FINISHED").length;
 
-  const recentResults = allMatches
-    .filter(m => m.status === "FINISHED")
-    .sort((a,b) => new Date(b.utcDate).getTime() - new Date(a.utcDate).getTime())
-    .slice(0, 8);
-
-  const played    = allMatches.filter(m => m.status === "FINISHED").length;
-  const remaining = allMatches.filter(m => m.status !== "FINISHED" && m.homeTeam.name !== "TBD").length;
-
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-4">
-      {/* ── LEFT COLUMN ── */}
-      <div>
+  return(
+    <div style={{display:"grid",gridTemplateColumns:"1fr",gap:"0"}} className="lg:grid-cols-[1fr_260px]" >
+      <div style={{paddingRight:"0"}} className="lg:pr-4">
         {/* Live */}
-        {liveMatches.length > 0 && <LiveSection initialMatches={liveMatches}/>}
+        {live.length>0&&<LiveSection initialMatches={live}/>}
 
         {/* Today */}
-        {todayMatches.length > 0 && (
-          <div className="mb-3">
+        {today.length>0&&(
+          <div style={{marginBottom:"16px"}}>
             <div className="sh">
               <span>⚡</span><span>TODAY&apos;S FIXTURES</span>
-              <span className="badge-up ml-1">{todayMatches.length} MATCHES · IST</span>
+              <span className="badge-up">{today.length} MATCHES · IST</span>
               <div className="sh-line"/>
             </div>
-            {todayMatches.map(m=><PortalMatchCard key={m.id} match={m}/>)}
+            {today.map(m=><PortalMatchCard key={m.id} match={m}/>)}
           </div>
         )}
 
         {/* Today results */}
-        {todayMatches.filter(m=>m.status==="FINISHED").length > 0 && (
-          <div className="mb-3">
+        {today.filter(m=>m.status==="FINISHED").length>0&&(
+          <div style={{marginBottom:"16px"}}>
             <div className="sh">
               <span>✅</span><span>TODAY&apos;S RESULTS</span>
-              <span className="text-[9px] text-white/30 ml-1">TAP FOR GOALSCORERS</span>
+              <span style={{fontSize:"9px",color:"rgba(255,255,255,.25)"}}>TAP FOR GOALSCORERS</span>
               <div className="sh-line"/>
             </div>
-            {todayMatches.filter(m=>m.status==="FINISHED").map(m=><PortalMatchCard key={m.id} match={m}/>)}
+            {today.filter(m=>m.status==="FINISHED").map(m=><PortalMatchCard key={m.id} match={m}/>)}
           </div>
         )}
 
         {/* Tomorrow */}
-        {tomorrowMatches.length > 0 && (
-          <div className="mb-3">
+        {tomorrow.length>0&&(
+          <div style={{marginBottom:"16px"}}>
             <div className="sh">
               <span>📅</span><span>TOMORROW</span>
-              <span className="badge-up ml-1">{tomorrowMatches.length} MATCHES</span>
+              <span className="badge-up">{tomorrow.length} MATCHES</span>
               <div className="sh-line"/>
             </div>
-            {tomorrowMatches.map(m=><PortalMatchCard key={m.id} match={m}/>)}
+            {tomorrow.map(m=><PortalMatchCard key={m.id} match={m}/>)}
+          </div>
+        )}
+
+        {/* Recent Results */}
+        {recent.length>0&&(
+          <div style={{marginBottom:"16px"}}>
+            <div className="sh">
+              <span>📋</span><span>RECENT RESULTS</span>
+              <div className="sh-line"/>
+              <Link href="/world-cup" style={{fontSize:"10px",color:"#FF9933",fontWeight:"700",textDecoration:"none",flexShrink:0}}>All →</Link>
+            </div>
+            {recent.map(m=><PortalMatchCard key={m.id} match={m}/>)}
           </div>
         )}
 
         {/* Coming up */}
-        {upcoming.length > 0 && (
-          <div className="mb-3">
+        {upcoming.length>0&&(
+          <div style={{marginBottom:"16px"}}>
             <div className="sh">
               <span>🔜</span><span>COMING UP</span>
               <div className="sh-line"/>
-              <Link href="/world-cup" className="text-[10px] text-blue-400 hover:underline font-bold flex-shrink-0">Full schedule →</Link>
+              <Link href="/world-cup" style={{fontSize:"10px",color:"#FF9933",fontWeight:"700",textDecoration:"none",flexShrink:0}}>Full schedule →</Link>
             </div>
             {upcoming.map(m=><PortalMatchCard key={m.id} match={m} showDate/>)}
           </div>
         )}
 
-        {/* Recent results */}
-        {recentResults.length > 0 && (
-          <div className="mb-3">
-            <div className="sh">
-              <span>📋</span><span>RECENT RESULTS</span>
-              <div className="sh-line"/>
-            </div>
-            {recentResults.map(m=><PortalMatchCard key={m.id} match={m}/>)}
-          </div>
-        )}
-
         {/* Tournament stats */}
-        <div className="card p-3 mb-3">
-          <div className="grid grid-cols-3 gap-0 text-center">
+        <div className="card" style={{padding:"14px",marginBottom:"16px"}}>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:0,textAlign:"center"}}>
             {[
-              {n:"🏆", l:"FIFA World Cup 2026"},
-              {n:`${played}`, l:"Matches Played"},
-              {n:`${remaining}`, l:"Matches Left"},
-              {n:"48", l:"Teams"},
-              {n:"104", l:"Total Matches"},
-              {n:"16", l:"Stadiums"},
+              {n:"🏆",l:"FIFA World Cup 2026"},
+              {n:`${played}`,l:"Matches Played"},
+              {n:`${104-played}`,l:"Matches Left"},
+              {n:"48",l:"Teams"},
+              {n:"16",l:"Stadiums"},
+              {n:"12",l:"Groups"},
             ].map((s,i)=>(
-              <div key={i} className={`py-2 px-1 ${i%3!==2?"border-r border-white/5":""} ${i>2?"border-t border-white/5":""}`}>
-                <div className="text-[14px] font-black text-white">{s.n}</div>
-                <div className="text-[8px] text-white/30 mt-0.5">{s.l}</div>
+              <div key={i} style={{padding:"10px 4px",borderRight:i%3!==2?"1px solid rgba(255,255,255,.05)":"none",borderTop:i>2?"1px solid rgba(255,255,255,.05)":"none"}}>
+                <div style={{fontSize:"16px",fontWeight:"900",color:"#fff",fontFamily:"'Barlow Condensed','Oswald',sans-serif"}}>{s.n}</div>
+                <div style={{fontSize:"8px",color:"rgba(255,255,255,.25)",marginTop:"2px"}}>{s.l}</div>
               </div>
             ))}
           </div>
-          <div className="mt-2 text-center text-[9px] text-white/20 border-t border-white/5 pt-1.5">
-            Jun 11 – Jul 19 · IST 🇮🇳
+          <div style={{marginTop:"8px",textAlign:"center",fontSize:"9px",color:"rgba(255,255,255,.15)",borderTop:"1px solid rgba(255,255,255,.05)",paddingTop:"8px"}}>
+            Jun 11 – Jul 19 · USA · Canada · Mexico · All times IST 🇮🇳
           </div>
         </div>
 
         {/* Quick links */}
-        <div className="grid grid-cols-2 gap-2 mb-3">
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"16px"}}>
           {[
-            {href:"/world-cup",  icon:"🏆", label:"Full WC Schedule",    sub:"104 matches · stadiums · IST"},
-            {href:"/standings",  icon:"📊", label:"All Group Standings",  sub:"12 groups updated live"},
-            {href:"/predict",    icon:"🔮", label:"AI Match Predictor",   sub:"Claude AI analysis"},
-            {href:"/live",       icon:"🔴", label:"Live Scores",          sub:"Real-time auto-refresh"},
+            {href:"/world-cup", icon:"📅",label:"Full WC Schedule",   sub:"104 matches · all IST times"},
+            {href:"/standings", icon:"📊",label:"Group Standings",    sub:"All 12 groups · live updated"},
+            {href:"/predict",   icon:"🔮",label:"AI Match Predictor", sub:"Claude AI analysis"},
+            {href:"/live",      icon:"🔴",label:"Live Scores",        sub:"Auto-refresh every 60s"},
           ].map(l=>(
-            <Link key={l.href} href={l.href} className="card p-3 hover:bg-white/6 transition-colors">
-              <div className="text-xl mb-1">{l.icon}</div>
-              <div className="text-[11px] font-bold text-white/80">{l.label}</div>
-              <div className="text-[9px] text-white/30 mt-0.5">{l.sub}</div>
+            <Link key={l.href} href={l.href} style={{textDecoration:"none"}}>
+              <div className="card" style={{padding:"12px",transition:"all .15s",cursor:"pointer"}}>
+                <div style={{fontSize:"22px",marginBottom:"5px"}}>{l.icon}</div>
+                <div style={{fontSize:"12px",fontWeight:"700",color:"rgba(255,255,255,.8)",fontFamily:"'Barlow Condensed','Oswald',sans-serif",letterSpacing:".02em"}}>{l.label}</div>
+                <div style={{fontSize:"9px",color:"rgba(255,255,255,.3)",marginTop:"2px"}}>{l.sub}</div>
+              </div>
             </Link>
           ))}
         </div>
       </div>
 
-      {/* ── RIGHT SIDEBAR ── */}
-      <div className="space-y-4">
-        <MiniStandings/>
-        <TopScorers/>
+      {/* Sidebar */}
+      <div style={{display:"none"}} className="lg:block" >
+        <div style={{position:"sticky",top:"120px",display:"flex",flexDirection:"column",gap:"16px"}}>
+          <MiniStandings/>
+          <TopScorers/>
+        </div>
       </div>
     </div>
   );
