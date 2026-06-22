@@ -52,7 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   {href:"/live",     label:"🔴 Live Scores"},
                   {href:"/world-cup",label:"📅 WC 2026 Schedule"},
                   {href:"/standings",label:"📊 Group Standings"},
-                  {href:"/predict",  label:"🔮 AI Predictor"},
+                  
                 ].map(l=>(
                   <Link key={l.href} href={l.href} style={{display:"block",fontSize:"12px",color:"rgba(255,255,255,.25)",marginBottom:"6px",textDecoration:"none"}}>{l.label}</Link>
                 ))}
