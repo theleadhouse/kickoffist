@@ -50,7 +50,7 @@ const FIXTURES: {
   {id:39,h:"Uruguay",      a:"Cabo Verde",     utc:"2026-06-21T22:00:00Z",group:"G",stage:"Group Stage",venue:"Hard Rock Stadium",      city:"Miami Gardens, FL",   res:[2,2]},
   {id:40,h:"New Zealand",  a:"Egypt",          utc:"2026-06-22T01:00:00Z",group:"H",stage:"Group Stage",venue:"BC Place",               city:"Vancouver",           res:[1,3],goals:[{team:"Egypt",player:"Trezeguet",minute:22},{team:"New Zealand",player:"Wood",minute:44},{team:"Egypt",player:"Salah",minute:67},{team:"Egypt",player:"Mostafa",minute:82}]},
   // MD2 Jun 22 IST — today
-  {id:41,h:"Argentina",    a:"Austria",        utc:"2026-06-22T17:00:00Z",group:"J",stage:"Group Stage",venue:"AT&T Stadium",           city:"Dallas"},
+  {id:41,h:"Argentina",    a:"Austria",        utc:"2026-06-22T17:00:00Z",group:"J",stage:"Group Stage",venue:"AT&T Stadium",           city:"Dallas",             res:[2,0],goals:[{team:"Argentina",player:"Messi",minute:67},{team:"Argentina",player:"Messi",minute:90}]},
   {id:42,h:"France",       a:"Iraq",           utc:"2026-06-22T21:00:00Z",group:"I",stage:"Group Stage",venue:"Lincoln Financial Field", city:"Philadelphia"},
   {id:43,h:"Norway",       a:"Senegal",        utc:"2026-06-23T00:00:00Z",group:"I",stage:"Group Stage",venue:"MetLife Stadium",        city:"East Rutherford, NJ"},
   {id:44,h:"Jordan",       a:"Algeria",        utc:"2026-06-23T03:30:00Z",group:"J",stage:"Group Stage",venue:"Levi's Stadium",         city:"Santa Clara, CA"},

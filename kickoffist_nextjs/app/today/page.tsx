@@ -9,101 +9,51 @@ export const revalidate = 60;
 
 export default async function TodayPage() {
   const [today, tomorrow, all, live] = await Promise.all([
-    getStaticTodayMatches(),
-    getStaticTomorrowMatches(),
-    getStaticWCMatches(),
-    getLiveMatches(),
+    getStaticTodayMatches(), getStaticTomorrowMatches(),
+    getStaticWCMatches(), getLiveMatches(),
   ]);
 
-  const now = Date.now();
-  const upcoming = all
-    .filter(m => m.status === "UPCOMING" && new Date(m.utcDate).getTime() > now + 24*3600*1000)
-    .slice(0, 6);
+  const todayUpcoming = today.filter(m=>m.status==="UPCOMING");
+  const todayResults  = today.filter(m=>m.status==="FINISHED");
+  const played = all.filter(m=>m.status==="FINISHED").length;
+  const tomorrow4 = tomorrow.slice(0,4);
 
-  const recent = all
-    .filter(m => m.status === "FINISHED")
-    .sort((a,b) => new Date(b.utcDate).getTime() - new Date(a.utcDate).getTime())
-    .slice(0, 8);
+  // IST date string
+  const istDate = new Date(Date.now()+5.5*3600000);
+  const dateStr = istDate.toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long",timeZone:"UTC"});
 
-  const played = all.filter(m => m.status === "FINISHED").length;
-  const todayUpcoming = today.filter(m => m.status === "UPCOMING");
-  const todayResults  = today.filter(m => m.status === "FINISHED");
-  const todayLive     = today.filter(m => m.status === "LIVE");
-
-  return (
+  return(
     <div>
-      {/* ── FOOTBALL PITCH HERO ─────────────────────────────────────── */}
+      {/* ── HERO ── */}
       <div style={{
-        background: "linear-gradient(135deg,#0a1a0a 0%,#0d2a0d 40%,#081808 100%)",
-        borderRadius: "14px",
-        padding: "24px 20px 20px",
-        marginBottom: "20px",
-        position: "relative",
-        overflow: "hidden",
-        border: "1px solid rgba(255,255,255,.06)",
+        position:"relative",overflow:"hidden",borderRadius:"14px",
+        marginBottom:"16px",
+        background:"linear-gradient(135deg,#071407 0%,#0d2a0d 50%,#071407 100%)",
+        border:"1px solid rgba(255,255,255,.06)",
       }}>
-        {/* Pitch lines background art */}
-        <div style={{
-          position: "absolute", inset: 0, opacity: .07,
-          backgroundImage: `
-            repeating-linear-gradient(rgba(255,255,255,.6) 0, rgba(255,255,255,.6) 1px, transparent 1px, transparent 32px),
-            repeating-linear-gradient(90deg, rgba(255,255,255,.6) 0, rgba(255,255,255,.6) 1px, transparent 1px, transparent 32px)
-          `,
-        }}/>
-        {/* Centre circle */}
-        <div style={{
-          position:"absolute",right:"5%",top:"50%",transform:"translateY(-50%)",
-          width:"220px",height:"220px",borderRadius:"50%",
-          border:"2px solid rgba(255,255,255,.06)",
-        }}/>
-        {/* Ball watermark */}
-        <div style={{position:"absolute",right:"8%",top:"50%",transform:"translateY(-50%)",fontSize:"120px",opacity:.04,userSelect:"none"}}>⚽</div>
+        {/* Pitch art */}
+        <div style={{position:"absolute",inset:0,opacity:.06,backgroundImage:"repeating-linear-gradient(rgba(255,255,255,.8) 0,rgba(255,255,255,.8) 1px,transparent 1px,transparent 44px),repeating-linear-gradient(90deg,rgba(255,255,255,.8) 0,rgba(255,255,255,.8) 1px,transparent 1px,transparent 44px)"}}/>
+        <div style={{position:"absolute",right:"4%",top:"50%",transform:"translateY(-50%)",width:"200px",height:"200px",borderRadius:"50%",border:"1.5px solid rgba(255,255,255,.05)"}}/>
+        <div style={{position:"absolute",right:"calc(4% + 85px)",top:0,bottom:0,width:"1.5px",background:"rgba(255,255,255,.04)"}}/>
+        <svg style={{position:"absolute",right:"7%",top:"50%",transform:"translateY(-50%)",opacity:.04,width:"130px",height:"130px"}} viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="white" strokeWidth="2"/><path d="M26,18 L50,0 L74,18 L84,46 L74,74 L50,92 L26,74 L16,46 Z" fill="none" stroke="white" strokeWidth="1.5"/></svg>
 
-        <div style={{position:"relative",zIndex:1}}>
-          {/* Tournament badge */}
-          <div style={{
-            display:"inline-flex",alignItems:"center",gap:"8px",
-            background:"rgba(255,153,51,.1)",border:"1px solid rgba(255,153,51,.25)",
-            borderRadius:"6px",padding:"5px 14px",marginBottom:"14px",
-          }}>
-            <span style={{fontSize:"12px"}}>🏆</span>
-            <span style={{fontFamily:"'Barlow Condensed','Oswald',sans-serif",fontSize:"11px",fontWeight:"800",color:"#FF9933",letterSpacing:".12em",textTransform:"uppercase"}}>
-              FIFA World Cup 2026
-            </span>
-            <span style={{fontSize:"9px",color:"rgba(255,153,51,.5)"}}>USA · Canada · Mexico</span>
-          </div>
-
-          <div style={{display:"flex",alignItems:"flex-end",justifyContent:"space-between",flexWrap:"wrap",gap:"12px"}}>
+        <div style={{position:"relative",zIndex:1,padding:"22px 20px 18px"}}>
+          <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",flexWrap:"wrap",gap:"12px"}}>
             <div>
-              <h1 style={{
-                fontFamily:"'Barlow Condensed','Oswald',sans-serif",
-                fontSize:"clamp(32px,5vw,52px)",fontWeight:"900",
-                color:"#fff",letterSpacing:"1px",lineHeight:.92,marginBottom:"8px",
-              }}>
-                {todayUpcoming.length > 0 || todayLive.length > 0
-                  ? `${todayUpcoming.length + todayLive.length} MATCH${(todayUpcoming.length + todayLive.length) !== 1 ? "ES" : ""} TODAY`
-                  : "TODAY'S RESULTS"
-                }
+              <div style={{display:"inline-flex",alignItems:"center",gap:"7px",background:"rgba(255,153,51,.1)",border:"1px solid rgba(255,153,51,.22)",borderRadius:"6px",padding:"4px 12px",marginBottom:"12px"}}>
+                <span>🏆</span>
+                <span style={{fontFamily:"'Barlow Condensed','Oswald',sans-serif",fontSize:"11px",fontWeight:800,color:"#FF9933",letterSpacing:".12em",textTransform:"uppercase"}}>FIFA World Cup 2026</span>
+              </div>
+              <h1 style={{fontFamily:"'Barlow Condensed','Oswald',sans-serif",fontSize:"clamp(28px,5vw,48px)",fontWeight:900,color:"#fff",letterSpacing:".5px",lineHeight:.92,marginBottom:"6px"}}>
+                {live.length>0?"LIVE NOW ⚡":todayUpcoming.length>0?`${todayUpcoming.length} MATCH${todayUpcoming.length>1?"ES":""} TODAY`:"TODAY'S RESULTS"}
               </h1>
-              <p style={{fontSize:"13px",color:"rgba(255,255,255,.4)"}}>
-                All times in Indian Standard Time 🇮🇳 · {new Date().toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long",year:"numeric",timeZone:"Asia/Kolkata"})}
-              </p>
+              <p style={{fontSize:"13px",color:"rgba(255,255,255,.4)"}}>{dateStr} · All times IST 🇮🇳</p>
             </div>
-
-            {/* Quick stats */}
-            <div style={{display:"flex",gap:"12px",flexWrap:"wrap"}}>
-              {[
-                {n:`${played}`,l:"Played"},
-                {n:`${104-played}`,l:"Left"},
-                {n:"⚽",l:"Live Updates"},
-              ].map((s,i)=>(
-                <div key={i} style={{
-                  background:"rgba(0,0,0,.4)",backdropFilter:"blur(8px)",
-                  border:"1px solid rgba(255,255,255,.08)",
-                  borderRadius:"8px",padding:"8px 14px",textAlign:"center",
-                }}>
-                  <div style={{fontFamily:"'Barlow Condensed','Oswald',sans-serif",fontSize:"20px",fontWeight:"900",color:"#FF9933",lineHeight:1}}>{s.n}</div>
-                  <div style={{fontSize:"9px",color:"rgba(255,255,255,.3)",marginTop:"2px"}}>{s.l}</div>
+            <div style={{display:"flex",gap:"8px",flexWrap:"wrap"}}>
+              {[{n:`${played}`,l:"Played"},{n:`${104-played}`,l:"Left"},{n:"48",l:"Teams"}].map((s,i)=>(
+                <div key={i} style={{background:"rgba(0,0,0,.5)",border:"1px solid rgba(255,255,255,.08)",borderRadius:"8px",padding:"8px 12px",textAlign:"center"}}>
+                  <div style={{fontFamily:"'Barlow Condensed','Oswald',sans-serif",fontSize:"22px",fontWeight:900,color:"#FF9933",lineHeight:1}}>{s.n}</div>
+                  <div style={{fontSize:"9px",color:"rgba(255,255,255,.35)",marginTop:"2px"}}>{s.l}</div>
                 </div>
               ))}
             </div>
@@ -111,108 +61,80 @@ export default async function TodayPage() {
         </div>
       </div>
 
-      {/* ── MAIN CONTENT + SIDEBAR ─────────────────────────────────── */}
+      {/* ── MAIN + SIDEBAR ── */}
       <div style={{display:"grid",gap:"16px"}} className="lg:grid-cols-[1fr_260px]">
         <div>
+          {/* LIVE */}
+          {live.length>0&&<LiveSection initialMatches={live}/>}
 
-          {/* LIVE NOW */}
-          {live.length > 0 && <LiveSection initialMatches={live}/>}
-
-          {/* TODAY'S UPCOMING — the most important section */}
-          {todayUpcoming.length > 0 && (
-            <div style={{marginBottom:"20px"}}>
+          {/* TODAY UPCOMING */}
+          {todayUpcoming.length>0&&(
+            <div style={{marginBottom:"18px"}}>
               <div className="sh">
-                <span style={{fontSize:"14px"}}>⚡</span>
-                <span style={{fontFamily:"'Barlow Condensed','Oswald',sans-serif",fontSize:"13px",letterSpacing:".1em"}}>TODAY&apos;S MATCHES</span>
-                <span className="badge-up">{todayUpcoming.length} UPCOMING · IST</span>
+                <span style={{fontSize:"15px"}}>⚡</span>
+                <span>TODAY'S MATCHES</span>
+                <span className="badge-up">{todayUpcoming.length} UPCOMING</span>
                 <div className="sh-line"/>
+                <span style={{fontSize:"10px",color:"rgba(255,255,255,.25)",flexShrink:0}}>IST</span>
               </div>
-              <div style={{display:"flex",flexDirection:"column",gap:"8px"}}>
-                {todayUpcoming.map(m => <PortalMatchCard key={m.id} match={m}/>)}
-              </div>
+              {todayUpcoming.map(m=><PortalMatchCard key={m.id} match={m}/>)}
             </div>
           )}
 
-          {/* TODAY'S LIVE */}
-          {todayLive.length > 0 && (
-            <div style={{marginBottom:"20px"}}>
+          {/* TODAY RESULTS */}
+          {todayResults.length>0&&(
+            <div style={{marginBottom:"18px"}}>
               <div className="sh">
-                <span className="live-dot"/>
-                <span style={{fontFamily:"'Barlow Condensed','Oswald',sans-serif",fontSize:"13px",letterSpacing:".1em",color:"#f87171"}}>LIVE NOW</span>
+                <span>✅</span><span>TODAY'S RESULTS</span>
+                <span style={{fontSize:"10px",color:"rgba(255,255,255,.25)"}}>TAP FOR GOALS</span>
                 <div className="sh-line"/>
               </div>
-              {todayLive.map(m => <PortalMatchCard key={m.id} match={m}/>)}
+              {todayResults.map(m=><PortalMatchCard key={m.id} match={m}/>)}
             </div>
           )}
 
-          {/* TODAY'S RESULTS */}
-          {todayResults.length > 0 && (
-            <div style={{marginBottom:"20px"}}>
+          {/* TOMORROW PREVIEW */}
+          {tomorrow4.length>0&&(
+            <div style={{marginBottom:"18px"}}>
               <div className="sh">
-                <span>✅</span>
-                <span style={{fontFamily:"'Barlow Condensed','Oswald',sans-serif",fontSize:"13px",letterSpacing:".1em"}}>TODAY&apos;S RESULTS</span>
-                <span style={{fontSize:"9px",color:"rgba(255,255,255,.25)"}}>TAP FOR GOALSCORERS</span>
-                <div className="sh-line"/>
-              </div>
-              {todayResults.map(m => <PortalMatchCard key={m.id} match={m}/>)}
-            </div>
-          )}
-
-          {/* RECENT RESULTS — last day */}
-          {recent.length > 0 && (
-            <div style={{marginBottom:"20px"}}>
-              <div className="sh">
-                <span>📋</span>
-                <span style={{fontFamily:"'Barlow Condensed','Oswald',sans-serif",fontSize:"13px",letterSpacing:".1em"}}>RECENT RESULTS</span>
-                <div className="sh-line"/>
-                <Link href="/world-cup" style={{fontSize:"10px",color:"#FF9933",fontWeight:"700",textDecoration:"none",flexShrink:0}}>All →</Link>
-              </div>
-              {recent.map(m => <PortalMatchCard key={m.id} match={m}/>)}
-            </div>
-          )}
-
-          {/* TOMORROW */}
-          {tomorrow.length > 0 && (
-            <div style={{marginBottom:"20px"}}>
-              <div className="sh">
-                <span>📅</span>
-                <span style={{fontFamily:"'Barlow Condensed','Oswald',sans-serif",fontSize:"13px",letterSpacing:".1em"}}>TOMORROW</span>
+                <span>📅</span><span>TOMORROW</span>
                 <span className="badge-up">{tomorrow.length} MATCHES</span>
                 <div className="sh-line"/>
+                <Link href="/world-cup" style={{fontSize:"10px",color:"#FF9933",fontWeight:700,textDecoration:"none",flexShrink:0}}>All →</Link>
               </div>
-              {tomorrow.map(m => <PortalMatchCard key={m.id} match={m}/>)}
-            </div>
-          )}
-
-          {/* COMING UP */}
-          {upcoming.length > 0 && (
-            <div style={{marginBottom:"20px"}}>
-              <div className="sh">
-                <span>🔜</span>
-                <span style={{fontFamily:"'Barlow Condensed','Oswald',sans-serif",fontSize:"13px",letterSpacing:".1em"}}>COMING UP</span>
-                <div className="sh-line"/>
-                <Link href="/world-cup" style={{fontSize:"10px",color:"#FF9933",fontWeight:"700",textDecoration:"none",flexShrink:0}}>Full schedule →</Link>
-              </div>
-              {upcoming.map(m => <PortalMatchCard key={m.id} match={m} showDate/>)}
+              {tomorrow4.map(m=><PortalMatchCard key={m.id} match={m}/>)}
             </div>
           )}
 
           {/* QUICK LINKS */}
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"16px"}}>
             {[
-              {href:"/world-cup", icon:"📅",label:"Full WC Schedule",   sub:"104 matches · all IST"},
-              {href:"/standings", icon:"📊",label:"Group Tables",       sub:"All 12 groups · live"},
-              {href:"/live",      icon:"🔴",label:"Live Scores",        sub:"Auto-refresh 60s"},
-              {href:"/world-cup", icon:"🏆",label:"WC 2026 · Jul 19",  sub:"Final at MetLife NJ"},
+              {href:"/results",  icon:"📋",label:"All Results",       sub:"Every match with goalscorers"},
+              {href:"/world-cup",icon:"📅",label:"Full Schedule",     sub:"All 104 matches in IST"},
+              {href:"/standings",icon:"📊",label:"Group Tables",      sub:"All 12 groups updated live"},
+              {href:"/news",     icon:"📰",label:"WC 2026 News",      sub:"Latest stories & analysis"},
             ].map(l=>(
-              <Link key={l.label} href={l.href} style={{textDecoration:"none"}}>
-                <div className="card" style={{padding:"12px",cursor:"pointer",transition:"background .15s"}}>
-                  <div style={{fontSize:"20px",marginBottom:"5px"}}>{l.icon}</div>
-                  <div style={{fontFamily:"'Barlow Condensed','Oswald',sans-serif",fontSize:"13px",fontWeight:"800",color:"rgba(255,255,255,.85)",letterSpacing:".03em"}}>{l.label}</div>
-                  <div style={{fontSize:"9px",color:"rgba(255,255,255,.3)",marginTop:"2px"}}>{l.sub}</div>
+              <Link key={l.href} href={l.href} style={{textDecoration:"none"}}>
+                <div className="card card-hover" style={{padding:"14px",cursor:"pointer"}}>
+                  <div style={{fontSize:"22px",marginBottom:"6px"}}>{l.icon}</div>
+                  <div style={{fontFamily:"'Barlow Condensed','Oswald',sans-serif",fontSize:"14px",fontWeight:800,color:"rgba(255,255,255,.85)",letterSpacing:".03em"}}>{l.label}</div>
+                  <div style={{fontSize:"10px",color:"rgba(255,255,255,.3)",marginTop:"2px"}}>{l.sub}</div>
                 </div>
               </Link>
             ))}
+          </div>
+
+          {/* WATCH ON */}
+          <div className="card" style={{padding:"14px",marginBottom:"16px",background:"rgba(255,153,51,.04)",border:"1px solid rgba(255,153,51,.12)"}}>
+            <div style={{fontFamily:"'Barlow Condensed','Oswald',sans-serif",fontSize:"12px",fontWeight:800,color:"#FF9933",letterSpacing:".1em",marginBottom:"8px"}}>📺 WHERE TO WATCH IN INDIA</div>
+            <div style={{display:"flex",gap:"8px",flexWrap:"wrap"}}>
+              {[["JioCinema","🎬 Free streaming"],["Sports18","📡 TV channel"],["DD Sports","📺 Free-to-air"]].map(([ch,tag])=>(
+                <div key={ch} style={{background:"rgba(0,0,0,.3)",borderRadius:"8px",padding:"8px 12px"}}>
+                  <div style={{fontFamily:"'Barlow Condensed','Oswald',sans-serif",fontSize:"14px",fontWeight:700,color:"#fff"}}>{ch}</div>
+                  <div style={{fontSize:"10px",color:"rgba(255,255,255,.35)",marginTop:"1px"}}>{tag}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

@@ -2,138 +2,151 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── GOOGLE FONTS ── */
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap');
 
-*{-webkit-tap-highlight-color:transparent;box-sizing:border-box;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html{scroll-behavior:smooth;}
 
 body{
-  background:#0a0a0f;
-  color:#e8eaf0;
   font-family:'Inter',system-ui,sans-serif;
-  font-size:13px;
+  background:#080c08;
+  color:#f0f2ee;
   -webkit-font-smoothing:antialiased;
   min-height:100vh;
+  font-size:14px;
   line-height:1.5;
 }
 
-/* Subtle noise texture on background */
+/* ── FOOTBALL PITCH BACKGROUND ─────────────────────── */
 body::before{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  content:'';
+  position:fixed;inset:0;pointer-events:none;z-index:0;
   background:
-    radial-gradient(ellipse 80% 50% at 50% -10%,rgba(255,153,51,.04) 0%,transparent 60%),
-    radial-gradient(ellipse 50% 40% at 0% 100%,rgba(19,136,8,.03) 0%,transparent 50%);
+    /* Pitch centre circle */
+    radial-gradient(ellipse 60% 40% at 100% 50%,rgba(0,80,0,.12) 0%,transparent 60%),
+    /* Top spotlight */
+    radial-gradient(ellipse 80% 30% at 50% -5%,rgba(30,120,30,.08) 0%,transparent 55%),
+    /* Bottom fade */
+    radial-gradient(ellipse 100% 40% at 50% 110%,rgba(0,40,0,.2) 0%,transparent 55%),
+    /* Base */
+    linear-gradient(180deg,#090e09 0%,#080c08 40%,#07090700 100%);
 }
-main,header,footer{position:relative;z-index:1;}
 
-/* ── MATCH CARD ── */
+/* Subtle pitch lines */
+body::after{
+  content:'';
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    repeating-linear-gradient(
+      rgba(255,255,255,.018) 0,
+      rgba(255,255,255,.018) 1px,
+      transparent 1px,
+      transparent 48px
+    );
+}
+
+main,header,footer,nav{position:relative;z-index:1;}
+
+/* ── TYPOGRAPHY ────────────────────────────────────── */
+.font-display{font-family:'Barlow Condensed','Oswald',sans-serif;}
+
+/* ── CARDS ─────────────────────────────────────────── */
+.card{
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+}
+.card-hover{transition:all .15s;}
+.card-hover:hover{
+  background:rgba(255,255,255,.07);
+  border-color:rgba(255,255,255,.13);
+  transform:translateY(-1px);
+  box-shadow:0 6px 24px rgba(0,0,0,.3);
+}
+
+/* ── MATCH CARDS ────────────────────────────────────── */
 .mc{
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.07);
-  border-radius:10px;
-  overflow:hidden;
-  transition:all .15s ease;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;overflow:hidden;
+  transition:all .15s;
 }
 .mc:hover{
   background:rgba(255,255,255,.07);
-  border-color:rgba(255,255,255,.12);
-  transform:translateY(-1px);
+  border-color:rgba(255,255,255,.13);
   box-shadow:0 4px 20px rgba(0,0,0,.3);
 }
-.mc.mc-live{
-  border-color:rgba(239,68,68,.3);
-  background:rgba(239,68,68,.04);
+.mc-live{
+  border-color:rgba(239,68,68,.3)!important;
+  background:rgba(239,68,68,.04)!important;
 }
 
-/* ── SECTION HEADERS — BBC SPORT STYLE ── */
+/* ── SECTION HEADERS ────────────────────────────────── */
 .sh{
   font-family:'Barlow Condensed','Oswald',sans-serif;
-  font-size:11px;font-weight:800;text-transform:uppercase;
-  letter-spacing:.1em;color:rgba(255,255,255,.4);
+  font-size:12px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.12em;
+  color:rgba(255,255,255,.45);
   display:flex;align-items:center;gap:8px;
-  padding:10px 0 8px;
+  padding:12px 0 8px;
   border-bottom:2px solid rgba(255,255,255,.06);
-  margin-bottom:8px;
+  margin-bottom:10px;
 }
 .sh-line{flex:1;height:1px;background:rgba(255,255,255,.04);}
+.sh-accent{color:#FF9933;}
 
-/* ── STATUS BADGES ── */
+/* ── BADGES ─────────────────────────────────────────── */
 .badge-live{
   background:rgba(239,68,68,.15);color:#f87171;
   border:1px solid rgba(239,68,68,.3);
-  font-size:9px;font-weight:900;padding:2px 7px;border-radius:4px;
-  display:inline-flex;align-items:center;gap:3px;letter-spacing:.06em;
-  text-transform:uppercase;font-family:'Barlow Condensed','Oswald',sans-serif;
+  font-family:'Barlow Condensed','Oswald',sans-serif;
+  font-size:10px;font-weight:900;padding:2px 8px;border-radius:4px;
+  display:inline-flex;align-items:center;gap:4px;letter-spacing:.06em;
+  text-transform:uppercase;
 }
 .badge-ft{
-  background:rgba(255,255,255,.06);color:rgba(255,255,255,.35);
-  border:1px solid rgba(255,255,255,.08);
-  font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;
-  font-family:'Barlow Condensed','Oswald',sans-serif;letter-spacing:.04em;
+  background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);
+  border:1px solid rgba(255,255,255,.1);
+  font-family:'Barlow Condensed','Oswald',sans-serif;
+  font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.04em;
 }
 .badge-up{
   background:rgba(255,153,51,.1);color:#FF9933;
   border:1px solid rgba(255,153,51,.25);
-  font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;
-  font-family:'Barlow Condensed','Oswald',sans-serif;letter-spacing:.04em;
+  font-family:'Barlow Condensed','Oswald',sans-serif;
+  font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.04em;
 }
 .badge-grp{
   background:rgba(255,153,51,.08);color:#FF9933;
-  font-size:8px;font-weight:800;padding:1px 6px;border-radius:3px;
-  letter-spacing:.06em;text-transform:uppercase;
   font-family:'Barlow Condensed','Oswald',sans-serif;
+  font-size:9px;font-weight:800;padding:1px 6px;border-radius:3px;
+  letter-spacing:.06em;text-transform:uppercase;
 }
 
-/* ── STANDINGS ── */
-.st-row{
-  display:flex;align-items:center;gap:5px;
-  padding:6px 10px;font-size:11px;
-  border-bottom:1px solid rgba(255,255,255,.04);
-  transition:background .1s;
-}
-.st-row:last-child{border:none;}
-.st-row:hover{background:rgba(255,255,255,.025);}
-.st-q{width:3px;height:16px;border-radius:2px;background:rgba(255,255,255,.08);flex-shrink:0;}
-.st-q.q{background:#22c55e;}
-
-/* ── CARD ── */
-.card{
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.07);
-  border-radius:10px;
-}
-
-/* ── LIVE DOT ── */
+/* ── LIVE DOT ───────────────────────────────────────── */
 .live-dot{
   width:7px;height:7px;border-radius:50%;
   background:#ef4444;display:inline-block;flex-shrink:0;
   animation:pulse-r 1.4s ease infinite;
 }
 @keyframes pulse-r{
-  0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(239,68,68,.5);}
-  50%{opacity:.5;transform:scale(.8);box-shadow:0 0 0 6px rgba(239,68,68,0);}
+  0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(239,68,68,.6);}
+  50%{opacity:.4;transform:scale(.8);box-shadow:0 0 0 6px rgba(239,68,68,0);}
 }
 
-/* ── NAV TABS ── */
-.tab-btn{
-  font-family:'Barlow Condensed','Oswald',sans-serif;
-  font-size:11px;font-weight:800;color:rgba(255,255,255,.35);
-  padding:8px 14px;border-bottom:2px solid transparent;
-  white-space:nowrap;cursor:pointer;transition:all .15s;flex-shrink:0;
-  text-transform:uppercase;letter-spacing:.08em;text-decoration:none;display:block;
+/* ── STANDINGS ──────────────────────────────────────── */
+.st-row{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 10px;font-size:12px;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  transition:background .1s;
 }
-.tab-btn.on{color:#FF9933;border-bottom-color:#FF9933;}
-.tab-btn:hover{color:rgba(255,255,255,.75);}
+.st-row:last-child{border:none;}
+.st-row:hover{background:rgba(255,255,255,.03);}
+.st-q{width:3px;height:18px;border-radius:2px;background:rgba(255,255,255,.08);flex-shrink:0;}
+.st-q.q{background:#22c55e;}
 
-/* ── GOAL SCORERS ── */
-.goalscorer{
-  font-size:10px;color:rgba(255,255,255,.45);
-  display:inline-flex;align-items:center;gap:4px;
-}
-.goalscorer .min{color:rgba(255,255,255,.25);font-size:9px;}
-
-/* Scrollbar */
+/* ── SCROLLBAR ──────────────────────────────────────── */
 ::-webkit-scrollbar{width:3px;height:3px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px;}
