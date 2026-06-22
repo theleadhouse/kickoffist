@@ -5,14 +5,26 @@ import TopBar from "@/components/TopBar";
 import BottomNav from "@/components/BottomNav";
 import LiveTicker from "@/components/LiveTicker";
 import Link from "next/link";
+import PWAInstallBanner from "@/components/PWAInstallBanner";
 
 const inter = Inter({ subsets:["latin"], weight:["400","500","600","700","800"] });
 
 export const metadata: Metadata = {
   title: "KickoffIST — FIFA World Cup 2026 Live Scores in IST | India Football",
   description: "Live scores, results, standings and fixtures from FIFA World Cup 2026 in Indian Standard Time. India's #1 football calendar. Made in India 🇮🇳",
-  themeColor: "#0a0a0f",
+  themeColor: "#FF9933",
   manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "KickoffIST",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "black-translucent",
+    "apple-mobile-web-app-title": "KickoffIST",
+  },
 };
 
 export const viewport: Viewport = {
@@ -72,7 +84,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </div>
         </footer>
+        <PWAInstallBanner />
         <BottomNav />
+        {/* PWA Service Worker */}
+        <script dangerouslySetInnerHTML={{__html: `
+          if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+              navigator.serviceWorker.register('/sw.js').then(function(reg) {
+                console.log('KickoffIST SW registered');
+              }).catch(function(err) {
+                console.log('SW registration failed:', err);
+              });
+            });
+          }
+        `}} />
       </body>
     </html>
   );
