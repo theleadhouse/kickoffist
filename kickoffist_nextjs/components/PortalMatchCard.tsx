@@ -54,9 +54,8 @@ export default function PortalMatchCard({ match, showDate=false }: { match: Matc
   return (
     <div className={`mc ${isLive?"mc-live":""}`}>
       {/* Main card row */}
-      <div style={{display:"flex",alignItems:"stretch",minHeight:"78px"}}
+      <div style={{display:"flex",alignItems:"stretch",minHeight:"78px",cursor:(isFinished||isLive)?"pointer":"default"}}
         onClick={()=>(isFinished||isLive)&&setExpanded(!expanded)}
-        style2={{cursor:(isFinished||isLive)?"pointer":"default"}}>
         {/* Strip */}
         <div style={{width:"4px",flexShrink:0,borderRadius:"14px 0 0 14px",background:isLive?"#ef4444":isFinished?"rgba(74,222,128,.5)":"#FF9933"}}/>
         {/* Group meta */}
