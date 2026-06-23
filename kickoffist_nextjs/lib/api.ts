@@ -51,9 +51,9 @@ const FIXTURES: {
   {id:40,h:"New Zealand",  a:"Egypt",          utc:"2026-06-22T01:00:00Z",group:"H",stage:"Group Stage",venue:"BC Place",               city:"Vancouver",           res:[1,3],goals:[{team:"Egypt",player:"Trezeguet",minute:22},{team:"New Zealand",player:"Wood",minute:44},{team:"Egypt",player:"Salah",minute:67},{team:"Egypt",player:"Mostafa",minute:82}]},
   // MD2 Jun 22 IST — today
   {id:41,h:"Argentina",    a:"Austria",        utc:"2026-06-22T17:00:00Z",group:"J",stage:"Group Stage",venue:"AT&T Stadium",           city:"Dallas",             res:[2,0],goals:[{team:"Argentina",player:"Messi",minute:67},{team:"Argentina",player:"Messi",minute:90}]},
-  {id:42,h:"France",       a:"Iraq",           utc:"2026-06-22T21:00:00Z",group:"I",stage:"Group Stage",venue:"Lincoln Financial Field", city:"Philadelphia"},
-  {id:43,h:"Norway",       a:"Senegal",        utc:"2026-06-23T00:00:00Z",group:"I",stage:"Group Stage",venue:"MetLife Stadium",        city:"East Rutherford, NJ"},
-  {id:44,h:"Jordan",       a:"Algeria",        utc:"2026-06-23T03:30:00Z",group:"J",stage:"Group Stage",venue:"Levi's Stadium",         city:"Santa Clara, CA"},
+  {id:42,h:"France",       a:"Iraq",           utc:"2026-06-22T21:00:00Z",group:"I",stage:"Group Stage",venue:"Lincoln Financial Field", city:"Philadelphia",        res:[3,0],goals:[{team:"France",player:"Mbappe",minute:14},{team:"France",player:"Mbappe",minute:54},{team:"France",player:"Dembele",minute:66}]},
+  {id:43,h:"Norway",       a:"Senegal",        utc:"2026-06-23T00:00:00Z",group:"I",stage:"Group Stage",venue:"MetLife Stadium",        city:"East Rutherford, NJ", res:[3,2],goals:[{team:"Norway",player:"Haaland",minute:22},{team:"Norway",player:"Haaland",minute:51},{team:"Norway",player:"Ostigard",minute:76},{team:"Senegal",player:"Sarr",minute:78},{team:"Senegal",player:"Mbaye",minute:90}]},
+  {id:44,h:"Jordan",       a:"Algeria",        utc:"2026-06-23T03:30:00Z",group:"J",stage:"Group Stage",venue:"Levi's Stadium",         city:"Santa Clara, CA",     res:[1,2],goals:[{team:"Jordan",player:"Al-Rashdan",minute:36},{team:"Algeria",player:"Benbouali",minute:69},{team:"Algeria",player:"Gouiri",minute:82}]},
   // MD2 Jun 23 IST
   {id:45,h:"Portugal",     a:"Uzbekistan",     utc:"2026-06-23T17:00:00Z",group:"K",stage:"Group Stage",venue:"NRG Stadium",            city:"Houston"},
   {id:46,h:"England",      a:"Ghana",          utc:"2026-06-23T20:00:00Z",group:"L",stage:"Group Stage",venue:"Gillette Stadium",       city:"Foxborough, MA"},
