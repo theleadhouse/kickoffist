@@ -2,20 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── FONTS ── */
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Teko:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html { scroll-behavior: smooth; }
 
-/* ══════════════════════════════════════════
-   BRAND PALETTE
-   Navy #0A1628 — floodlit stadium night sky
-   Saffron #FF9933 — energy, IST, India
-   White #FFFFFF — scores, headlines
-   Soft white #C8D4E8 — secondary text
-   Green #138808 — India, pitch
-   ══════════════════════════════════════════ */
 :root {
   --navy:       #0A1628;
   --navy-lt:    #112040;
@@ -41,45 +32,28 @@ body {
   font-size: 14px;
 }
 
-/* ── STADIUM ATMOSPHERE BACKGROUND ── */
 body::before {
   content: '';
   position: fixed; inset: 0; pointer-events: none; z-index: 0;
   background:
-    /* Top floodlight glow */
-    radial-gradient(ellipse 100% 25% at 50% 0%, rgba(255,153,51,.06) 0%, transparent 60%),
-    /* Left corner light */
-    radial-gradient(ellipse 50% 40% at 0% 50%, rgba(19,136,8,.05) 0%, transparent 55%),
-    /* Right corner light */
+    radial-gradient(ellipse 100% 25% at 50% 0%, rgba(255,153,51,.05) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 0% 50%, rgba(19,136,8,.04) 0%, transparent 55%),
     radial-gradient(ellipse 50% 40% at 100% 50%, rgba(19,136,8,.04) 0%, transparent 55%),
-    /* Pitch glow bottom */
-    radial-gradient(ellipse 80% 30% at 50% 100%, rgba(19,136,8,.08) 0%, transparent 55%);
+    radial-gradient(ellipse 80% 30% at 50% 100%, rgba(19,136,8,.06) 0%, transparent 55%);
 }
 
-/* Subtle pitch stripe */
 body::after {
   content: '';
   position: fixed; inset: 0; pointer-events: none; z-index: 0;
   background-image: repeating-linear-gradient(
     180deg,
-    transparent 0, transparent 48px,
-    rgba(255,255,255,.012) 48px, rgba(255,255,255,.012) 96px
+    transparent 0, transparent 52px,
+    rgba(255,255,255,.015) 52px, rgba(255,255,255,.015) 104px
   );
 }
 
 main, header, footer, nav { position: relative; z-index: 1; }
 
-/* ── TYPOGRAPHY ── */
-.font-score {
-  font-family: 'Bebas Neue', sans-serif;
-  letter-spacing: .04em;
-}
-.font-head {
-  font-family: 'Teko', sans-serif;
-  letter-spacing: .04em;
-}
-
-/* ── CARDS ── */
 .card {
   background: var(--navy-lt);
   border: 1px solid var(--border);
@@ -88,12 +62,11 @@ main, header, footer, nav { position: relative; z-index: 1; }
 .card-hover { transition: all .15s; }
 .card-hover:hover {
   background: var(--navy-ltr);
-  border-color: var(--border-lt);
+  border-color: rgba(255,153,51,.2);
   transform: translateY(-1px);
   box-shadow: 0 6px 24px rgba(0,0,0,.4);
 }
 
-/* ── MATCH CARDS ── */
 .mc {
   background: var(--navy-lt);
   border: 1px solid var(--border);
@@ -102,18 +75,10 @@ main, header, footer, nav { position: relative; z-index: 1; }
   transition: all .15s;
   margin-bottom: 8px;
 }
-.mc:hover {
-  background: var(--navy-ltr);
-  border-color: rgba(255,153,51,.2);
-  box-shadow: 0 4px 20px rgba(0,0,0,.3);
-}
-.mc-live {
-  border-color: rgba(239,68,68,.4) !important;
-  background: linear-gradient(135deg, rgba(239,68,68,.06), var(--navy-lt)) !important;
-}
+.mc:hover { background: var(--navy-ltr); border-color: rgba(255,153,51,.2); box-shadow: 0 4px 20px rgba(0,0,0,.3); }
+.mc-live { border-color: rgba(239,68,68,.4) !important; background: linear-gradient(135deg, rgba(239,68,68,.06), var(--navy-lt)) !important; }
 .mc-live:hover { border-color: rgba(239,68,68,.6) !important; }
 
-/* ── SECTION HEADERS ── */
 .sh {
   font-family: 'Teko', sans-serif;
   font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
@@ -124,69 +89,21 @@ main, header, footer, nav { position: relative; z-index: 1; }
   margin-bottom: 12px;
 }
 .sh-line { flex: 1; height: 1px; background: var(--border); }
-.sh-accent { color: var(--saffron); }
 
-/* ── BADGES ── */
-.badge-live {
-  background: rgba(239,68,68,.15); color: #f87171;
-  border: 1px solid rgba(239,68,68,.35);
-  font-family: 'Teko', sans-serif;
-  font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 5px;
-  display: inline-flex; align-items: center; gap: 4px; letter-spacing: .06em;
-  text-transform: uppercase;
-}
-.badge-ft {
-  background: rgba(255,255,255,.06); color: var(--muted);
-  border: 1px solid var(--border);
-  font-family: 'Teko', sans-serif;
-  font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 5px;
-}
-.badge-up {
-  background: rgba(255,153,51,.1); color: var(--saffron);
-  border: 1px solid rgba(255,153,51,.25);
-  font-family: 'Teko', sans-serif;
-  font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 5px;
-}
-.badge-grp {
-  background: rgba(255,153,51,.08); color: var(--saffron);
-  font-family: 'Teko', sans-serif;
-  font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 4px;
-  letter-spacing: .06em; text-transform: uppercase;
-}
+.badge-live { background: rgba(239,68,68,.15); color: #f87171; border: 1px solid rgba(239,68,68,.35); font-family: 'Teko',sans-serif; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 5px; display: inline-flex; align-items: center; gap: 4px; letter-spacing: .06em; text-transform: uppercase; }
+.badge-ft { background: rgba(255,255,255,.06); color: var(--muted); border: 1px solid var(--border); font-family: 'Teko',sans-serif; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 5px; }
+.badge-up { background: rgba(255,153,51,.1); color: var(--saffron); border: 1px solid rgba(255,153,51,.25); font-family: 'Teko',sans-serif; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 5px; }
+.badge-grp { background: rgba(255,153,51,.08); color: var(--saffron); font-family: 'Teko',sans-serif; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 4px; letter-spacing: .06em; text-transform: uppercase; }
 
-/* ── LIVE DOT ── */
-.live-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--red); display: inline-block; flex-shrink: 0;
-  animation: pulse-r 1.4s ease infinite;
-}
-@keyframes pulse-r {
-  0%,100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(239,68,68,.6); }
-  50% { opacity: .4; transform: scale(.8); box-shadow: 0 0 0 6px rgba(239,68,68,0); }
-}
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); display: inline-block; flex-shrink: 0; animation: pulse-r 1.4s ease infinite; }
+@keyframes pulse-r { 0%,100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(239,68,68,.6); } 50% { opacity: .4; transform: scale(.8); box-shadow: 0 0 0 6px rgba(239,68,68,0); } }
 
-/* ── STANDINGS ── */
-.st-row {
-  display: flex; align-items: center; gap: 6px;
-  padding: 7px 12px; font-size: 12px;
-  border-bottom: 1px solid rgba(255,255,255,.04);
-  transition: background .1s;
-}
+.st-row { display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-bottom: 1px solid rgba(255,255,255,.04); transition: background .1s; }
 .st-row:last-child { border: none; }
 .st-row:hover { background: rgba(255,255,255,.03); }
 .st-q { width: 3px; height: 18px; border-radius: 2px; background: rgba(255,255,255,.08); flex-shrink: 0; }
 .st-q.q { background: #22c55e; }
 
-/* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 3px; height: 3px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 2px; }
-
-/* ── BUTTONS ── */
-.btn-saffron {
-  background: var(--saffron); color: #000;
-  font-family: 'Teko', sans-serif; font-size: 15px; font-weight: 600;
-  padding: 10px 22px; border-radius: 10px; border: none;
-  cursor: pointer; letter-spacing: .06em; transition: all .15s;
-}
-.btn-saffron:hover { background: var(--saffron-dk); transform: translateY(-1px); }
