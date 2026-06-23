@@ -1,203 +1,109 @@
 export const revalidate = 300;
-
-// VERIFIED: ESPN + CBS Sports + Yahoo Sports + FIFA.com - June 21 2026
-// ALL GROUPS ARE 4 TEAMS EACH — confirmed from official sources
 const GROUPS = [
-  {id:"A", teams:[
-    {name:"Mexico",      flag:"🇲🇽",p:2,w:2,d:0,l:0,gf:3,ga:0,pts:6},
-    {name:"South Korea", flag:"🇰🇷",p:2,w:1,d:0,l:1,gf:2,ga:2,pts:3},
-    {name:"Czechia",     flag:"🇨🇿",p:2,w:0,d:1,l:1,gf:2,ga:3,pts:1},
-    {name:"South Africa",flag:"🇿🇦",p:2,w:0,d:1,l:1,gf:1,ga:3,pts:1},
-  ]},
-  {id:"B", teams:[
-    {name:"Canada",       flag:"🇨🇦",p:2,w:1,d:1,l:0,gf:7,ga:1,pts:4},
-    {name:"Switzerland",  flag:"🇨🇭",p:2,w:1,d:1,l:0,gf:5,ga:2,pts:4},
-    {name:"Bosnia & Herz.",flag:"🇧🇦",p:2,w:0,d:1,l:1,gf:2,ga:5,pts:1},
-    {name:"Qatar",        flag:"🇶🇦",p:2,w:0,d:0,l:2,gf:1,ga:7,pts:0},
-  ]},
-  {id:"C", teams:[
-    {name:"Brazil",   flag:"🇧🇷",p:2,w:1,d:1,l:0,gf:4,ga:1,pts:4},
-    {name:"Morocco",  flag:"🇲🇦",p:2,w:1,d:1,l:0,gf:2,ga:1,pts:4},
-    {name:"Scotland", flag:"🏴󠁧󠁢󠁳󠁣󠁴󠁿",p:2,w:1,d:0,l:1,gf:1,ga:1,pts:3},
-    {name:"Haiti",    flag:"🇭🇹",p:2,w:0,d:0,l:2,gf:0,ga:4,pts:0},
-  ]},
-  {id:"D", teams:[
-    {name:"USA",      flag:"🇺🇸",p:2,w:2,d:0,l:0,gf:6,ga:1,pts:6},
-    {name:"Paraguay", flag:"🇵🇾",p:2,w:1,d:0,l:1,gf:2,ga:5,pts:3},
-    {name:"Australia",flag:"🇦🇺",p:2,w:1,d:0,l:1,gf:2,ga:2,pts:3},
-    {name:"Turkey",   flag:"🇹🇷",p:2,w:0,d:0,l:2,gf:0,ga:2,pts:0},
-  ]},
-  {id:"E", teams:[
-    {name:"Germany",     flag:"🇩🇪",p:2,w:2,d:0,l:0,gf:9,ga:2,pts:6},
-    {name:"Ivory Coast", flag:"🇨🇮",p:2,w:1,d:0,l:1,gf:2,ga:8,pts:3},
-    {name:"Ecuador",     flag:"🇪🇨",p:2,w:0,d:1,l:1,gf:0,ga:1,pts:1},
-    {name:"Curaçao",     flag:"🇨🇼",p:2,w:0,d:1,l:1,gf:1,ga:1,pts:1},
-  ]},
-  {id:"F", teams:[
-    {name:"Netherlands",flag:"🇳🇱",p:2,w:1,d:1,l:0,gf:7,ga:3,pts:4},
-    {name:"Japan",      flag:"🇯🇵",p:2,w:1,d:1,l:0,gf:6,ga:2,pts:4},
-    {name:"Sweden",     flag:"🇸🇪",p:2,w:1,d:0,l:1,gf:6,ga:6,pts:3},
-    {name:"Tunisia",    flag:"🇹🇳",p:2,w:0,d:0,l:2,gf:1,ga:9,pts:0},
-  ]},
-  {id:"G", teams:[
-    {name:"Spain",       flag:"🇪🇸",p:2,w:1,d:1,l:0,gf:4,ga:0,pts:4},
-    {name:"Uruguay",     flag:"🇺🇾",p:2,w:0,d:2,l:0,gf:3,ga:3,pts:2},
-    {name:"Cabo Verde",  flag:"🇨🇻",p:2,w:0,d:2,l:0,gf:2,ga:2,pts:2},
-    {name:"Saudi Arabia",flag:"🇸🇦",p:2,w:0,d:1,l:1,gf:1,ga:5,pts:1},
-  ]},
-  {id:"H", teams:[
-    {name:"Egypt",      flag:"🇪🇬",p:2,w:1,d:1,l:0,gf:4,ga:3,pts:4},
-    {name:"Belgium",    flag:"🇧🇪",p:2,w:0,d:2,l:0,gf:1,ga:1,pts:2},
-    {name:"Iran",       flag:"🇮🇷",p:2,w:0,d:2,l:0,gf:2,ga:2,pts:2},
-    {name:"New Zealand",flag:"🇳🇿",p:2,w:0,d:1,l:1,gf:3,ga:4,pts:1},
-  ]},
-  {id:"I", teams:[
-    {name:"France",  flag:"🇫🇷",p:1,w:1,d:0,l:0,gf:3,ga:1,pts:3},
-    {name:"Norway",  flag:"🇳🇴",p:1,w:1,d:0,l:0,gf:4,ga:1,pts:3},
-    {name:"Senegal", flag:"🇸🇳",p:1,w:0,d:0,l:1,gf:1,ga:3,pts:0},
-    {name:"Iraq",    flag:"🇮🇶",p:1,w:0,d:0,l:1,gf:1,ga:4,pts:0},
-  ]},
-  {id:"J", teams:[
-    {name:"Argentina",flag:"🇦🇷",p:1,w:1,d:0,l:0,gf:3,ga:0,pts:3},
-    {name:"Austria",  flag:"🇦🇹",p:1,w:1,d:0,l:0,gf:3,ga:1,pts:3},
-    {name:"Jordan",   flag:"🇯🇴",p:1,w:0,d:0,l:1,gf:1,ga:3,pts:0},
-    {name:"Algeria",  flag:"🇩🇿",p:1,w:0,d:0,l:1,gf:0,ga:3,pts:0},
-  ]},
-  {id:"K", teams:[
-    {name:"Colombia",  flag:"🇨🇴",p:1,w:1,d:0,l:0,gf:3,ga:1,pts:3},
-    {name:"Portugal",  flag:"🇵🇹",p:1,w:0,d:1,l:0,gf:1,ga:1,pts:1},
-    {name:"DR Congo",  flag:"🇨🇩",p:1,w:0,d:1,l:0,gf:1,ga:1,pts:1},
-    {name:"Uzbekistan",flag:"🇺🇿",p:1,w:0,d:0,l:1,gf:1,ga:3,pts:0},
-  ]},
-  {id:"L", teams:[
-    {name:"England",flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",p:1,w:1,d:0,l:0,gf:4,ga:2,pts:3},
-    {name:"Ghana",  flag:"🇬🇭",p:1,w:1,d:0,l:0,gf:1,ga:0,pts:3},
-    {name:"Croatia",flag:"🇭🇷",p:1,w:0,d:0,l:1,gf:2,ga:4,pts:0},
-    {name:"Panama", flag:"🇵🇦",p:1,w:0,d:0,l:1,gf:0,ga:1,pts:0},
-  ]},
+  {id:"A",teams:[{n:"Mexico",f:"🇲🇽",p:2,w:2,d:0,l:0,gf:3,ga:0,pts:6},{n:"South Korea",f:"🇰🇷",p:2,w:1,d:0,l:1,gf:2,ga:2,pts:3},{n:"Czechia",f:"🇨🇿",p:2,w:0,d:1,l:1,gf:2,ga:3,pts:1},{n:"South Africa",f:"🇿🇦",p:2,w:0,d:1,l:1,gf:1,ga:3,pts:1}]},
+  {id:"B",teams:[{n:"Canada",f:"🇨🇦",p:2,w:1,d:1,l:0,gf:7,ga:1,pts:4},{n:"Switzerland",f:"🇨🇭",p:2,w:1,d:1,l:0,gf:5,ga:2,pts:4},{n:"Bosnia",f:"🇧🇦",p:2,w:0,d:1,l:1,gf:2,ga:5,pts:1},{n:"Qatar",f:"🇶🇦",p:2,w:0,d:0,l:2,gf:1,ga:7,pts:0}]},
+  {id:"C",teams:[{n:"Brazil",f:"🇧🇷",p:2,w:1,d:1,l:0,gf:4,ga:1,pts:4},{n:"Morocco",f:"🇲🇦",p:2,w:1,d:1,l:0,gf:2,ga:1,pts:4},{n:"Scotland",f:"🏴󠁧󠁢󠁳󠁣󠁴󠁿",p:2,w:1,d:0,l:1,gf:1,ga:1,pts:3},{n:"Haiti",f:"🇭🇹",p:2,w:0,d:0,l:2,gf:0,ga:4,pts:0}]},
+  {id:"D",teams:[{n:"USA",f:"🇺🇸",p:2,w:2,d:0,l:0,gf:6,ga:1,pts:6},{n:"Paraguay",f:"🇵🇾",p:2,w:1,d:0,l:1,gf:2,ga:5,pts:3},{n:"Australia",f:"🇦🇺",p:2,w:1,d:0,l:1,gf:2,ga:2,pts:3},{n:"Turkey",f:"🇹🇷",p:2,w:0,d:0,l:2,gf:0,ga:2,pts:0}]},
+  {id:"E",teams:[{n:"Germany",f:"🇩🇪",p:2,w:2,d:0,l:0,gf:9,ga:2,pts:6},{n:"Ivory Coast",f:"🇨🇮",p:2,w:1,d:0,l:1,gf:2,ga:8,pts:3},{n:"Ecuador",f:"🇪🇨",p:2,w:0,d:1,l:1,gf:0,ga:1,pts:1},{n:"Curaçao",f:"🇨🇼",p:2,w:0,d:1,l:1,gf:1,ga:1,pts:1}]},
+  {id:"F",teams:[{n:"Netherlands",f:"🇳🇱",p:2,w:1,d:1,l:0,gf:7,ga:3,pts:4},{n:"Japan",f:"🇯🇵",p:2,w:1,d:1,l:0,gf:6,ga:2,pts:4},{n:"Sweden",f:"🇸🇪",p:2,w:1,d:0,l:1,gf:6,ga:6,pts:3},{n:"Tunisia",f:"🇹🇳",p:2,w:0,d:0,l:2,gf:1,ga:9,pts:0}]},
+  {id:"G",teams:[{n:"Spain",f:"🇪🇸",p:2,w:1,d:1,l:0,gf:4,ga:0,pts:4},{n:"Uruguay",f:"🇺🇾",p:2,w:0,d:2,l:0,gf:3,ga:3,pts:2},{n:"Cabo Verde",f:"🇨🇻",p:2,w:0,d:2,l:0,gf:2,ga:2,pts:2},{n:"Saudi Arabia",f:"🇸🇦",p:2,w:0,d:1,l:1,gf:1,ga:5,pts:1}]},
+  {id:"H",teams:[{n:"Egypt",f:"🇪🇬",p:2,w:1,d:1,l:0,gf:4,ga:3,pts:4},{n:"Belgium",f:"🇧🇪",p:2,w:0,d:2,l:0,gf:1,ga:1,pts:2},{n:"Iran",f:"🇮🇷",p:2,w:0,d:2,l:0,gf:2,ga:2,pts:2},{n:"New Zealand",f:"🇳🇿",p:2,w:0,d:1,l:1,gf:3,ga:4,pts:1}]},
+  {id:"I",teams:[{n:"Norway",f:"🇳🇴",p:2,w:2,d:0,l:0,gf:7,ga:3,pts:6},{n:"France",f:"🇫🇷",p:2,w:2,d:0,l:0,gf:6,ga:1,pts:6},{n:"Senegal",f:"🇸🇳",p:2,w:0,d:0,l:2,gf:3,ga:6,pts:0},{n:"Iraq",f:"🇮🇶",p:2,w:0,d:0,l:2,gf:1,ga:7,pts:0}]},
+  {id:"J",teams:[{n:"Argentina",f:"🇦🇷",p:2,w:2,d:0,l:0,gf:5,ga:0,pts:6},{n:"Austria",f:"🇦🇹",p:2,w:1,d:0,l:1,gf:3,ga:3,pts:3},{n:"Algeria",f:"🇩🇿",p:2,w:1,d:0,l:1,gf:2,ga:3,pts:3},{n:"Jordan",f:"🇯🇴",p:2,w:0,d:0,l:2,gf:2,ga:6,pts:0}]},
+  {id:"K",teams:[{n:"Colombia",f:"🇨🇴",p:1,w:1,d:0,l:0,gf:3,ga:1,pts:3},{n:"Portugal",f:"🇵🇹",p:1,w:0,d:1,l:0,gf:1,ga:1,pts:1},{n:"DR Congo",f:"🇨🇩",p:1,w:0,d:1,l:0,gf:1,ga:1,pts:1},{n:"Uzbekistan",f:"🇺🇿",p:1,w:0,d:0,l:1,gf:1,ga:3,pts:0}]},
+  {id:"L",teams:[{n:"England",f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",p:1,w:1,d:0,l:0,gf:4,ga:2,pts:3},{n:"Ghana",f:"🇬🇭",p:1,w:1,d:0,l:0,gf:1,ga:0,pts:3},{n:"Croatia",f:"🇭🇷",p:1,w:0,d:0,l:1,gf:2,ga:4,pts:0},{n:"Panama",f:"🇵🇦",p:1,w:0,d:0,l:1,gf:0,ga:1,pts:0}]},
 ];
-
-const TOP_SCORERS=[
-  {name:"Lionel Messi",    team:"Argentina",   flag:"🇦🇷",goals:3,matches:1},
-  {name:"Jonathan David",  team:"Canada",      flag:"🇨🇦",goals:3,matches:1},
-  {name:"Kai Havertz",     team:"Germany",     flag:"🇩🇪",goals:2,matches:2},
-  {name:"Harry Kane",      team:"England",     flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",goals:2,matches:1},
-  {name:"Erling Haaland",  team:"Norway",      flag:"🇳🇴",goals:2,matches:1},
-  {name:"Kylian Mbappe",   team:"France",      flag:"🇫🇷",goals:2,matches:1},
-  {name:"Brian Brobbey",   team:"Netherlands", flag:"🇳🇱",goals:2,matches:2},
-  {name:"Deniz Undav",     team:"Germany",     flag:"🇩🇪",goals:2,matches:2},
-  {name:"Ayase Ueda",      team:"Japan",       flag:"🇯🇵",goals:2,matches:2},
-  {name:"Viktor Gyokeres", team:"Sweden",      flag:"🇸🇪",goals:2,matches:2},
-  {name:"Folarin Balogun", team:"USA",         flag:"🇺🇸",goals:2,matches:2},
-  {name:"Yasin Ayari",     team:"Sweden",      flag:"🇸🇪",goals:2,matches:1},
+const TOP = [
+  {n:"Lionel Messi",t:"Argentina",f:"🇦🇷",g:5},{n:"Erling Haaland",t:"Norway",f:"🇳🇴",g:4},
+  {n:"Kylian Mbappe",t:"France",f:"🇫🇷",g:4},{n:"Jonathan David",t:"Canada",f:"🇨🇦",g:3},
+  {n:"Kai Havertz",t:"Germany",f:"🇩🇪",g:2},{n:"Deniz Undav",t:"Germany",f:"🇩🇪",g:2},
+  {n:"Brian Brobbey",t:"Netherlands",f:"🇳🇱",g:2},{n:"Ayase Ueda",t:"Japan",f:"🇯🇵",g:2},
+  {n:"Harry Kane",t:"England",f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",g:2},{n:"Folarin Balogun",t:"USA",f:"🇺🇸",g:2},
 ];
-
-export default function StandingsPage(){
-  return(
+export default function StandingsPage() {
+  return (
     <div style={{maxWidth:"1100px",margin:"0 auto"}}>
-      {/* Header */}
-      <div style={{marginBottom:"20px",paddingBottom:"14px",borderBottom:"1px solid rgba(255,255,255,.07)"}}>
-        <div style={{fontSize:"10px",fontWeight:"800",color:"#FF9933",letterSpacing:".14em",textTransform:"uppercase",fontFamily:"'Barlow Condensed','Oswald',sans-serif",marginBottom:"4px"}}>
-          FIFA World Cup 2026
-        </div>
-        <h1 style={{fontSize:"clamp(24px,4vw,36px)",fontWeight:"900",color:"#fff",fontFamily:"'Barlow Condensed','Oswald',sans-serif",letterSpacing:"1px",lineHeight:1,marginBottom:"6px"}}>
-          GROUP STANDINGS
-        </h1>
-        <p style={{fontSize:"12px",color:"rgba(255,255,255,.3)"}}>
-          Updated June 21 2026 · All 12 Groups · 4 teams each · Source: ESPN + CBS Sports + FIFA.com
-        </p>
+      <div style={{marginBottom:"20px",paddingBottom:"14px",borderBottom:"1px solid rgba(255,255,255,.06)"}}>
+        <div style={{fontFamily:"'Teko',sans-serif",fontSize:"12px",fontWeight:600,color:"#FF9933",letterSpacing:".14em",marginBottom:"4px"}}>FIFA WORLD CUP 2026</div>
+        <h1 style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"clamp(28px,4vw,44px)",letterSpacing:"2px",color:"#fff",lineHeight:1,marginBottom:"6px"}}>GROUP STANDINGS</h1>
+        <p style={{fontSize:"12px",color:"rgba(200,212,232,.35)"}}>Updated June 22 2026 · All 12 groups · 4 teams each · Verified: ESPN + Yahoo + FIFA.com</p>
       </div>
 
       {/* Golden Boot */}
-      <div style={{background:"rgba(255,153,51,.05)",border:"1px solid rgba(255,153,51,.15)",borderRadius:"12px",marginBottom:"24px",overflow:"hidden"}}>
+      <div style={{background:"rgba(255,153,51,.05)",border:"1px solid rgba(255,153,51,.15)",borderRadius:"14px",marginBottom:"24px",overflow:"hidden"}}>
         <div style={{padding:"12px 16px",borderBottom:"1px solid rgba(255,153,51,.1)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
           <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
-            <span style={{fontSize:"16px"}}>⚽</span>
-            <span style={{fontFamily:"'Barlow Condensed','Oswald',sans-serif",fontSize:"14px",fontWeight:"800",color:"#FF9933",letterSpacing:".08em",textTransform:"uppercase"}}>Golden Boot Race</span>
+            <span>⚽</span>
+            <span style={{fontFamily:"'Teko',sans-serif",fontSize:"15px",fontWeight:600,color:"#FF9933",letterSpacing:".08em"}}>GOLDEN BOOT RACE</span>
           </div>
-          <span style={{fontSize:"10px",color:"rgba(255,153,51,.5)"}}>After MD2</span>
+          <span style={{fontSize:"10px",color:"rgba(200,212,232,.35)"}}>After MD2 · Jun 22</span>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))"}}>
-          {TOP_SCORERS.map((s,i)=>(
-            <div key={s.name} style={{display:"flex",alignItems:"center",gap:"10px",padding:"10px 16px",borderBottom:"1px solid rgba(255,255,255,.04)",borderRight:"1px solid rgba(255,255,255,.04)"}}>
-              <span style={{fontSize:"9px",color:"rgba(255,255,255,.2)",width:"14px",fontWeight:"700"}}>{i+1}</span>
-              <span style={{fontSize:"18px"}}>{s.flag}</span>
+          {TOP.map((s,i) => (
+            <div key={s.n} style={{display:"flex",alignItems:"center",gap:"10px",padding:"10px 16px",borderBottom:"1px solid rgba(255,255,255,.04)",borderRight:"1px solid rgba(255,255,255,.04)"}}>
+              <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"13px",letterSpacing:".04em",color:i===0?"#FF9933":"rgba(200,212,232,.25)",width:"16px"}}>{i+1}</span>
+              <span style={{fontSize:"18px"}}>{s.f}</span>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:"12px",fontWeight:"700",color:i===0?"#FF9933":i<3?"#fff":"rgba(255,255,255,.65)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontFamily:"'Barlow Condensed','Oswald',sans-serif"}}>{s.name}</div>
-                <div style={{fontSize:"9px",color:"rgba(255,255,255,.3)"}}>{s.team}</div>
+                <div style={{fontFamily:"'Teko',sans-serif",fontSize:"13px",fontWeight:500,color:i===0?"#FF9933":i<3?"#fff":"rgba(200,212,232,.6)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.n}</div>
+                <div style={{fontSize:"9px",color:"rgba(200,212,232,.35)"}}>{s.t}</div>
               </div>
               <div style={{display:"flex",alignItems:"center",gap:"3px",flexShrink:0}}>
-                <span style={{fontFamily:"'Barlow Condensed','Oswald',sans-serif",fontSize:"20px",fontWeight:"900",color:i===0?"#FF9933":i<3?"#fff":"rgba(255,255,255,.5)"}}>{s.goals}</span>
-                <span style={{fontSize:"11px"}}>⚽</span>
+                <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"22px",letterSpacing:".04em",color:i===0?"#FF9933":i<3?"#fff":"rgba(200,212,232,.5)"}}>{s.g}</span>
+                <span style={{fontSize:"10px"}}>⚽</span>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* All 12 Groups — 3 column grid */}
-      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:"16px"}}>
-        {GROUPS.map(({id,teams})=>{
+      {/* 12 Groups */}
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:"14px"}}>
+        {GROUPS.map(({id,teams}) => {
           const sorted=[...teams].sort((a,b)=>b.pts-a.pts||(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf);
-          return(
-            <div key={id} style={{background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.07)",borderRadius:"10px",overflow:"hidden"}}>
-              {/* Group header */}
-              <div style={{padding:"10px 14px",background:"rgba(255,153,51,.06)",borderBottom:"2px solid rgba(255,153,51,.15)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-                <span style={{fontFamily:"'Barlow Condensed','Oswald',sans-serif",fontSize:"14px",fontWeight:"900",color:"#FF9933",letterSpacing:".12em"}}>GROUP {id}</span>
-                <div style={{display:"flex",gap:"8px",fontSize:"9px",color:"rgba(255,255,255,.25)",fontWeight:"700"}}>
-                  <span style={{width:"24px",textAlign:"center"}}>MP</span>
+          return (
+            <div key={id} style={{background:"#112040",border:"1px solid rgba(255,255,255,.07)",borderRadius:"12px",overflow:"hidden"}}>
+              <div style={{padding:"10px 14px",background:"rgba(255,153,51,.06)",borderBottom:"2px solid rgba(255,153,51,.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"16px",letterSpacing:"2px",color:"#FF9933"}}>GROUP {id}</span>
+                <div style={{display:"flex",gap:"8px",fontFamily:"'Teko',sans-serif",fontSize:"11px",color:"rgba(200,212,232,.3)",letterSpacing:".06em"}}>
+                  <span style={{width:"22px",textAlign:"center"}}>MP</span>
                   <span style={{width:"16px",textAlign:"center"}}>W</span>
                   <span style={{width:"16px",textAlign:"center"}}>D</span>
                   <span style={{width:"16px",textAlign:"center"}}>L</span>
-                  <span style={{width:"24px",textAlign:"center"}}>GD</span>
-                  <span style={{width:"24px",textAlign:"center",color:"rgba(255,153,51,.6)"}}>PTS</span>
+                  <span style={{width:"22px",textAlign:"center"}}>GD</span>
+                  <span style={{width:"22px",textAlign:"center",color:"rgba(255,153,51,.5)"}}>PTS</span>
                 </div>
               </div>
-              {/* Teams */}
-              {sorted.map((t,i)=>{
-                const gd=t.gf-t.ga;
-                const qualified=i<2&&t.p>0;
-                return(
-                  <div key={t.name} style={{
-                    display:"flex",alignItems:"center",gap:"8px",
-                    padding:"9px 14px",
-                    borderBottom:i<3?"1px solid rgba(255,255,255,.04)":"none",
-                    background:qualified?"rgba(74,222,128,.03)":"transparent",
-                    transition:"background .15s",
-                  }}>
-                    <span style={{fontSize:"10px",color:"rgba(255,255,255,.2)",width:"14px",textAlign:"center",fontWeight:"700"}}>{i+1}</span>
-                    <span style={{width:"4px",height:"20px",borderRadius:"2px",background:qualified?"#22c55e":"rgba(255,255,255,.08)",flexShrink:0}}/>
-                    <span style={{fontSize:"18px",width:"22px",textAlign:"center",lineHeight:1,flexShrink:0}}>{t.flag}</span>
-                    <span style={{
-                      flex:1,fontSize:"13px",fontWeight:"700",
-                      overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",
-                      fontFamily:"'Barlow Condensed','Oswald',sans-serif",letterSpacing:".02em",
-                      color:qualified?"#4ade80":"rgba(255,255,255,.75)",
-                    }}>{t.name}</span>
-                    <div style={{display:"flex",gap:"8px",fontSize:"11px",color:"rgba(255,255,255,.35)",fontFamily:"'Barlow Condensed','Oswald',sans-serif",fontWeight:"600"}}>
-                      <span style={{width:"24px",textAlign:"center"}}>{t.p}</span>
+              {sorted.map((t,i) => {
+                const gd = t.gf-t.ga;
+                const q = i<2&&t.p>0;
+                return (
+                  <div key={t.n} style={{display:"flex",alignItems:"center",gap:"8px",padding:"9px 14px",borderBottom:i<3?"1px solid rgba(255,255,255,.04)":"none",background:q?"rgba(74,222,128,.03)":"transparent"}}>
+                    <span style={{fontFamily:"'Teko',sans-serif",fontSize:"11px",color:"rgba(200,212,232,.25)",width:"14px",textAlign:"center"}}>{i+1}</span>
+                    <span style={{width:"4px",height:"20px",borderRadius:"2px",background:q?"#22c55e":"rgba(255,255,255,.07)",flexShrink:0}}/>
+                    <span style={{fontSize:"18px",width:"22px",textAlign:"center",lineHeight:1,flexShrink:0}}>{t.f}</span>
+                    <span style={{flex:1,fontFamily:"'Teko',sans-serif",fontSize:"14px",fontWeight:500,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",
+                      color:q?"#4ade80":"rgba(200,212,232,.75)"
+                    }}>{t.n}</span>
+                    <div style={{display:"flex",gap:"8px",fontFamily:"'Teko',sans-serif",fontSize:"12px",color:"rgba(200,212,232,.4)"}}>
+                      <span style={{width:"22px",textAlign:"center"}}>{t.p}</span>
                       <span style={{width:"16px",textAlign:"center"}}>{t.w}</span>
                       <span style={{width:"16px",textAlign:"center"}}>{t.d}</span>
                       <span style={{width:"16px",textAlign:"center"}}>{t.l}</span>
-                      <span style={{width:"24px",textAlign:"center",color:gd>0?"#4ade80":gd<0?"rgba(239,68,68,.7)":"rgba(255,255,255,.3)"}}>{gd>0?"+":""}{gd}</span>
-                      <span style={{width:"24px",textAlign:"center",fontWeight:"900",color:t.pts>0?"#fff":"rgba(255,255,255,.2)",fontSize:"13px"}}>{t.pts}</span>
+                      <span style={{width:"22px",textAlign:"center",color:gd>0?"#4ade80":gd<0?"rgba(239,68,68,.7)":"rgba(200,212,232,.3)"}}>{gd>0?"+":""}{gd}</span>
+                      <span style={{width:"22px",textAlign:"center",fontFamily:"'Bebas Neue',sans-serif",fontSize:"14px",letterSpacing:".04em",color:t.pts>0?"#FF9933":"rgba(200,212,232,.2)"}}>{t.pts}</span>
                     </div>
                   </div>
                 );
               })}
-              {/* Qualify note */}
               <div style={{padding:"5px 14px",display:"flex",alignItems:"center",gap:"5px",borderTop:"1px solid rgba(255,255,255,.04)"}}>
-                <span style={{width:"8px",height:"8px",borderRadius:"2px",background:"rgba(74,222,128,.3)"}}/>
-                <span style={{fontSize:"8px",color:"rgba(255,255,255,.15)"}}>Top 2 advance · +8 best 3rd place teams</span>
+                <span style={{width:"7px",height:"7px",borderRadius:"2px",background:"rgba(74,222,128,.3)"}}/>
+                <span style={{fontFamily:"'Teko',sans-serif",fontSize:"10px",color:"rgba(200,212,232,.2)"}}>Top 2 advance + 8 best 3rd place</span>
               </div>
             </div>
           );
         })}
       </div>
-
-      <p style={{fontSize:"10px",color:"rgba(255,255,255,.15)",textAlign:"center",marginTop:"20px"}}>
-        Data verified from ESPN · CBS Sports · Yahoo Sports · FIFA.com · June 21 2026 IST · 4 teams per group · 12 groups total
-      </p>
+      <p style={{fontSize:"10px",color:"rgba(200,212,232,.18)",textAlign:"center",marginTop:"20px"}}>Source: ESPN · CBS Sports · Yahoo Sports · FIFA.com · June 22 2026 IST · 4 teams per group</p>
     </div>
   );
 }
