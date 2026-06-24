@@ -22,7 +22,7 @@ export default function HeroMatch({ match, played, total }: { match: Match; play
 
   useEffect(() => {
     if (!isUpcoming) return;
-    const tick = () => setCountdown(getCountdown(match.utcDate));
+    const tick = () => setCountdown(getCountdown(match.utcDate) ?? "");
     tick(); const id = setInterval(tick, 1000); return () => clearInterval(id);
   }, [match.utcDate, isUpcoming]);
 
@@ -37,12 +37,10 @@ export default function HeroMatch({ match, played, total }: { match: Match; play
       border: isLive ? "1px solid rgba(239,68,68,.4)" : "1px solid rgba(255,153,51,.2)",
       boxShadow: isLive ? "0 0 40px rgba(239,68,68,.1)" : "0 0 40px rgba(255,153,51,.06)",
     }}>
-      {/* Pitch art */}
       <div style={{position:"absolute",inset:0,backgroundImage:"repeating-linear-gradient(rgba(255,255,255,.025) 0,rgba(255,255,255,.025) 1px,transparent 1px,transparent 46px),repeating-linear-gradient(90deg,rgba(255,255,255,.025) 0,rgba(255,255,255,.025) 1px,transparent 1px,transparent 46px)"}}/>
       <div style={{position:"absolute",left:"50%",top:"50%",transform:"translate(-50%,-50%)",width:"45vw",maxWidth:"300px",aspectRatio:"1",borderRadius:"50%",border:"1.5px solid rgba(255,255,255,.06)"}}/>
       <div style={{position:"absolute",left:"50%",top:0,bottom:0,width:"1px",background:"rgba(255,255,255,.05)"}}/>
 
-      {/* Top bar */}
       <div style={{position:"relative",zIndex:1,display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 20px",borderBottom:"1px solid rgba(255,255,255,.06)"}}>
         <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
           <span style={{fontSize:"14px"}}>🏆</span>
@@ -67,22 +65,17 @@ export default function HeroMatch({ match, played, total }: { match: Match; play
         </div>
       </div>
 
-      {/* MAIN — the two teams */}
       <div style={{position:"relative",zIndex:1,padding:"24px 20px"}}>
         {isUpcoming && countdown && (
           <div style={{textAlign:"center",fontFamily:"'Teko',sans-serif",fontSize:"13px",fontWeight:600,color:"rgba(255,153,51,.7)",letterSpacing:".12em",marginBottom:"16px"}}>
             KICKS OFF IN {countdown.toUpperCase()}
           </div>
         )}
-
         <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:"16px",alignItems:"center"}}>
-          {/* Home team */}
           <div style={{textAlign:"center"}}>
             <div style={{fontSize:"clamp(52px,8vw,72px)",lineHeight:1,marginBottom:"10px"}}>{match.homeTeam.flag||"🏳️"}</div>
             <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"clamp(18px,3.5vw,26px)",letterSpacing:"2px",color:"#fff",lineHeight:1}}>{match.homeTeam.name}</div>
           </div>
-
-          {/* Score / VS */}
           <div style={{textAlign:"center",minWidth:"80px"}}>
             {(isLive||isFinished) && h!==null && a!==null ? (
               <>
@@ -96,15 +89,11 @@ export default function HeroMatch({ match, played, total }: { match: Match; play
               </>
             )}
           </div>
-
-          {/* Away team */}
           <div style={{textAlign:"center"}}>
             <div style={{fontSize:"clamp(52px,8vw,72px)",lineHeight:1,marginBottom:"10px"}}>{match.awayTeam.flag||"🏳️"}</div>
             <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"clamp(18px,3.5vw,26px)",letterSpacing:"2px",color:"#fff",lineHeight:1}}>{match.awayTeam.name}</div>
           </div>
         </div>
-
-        {/* Venue */}
         {(match.venue||match.city) && (
           <div style={{textAlign:"center",marginTop:"12px",fontSize:"11px",color:"rgba(255,255,255,.3)"}}>
             📍 {[match.venue,match.city].filter(Boolean).join(" · ")}
@@ -112,10 +101,9 @@ export default function HeroMatch({ match, played, total }: { match: Match; play
         )}
       </div>
 
-      {/* Action buttons */}
       <div style={{position:"relative",zIndex:1,padding:"0 16px 16px",display:"flex",gap:"8px"}}>
         {isUpcoming && (
-          <a href={gcalUrl(match)} target="_blank" rel="noopener noreferrer" style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",background:"#FF9933",borderRadius:"10px",padding:"12px",textDecoration:"none",transition:"all .15s"}}>
+          <a href={gcalUrl(match)} target="_blank" rel="noopener noreferrer" style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",background:"#FF9933",borderRadius:"10px",padding:"12px",textDecoration:"none"}}>
             <span style={{fontSize:"14px"}}>⏰</span>
             <span style={{fontFamily:"'Teko',sans-serif",fontSize:"14px",fontWeight:600,color:"#000",letterSpacing:".06em"}}>SET ALARM</span>
           </a>
