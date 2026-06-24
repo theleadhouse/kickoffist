@@ -7,112 +7,108 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html { scroll-behavior: smooth; }
 
+/* ════════════════════════════════════════
+   FOTMOB-INSPIRED DARK SPORTS THEME
+   Pure dark — like a stadium at night
+   Saffron accents — India's colour
+   Bebas Neue scores — jersey font
+   Teko nav — sports editorial
+   Inter body — maximum readability
+   ════════════════════════════════════════ */
 :root {
-  --bg:         #f0f4f0;
-  --bg-card:    #ffffff;
-  --bg-card2:   #f7faf7;
-  --green:      #1a6b1a;
-  --green-lt:   #2d8a2d;
-  --green-pale: #e8f5e8;
-  --saffron:    #FF9933;
-  --saffron-dk: #e07000;
-  --navy:       #0A1628;
-  --text-1:     #0d1f0d;
-  --text-2:     #3a5c3a;
-  --text-3:     #7a9a7a;
-  --border:     rgba(0,80,0,.1);
-  --border-lt:  rgba(0,80,0,.06);
-  --red:        #dc2626;
-  --shadow:     0 2px 12px rgba(0,80,0,.08);
-  --shadow-lg:  0 8px 32px rgba(0,80,0,.12);
+  --bg:        #111318;
+  --bg2:       #1a1d24;
+  --bg3:       #22262f;
+  --saffron:   #FF9933;
+  --saff-dk:   #cc7a00;
+  --white:     #ffffff;
+  --soft:      #d4d8e2;
+  --muted:     #7a8499;
+  --faint:     #3a404f;
+  --border:    rgba(255,255,255,.07);
+  --border2:   rgba(255,255,255,.12);
+  --green-go:  #22c55e;
+  --red-live:  #ef4444;
+  --shadow:    0 2px 16px rgba(0,0,0,.4);
 }
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
   background: var(--bg);
-  color: var(--text-1);
+  color: var(--soft);
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   line-height: 1.5;
   font-size: 14px;
 }
 
-/* Subtle football pitch pattern */
+/* Subtle pitch atmosphere */
 body::before {
   content: '';
   position: fixed; inset: 0; pointer-events: none; z-index: 0;
   background:
-    radial-gradient(ellipse 80% 30% at 50% 0%, rgba(26,107,26,.06) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 0% 60%, rgba(26,107,26,.04) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 100% 40%, rgba(26,107,26,.04) 0%, transparent 50%);
-}
-body::after {
-  content: '';
-  position: fixed; inset: 0; pointer-events: none; z-index: 0;
-  background-image: repeating-linear-gradient(
-    180deg,
-    transparent 0, transparent 60px,
-    rgba(26,107,26,.025) 60px, rgba(26,107,26,.025) 120px
-  );
+    radial-gradient(ellipse 90% 25% at 50% 0%, rgba(255,153,51,.04) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 35% at 0% 70%, rgba(34,197,94,.03) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 35% at 100% 30%, rgba(34,197,94,.03) 0%, transparent 50%);
 }
 main, header, footer, nav { position: relative; z-index: 1; }
 
 /* ── CARDS ── */
 .card {
-  background: var(--bg-card);
+  background: var(--bg2);
   border: 1px solid var(--border);
-  border-radius: 14px;
-  box-shadow: var(--shadow);
+  border-radius: 12px;
 }
-.card-hover { transition: all .15s; }
+.card-hover { transition: all .15s; cursor: pointer; }
 .card-hover:hover {
-  box-shadow: var(--shadow-lg);
-  border-color: rgba(26,107,26,.18);
+  background: var(--bg3);
+  border-color: rgba(255,153,51,.2);
   transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(0,0,0,.4);
 }
 
-/* ── MATCH CARDS ── */
+/* ── MATCH CARDS — FotMob style ── */
 .mc {
-  background: var(--bg-card);
+  background: var(--bg2);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 12px;
   overflow: hidden;
   transition: all .15s;
   margin-bottom: 8px;
-  box-shadow: var(--shadow);
 }
-.mc:hover { box-shadow: var(--shadow-lg); border-color: rgba(26,107,26,.2); transform: translateY(-1px); }
-.mc-live { border-color: rgba(220,38,38,.3) !important; background: rgba(220,38,38,.02) !important; }
+.mc:hover { background: var(--bg3); border-color: rgba(255,153,51,.18); box-shadow: 0 4px 16px rgba(0,0,0,.3); }
+.mc-live { border-color: rgba(239,68,68,.35) !important; background: rgba(239,68,68,.04) !important; }
 
 /* ── SECTION HEADERS ── */
 .sh {
   font-family: 'Teko', sans-serif;
-  font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--text-3);
+  font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--muted);
   display: flex; align-items: center; gap: 8px;
   padding: 14px 0 10px;
-  border-bottom: 2px solid var(--green-pale);
+  border-bottom: 1px solid var(--border);
   margin-bottom: 12px;
 }
-.sh-line { flex: 1; height: 1px; background: var(--border-lt); }
+.sh-line { flex: 1; height: 1px; background: var(--border); }
+.sh-accent { color: var(--saffron) !important; }
 
 /* ── BADGES ── */
-.badge-live { background: rgba(220,38,38,.1); color: #dc2626; border: 1px solid rgba(220,38,38,.25); font-family: 'Teko',sans-serif; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 5px; display: inline-flex; align-items: center; gap: 4px; letter-spacing: .06em; text-transform: uppercase; }
-.badge-ft { background: rgba(26,107,26,.08); color: var(--green); border: 1px solid rgba(26,107,26,.15); font-family: 'Teko',sans-serif; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 5px; }
-.badge-up { background: rgba(255,153,51,.1); color: #c85000; border: 1px solid rgba(255,153,51,.3); font-family: 'Teko',sans-serif; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 5px; }
-.badge-grp { background: rgba(26,107,26,.08); color: var(--green); font-family: 'Teko',sans-serif; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 4px; letter-spacing: .06em; text-transform: uppercase; }
+.badge-live { background: rgba(239,68,68,.15); color: #f87171; border: 1px solid rgba(239,68,68,.3); font-family:'Teko',sans-serif; font-size:11px; font-weight:600; padding:2px 8px; border-radius:5px; display:inline-flex; align-items:center; gap:4px; letter-spacing:.06em; text-transform:uppercase; }
+.badge-ft   { background: rgba(255,255,255,.06); color: var(--muted); border: 1px solid var(--border); font-family:'Teko',sans-serif; font-size:11px; font-weight:600; padding:2px 8px; border-radius:5px; }
+.badge-up   { background: rgba(255,153,51,.1); color: var(--saffron); border: 1px solid rgba(255,153,51,.25); font-family:'Teko',sans-serif; font-size:11px; font-weight:600; padding:2px 8px; border-radius:5px; }
+.badge-grp  { background: rgba(255,153,51,.08); color: var(--saffron); font-family:'Teko',sans-serif; font-size:10px; font-weight:600; padding:1px 6px; border-radius:4px; letter-spacing:.06em; text-transform:uppercase; }
 
 /* ── LIVE DOT ── */
-.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); display: inline-block; flex-shrink: 0; animation: pulse-r 1.4s ease infinite; }
-@keyframes pulse-r { 0%,100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(220,38,38,.5); } 50% { opacity: .4; transform: scale(.8); box-shadow: 0 0 0 6px rgba(220,38,38,0); } }
+.live-dot { width:7px; height:7px; border-radius:50%; background:var(--red-live); display:inline-block; flex-shrink:0; animation:pulse-r 1.4s ease infinite; }
+@keyframes pulse-r { 0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(239,68,68,.6);}50%{opacity:.4;transform:scale(.8);box-shadow:0 0 0 6px rgba(239,68,68,0);} }
 
 /* ── STANDINGS ── */
-.st-row { display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-bottom: 1px solid var(--border-lt); transition: background .1s; }
-.st-row:last-child { border: none; }
-.st-row:hover { background: var(--green-pale); }
-.st-q { width: 3px; height: 18px; border-radius: 2px; background: var(--border); flex-shrink: 0; }
-.st-q.q { background: var(--green); }
+.st-row { display:flex; align-items:center; gap:6px; padding:7px 12px; border-bottom:1px solid var(--border); transition:background .1s; }
+.st-row:last-child { border:none; }
+.st-row:hover { background:var(--bg3); }
+.st-q { width:3px; height:18px; border-radius:2px; background:var(--faint); flex-shrink:0; }
+.st-q.q { background:var(--green-go); }
 
-::-webkit-scrollbar { width: 3px; height: 3px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(26,107,26,.2); border-radius: 2px; }
+::-webkit-scrollbar { width:3px; height:3px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--faint); border-radius:2px; }
