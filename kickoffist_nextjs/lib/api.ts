@@ -55,10 +55,10 @@ const FIXTURES: {
   {id:43,h:"Norway",       a:"Senegal",        utc:"2026-06-23T00:00:00Z",group:"I",stage:"Group Stage",venue:"MetLife Stadium",        city:"East Rutherford, NJ", res:[3,2],goals:[{team:"Norway",player:"Haaland",minute:22},{team:"Norway",player:"Haaland",minute:51},{team:"Norway",player:"Ostigard",minute:76},{team:"Senegal",player:"Sarr",minute:78},{team:"Senegal",player:"Mbaye",minute:90}]},
   {id:44,h:"Jordan",       a:"Algeria",        utc:"2026-06-23T03:30:00Z",group:"J",stage:"Group Stage",venue:"Levi's Stadium",         city:"Santa Clara, CA",     res:[1,2],goals:[{team:"Jordan",player:"Al-Rashdan",minute:36},{team:"Algeria",player:"Benbouali",minute:69},{team:"Algeria",player:"Gouiri",minute:82}]},
   // MD2 Jun 23 IST
-  {id:45,h:"Portugal",     a:"Uzbekistan",     utc:"2026-06-23T17:00:00Z",group:"K",stage:"Group Stage",venue:"NRG Stadium",            city:"Houston"},
-  {id:46,h:"England",      a:"Ghana",          utc:"2026-06-23T20:00:00Z",group:"L",stage:"Group Stage",venue:"Gillette Stadium",       city:"Foxborough, MA"},
-  {id:47,h:"Panama",       a:"Croatia",        utc:"2026-06-23T23:00:00Z",group:"L",stage:"Group Stage",venue:"BMO Field",              city:"Toronto"},
-  {id:48,h:"Colombia",     a:"DR Congo",       utc:"2026-06-24T02:00:00Z",group:"K",stage:"Group Stage",venue:"Estadio Akron",          city:"Guadalajara"},
+  {id:45,h:"Portugal",     a:"Uzbekistan",     utc:"2026-06-23T17:00:00Z",group:"K",stage:"Group Stage",venue:"NRG Stadium",            city:"Houston",             res:[5,0],goals:[{team:"Portugal",player:"Ronaldo",minute:31},{team:"Portugal",player:"Ronaldo",minute:67},{team:"Portugal",player:"Fernandes",minute:44},{team:"Portugal",player:"Leao",minute:78},{team:"Portugal",player:"Joao Felix",minute:88}]},
+  {id:46,h:"England",      a:"Ghana",          utc:"2026-06-23T20:00:00Z",group:"L",stage:"Group Stage",venue:"Gillette Stadium",       city:"Foxborough, MA",      res:[0,0]},
+  {id:47,h:"Panama",       a:"Croatia",        utc:"2026-06-23T23:00:00Z",group:"L",stage:"Group Stage",venue:"BMO Field",              city:"Toronto",             res:[0,1],goals:[{team:"Croatia",player:"Budimir",minute:61}]},
+  {id:48,h:"Colombia",     a:"DR Congo",       utc:"2026-06-24T02:00:00Z",group:"K",stage:"Group Stage",venue:"Estadio Akron",          city:"Guadalajara",         res:[1,0],goals:[{team:"Colombia",player:"Diaz",minute:73}]},
   // MD3
   {id:49,h:"Switzerland",  a:"Canada",         utc:"2026-06-24T19:00:00Z",group:"B",stage:"Group Stage",venue:"BC Place",               city:"Vancouver"},
   {id:50,h:"Bosnia & Herz.",a:"Qatar",         utc:"2026-06-24T19:00:00Z",group:"B",stage:"Group Stage",venue:"Arrowhead Stadium",      city:"Kansas City, MO"},
