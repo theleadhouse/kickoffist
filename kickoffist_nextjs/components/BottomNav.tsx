@@ -6,7 +6,7 @@ const NAV = [
   {href:"/results",  label:"Results", icon:"📋"},
   {href:"/world-cup",label:"Schedule",icon:"📅"},
   {href:"/standings",label:"Tables",  icon:"📊"},
-  {href:"/news",     label:"News",    icon:"📰"},
+  {href:"/news",     label:"Guide",   icon:"🇮🇳"},
 ];
 export default function BottomNav() {
   const path = usePathname();

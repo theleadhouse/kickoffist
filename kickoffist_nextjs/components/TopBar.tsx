@@ -20,7 +20,7 @@ const NAV = [
   {href:"/results",  label:"RESULTS", icon:"📋"},
   {href:"/world-cup",label:"SCHEDULE",icon:"📅"},
   {href:"/standings",label:"TABLES",  icon:"📊"},
-  {href:"/news",     label:"NEWS",    icon:"📰"},
+  {href:"/news",     label:"IST GUIDE",icon:"🇮🇳"},
 ];
 
 export default function TopBar() {
