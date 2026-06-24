@@ -28,7 +28,7 @@ export default function RootLayout({children}:{children:React.ReactNode}){
       </head>
       <body>
         <TopBar/>
-        <main style={{maxWidth:"1100px",margin:"0 auto",padding:"14px 12px 80px"}}>
+        <main style={{maxWidth:"1100px",margin:"0 auto",padding:"14px 16px 80px"}}>
           {children}
         </main>
         <footer style={{borderTop:"1px solid rgba(255,153,51,.12)",background:"rgba(10,12,16,.95)",padding:"28px 16px 80px"}}>
