@@ -1,14 +1,15 @@
+// Verified June 25 2026 — ESPN + Yahoo + FIFA.com
 const S=[
-  {n:"Messi",   t:"Argentina",   f:"🇦🇷",g:5},
-  {n:"Haaland", t:"Norway",      f:"🇳🇴",g:4},
-  {n:"Mbappe",  t:"France",      f:"🇫🇷",g:4},
-  {n:"J. David",t:"Canada",      f:"🇨🇦",g:3},
-  {n:"Ronaldo", t:"Portugal",    f:"🇵🇹",g:2},
-  {n:"Havertz", t:"Germany",     f:"🇩🇪",g:2},
-  {n:"Undav",   t:"Germany",     f:"🇩🇪",g:2},
-  {n:"Brobbey", t:"Netherlands", f:"🇳🇱",g:2},
-  {n:"Ueda",    t:"Japan",       f:"🇯🇵",g:2},
-  {n:"Kane",    t:"England",     f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",g:2},
+  {n:"Messi",    t:"Argentina",   f:"🇦🇷",g:5},
+  {n:"Haaland",  t:"Norway",      f:"🇳🇴",g:4},
+  {n:"Mbappe",   t:"France",      f:"🇫🇷",g:4},
+  {n:"Vinicius", t:"Brazil",      f:"🇧🇷",g:3},
+  {n:"J. David", t:"Canada",      f:"🇨🇦",g:3},
+  {n:"Ronaldo",  t:"Portugal",    f:"🇵🇹",g:2},
+  {n:"Havertz",  t:"Germany",     f:"🇩🇪",g:2},
+  {n:"Undav",    t:"Germany",     f:"🇩🇪",g:2},
+  {n:"Brobbey",  t:"Netherlands", f:"🇳🇱",g:2},
+  {n:"Kane",     t:"England",     f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",g:2},
 ];
 export default function TopScorers(){
   return(
@@ -16,7 +17,7 @@ export default function TopScorers(){
       <div className="sh">
         <span>⚽</span><span>GOLDEN BOOT</span>
         <div className="sh-line"/>
-        <span style={{fontSize:"8px",color:"rgba(255,255,255,.2)",flexShrink:0}}>Jun 23</span>
+        <span style={{fontSize:"8px",color:"rgba(255,255,255,.2)",flexShrink:0}}>Jun 25</span>
       </div>
       <div className="card" style={{overflow:"hidden"}}>
         {S.map((s,i)=>(

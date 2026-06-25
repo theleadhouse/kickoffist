@@ -1,11 +1,12 @@
 import Link from "next/link";
+// Updated June 25 2026 — ESPN + Yahoo + FIFA.com
 const GROUPS=[
-  {id:"A",teams:[{t:"Mexico",f:"🇲🇽",p:2,pts:6},{t:"South Korea",f:"🇰🇷",p:2,pts:3},{t:"Czechia",f:"🇨🇿",p:2,pts:1},{t:"South Africa",f:"🇿🇦",p:2,pts:1}]},
-  {id:"D",teams:[{t:"USA",f:"🇺🇸",p:2,pts:6},{t:"Paraguay",f:"🇵🇾",p:2,pts:3},{t:"Australia",f:"🇦🇺",p:2,pts:3},{t:"Turkey",f:"🇹🇷",p:2,pts:0}]},
-  {id:"K",teams:[{t:"Colombia",f:"🇨🇴",p:2,pts:6},{t:"Portugal",f:"🇵🇹",p:2,pts:4},{t:"DR Congo",f:"🇨🇩",p:2,pts:1},{t:"Uzbekistan",f:"🇺🇿",p:2,pts:0}]},
-  {id:"I",teams:[{t:"Norway",f:"🇳🇴",p:2,pts:6},{t:"France",f:"🇫🇷",p:2,pts:6},{t:"Senegal",f:"🇸🇳",p:2,pts:0},{t:"Iraq",f:"🇮🇶",p:2,pts:0}]},
+  {id:"A",teams:[{t:"Mexico",f:"🇲🇽",p:3,pts:9},{t:"S. Africa",f:"🇿🇦",p:3,pts:4},{t:"S. Korea",f:"🇰🇷",p:3,pts:3},{t:"Czechia",f:"🇨🇿",p:3,pts:1}]},
+  {id:"B",teams:[{t:"Switzerland",f:"🇨🇭",p:3,pts:7},{t:"Canada",f:"🇨🇦",p:3,pts:4},{t:"Bosnia",f:"🇧🇦",p:3,pts:4},{t:"Qatar",f:"🇶🇦",p:3,pts:0}]},
+  {id:"C",teams:[{t:"Brazil",f:"🇧🇷",p:3,pts:7},{t:"Morocco",f:"🇲🇦",p:3,pts:7},{t:"Scotland",f:"🏴󠁧󠁢󠁳󠁣󠁴󠁿",p:3,pts:3},{t:"Haiti",f:"🇭🇹",p:3,pts:0}]},
+  {id:"D",teams:[{t:"USA",f:"🇺🇸",p:2,pts:6},{t:"Australia",f:"🇦🇺",p:2,pts:3},{t:"Paraguay",f:"🇵🇾",p:2,pts:3},{t:"Turkey",f:"🇹🇷",p:2,pts:0}]},
   {id:"J",teams:[{t:"Argentina",f:"🇦🇷",p:2,pts:6},{t:"Austria",f:"🇦🇹",p:2,pts:3},{t:"Algeria",f:"🇩🇿",p:2,pts:3},{t:"Jordan",f:"🇯🇴",p:2,pts:0}]},
-  {id:"L",teams:[{t:"England",f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",p:2,pts:4},{t:"Ghana",f:"🇬🇭",p:2,pts:4},{t:"Croatia",f:"🇭🇷",p:2,pts:3},{t:"Panama",f:"🇵🇦",p:2,pts:0}]},
+  {id:"K",teams:[{t:"Colombia",f:"🇨🇴",p:2,pts:6},{t:"Portugal",f:"🇵🇹",p:2,pts:4},{t:"DR Congo",f:"🇨🇩",p:2,pts:1},{t:"Uzbekistan",f:"🇺🇿",p:2,pts:0}]},
 ];
 export default function MiniStandings(){
   return(
@@ -24,11 +25,11 @@ export default function MiniStandings(){
             </div>
             {teams.map((t,i)=>(
               <div key={t.t} className="st-row">
-                <span style={{fontSize:"9px",color:"rgba(255,255,255,.2)",width:"14px",textAlign:"center"}}>{i+1}</span>
+                <span style={{fontSize:"9px",color:"rgba(255,255,255,.25)",width:"14px",textAlign:"center",fontWeight:600}}>{i+1}</span>
                 <span className={`st-q ${i<2&&t.pts>0?"q":""}`}/>
                 <span style={{fontSize:"17px",width:"22px",textAlign:"center",lineHeight:1}}>{t.f}</span>
                 <span style={{flex:1,fontFamily:"'Teko',sans-serif",fontSize:"13px",fontWeight:500,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",
-                  color:i<2&&t.pts>0?"rgba(255,255,255,.85)":"rgba(255,255,255,.35)"
+                  color:i<2&&t.pts>0?"rgba(255,255,255,.9)":"rgba(255,255,255,.35)"
                 }}>{t.t}</span>
                 <span style={{fontSize:"10px",color:"rgba(255,255,255,.25)",width:"18px",textAlign:"center"}}>{t.p}</span>
                 <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"15px",letterSpacing:".04em",width:"22px",textAlign:"center",
