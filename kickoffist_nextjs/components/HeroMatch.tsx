@@ -112,6 +112,30 @@ export default function HeroMatch({ match, played, total }: { match: Match; play
         )}
       </div>
 
+
+      {/* Footballer silhouette - dim, atmospheric */}
+      <div style={{position:"absolute",right:"4%",bottom:0,height:"90%",opacity:.07,pointerEvents:"none",zIndex:0,display:"flex",alignItems:"flex-end"}}>
+        <svg viewBox="0 0 200 400" height="100%" fill="white" xmlns="http://www.w3.org/2000/svg">
+          {/* Head */}
+          <circle cx="100" cy="40" r="28"/>
+          {/* Body */}
+          <path d="M70 68 Q60 100 55 140 L80 145 L85 200 L100 195 L115 200 L120 145 L145 140 Q140 100 130 68 Z"/>
+          {/* Left arm - raised holding ball */}
+          <path d="M70 80 Q40 60 20 40 Q15 35 22 30 Q50 55 75 78"/>
+          {/* Ball at end of raised arm */}
+          <circle cx="16" cy="26" r="14"/>
+          {/* Right arm */}
+          <path d="M130 80 Q155 110 165 130 Q168 135 162 138 Q150 118 128 88"/>
+          {/* Left leg - kicking */}
+          <path d="M85 200 Q75 250 60 290 Q50 310 65 315 Q75 295 88 255 L95 290 Q90 320 105 322 Q115 300 108 265 L100 195 Z"/>
+          {/* Right leg - planted */}
+          <path d="M115 200 Q125 250 135 300 Q140 320 155 318 Q148 298 140 250 L145 200 Z"/>
+          {/* Right boot */}
+          <path d="M133 298 Q148 296 158 316 Q160 322 153 324 Q140 318 130 305 Z"/>
+          {/* Left boot */}
+          <path d="M103 320 Q118 318 122 336 Q122 342 114 342 Q104 335 100 322 Z"/>
+        </svg>
+      </div>
       {/* Match Info Panel */}
       {isUpcoming && <div style={{padding:"0 16px 8px",position:"relative",zIndex:1}}><div style={{display:"flex",gap:"8px"}}><MatchInfoPanel match={match}/></div></div>}
 
