@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { Match } from "@/lib/types";
 import { getCountdown } from "@/lib/utils";
+import MatchInfoPanel from "@/components/MatchInfoPanel";
 
 function gcalUrl(m: Match) {
   const p=(s:string)=>s.replace(/[-:]/g,"").replace(/\.\d+/,"");
@@ -110,6 +111,9 @@ export default function HeroMatch({ match, played, total }: { match: Match; play
           </div>
         )}
       </div>
+
+      {/* Match Info Panel */}
+      {isUpcoming && <div style={{padding:"0 16px 8px",position:"relative",zIndex:1}}><div style={{display:"flex",gap:"8px"}}><MatchInfoPanel match={match}/></div></div>}
 
       {/* Action buttons */}
       <div style={{position:"relative",zIndex:1,padding:"0 16px 16px",display:"flex",gap:"8px"}}>

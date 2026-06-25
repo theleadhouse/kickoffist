@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { Match } from "@/lib/types";
 import { getCountdown } from "@/lib/utils";
+import MatchInfoPanel from "@/components/MatchInfoPanel";
 
 function gcalUrl(m: Match) {
   const p = (s:string) => s.replace(/[-:]/g,"").replace(/\.\d+/,"");
@@ -138,12 +139,7 @@ export default function PortalMatchCard({ match, showDate=false }: { match: Matc
             <span style={{fontSize:"13px"}}>📤</span>
             <span style={{fontFamily:"'Teko',sans-serif",fontSize:"12px",fontWeight:600,color:"rgba(255,255,255,.5)",letterSpacing:".06em"}}>SHARE</span>
           </button>
-          {isUpcoming&&(
-            <a href={`https://wa.me/?text=${encodeURIComponent(`🚨 SQUAD ALERT 🚨\n\n⚽ ${match.homeTeam.flag} ${match.homeTeam.name} vs ${match.awayTeam.name} ${match.awayTeam.flag}\n🕐 ${match.istTime} IST tonight\n📺 Zee5 India\n\nWho's watching? 👇\nkickoffist.com 🇮🇳`)}`} target="_blank" rel="noopener noreferrer" style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:"5px",background:"rgba(255,100,0,.08)",border:"1px solid rgba(255,100,0,.2)",borderRadius:"7px",padding:"7px",textDecoration:"none"}}>
-              <span style={{fontSize:"13px"}}>🚨</span>
-              <span style={{fontFamily:"'Teko',sans-serif",fontSize:"12px",fontWeight:600,color:"#ff6400",letterSpacing:".04em"}}>SQUAD</span>
-            </a>
-          )}
+          {isUpcoming&&<MatchInfoPanel match={match}/>}
         </div>
       )}
 
