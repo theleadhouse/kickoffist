@@ -15,7 +15,7 @@ export default function ScheduleCalendar({matches,played}:{matches:Match[];playe
   const today = new Date(Date.now()+5.5*3600000).toISOString().slice(0,10);
   const [sel, setSel] = useState(today);
 
-  const dates = [...new Set(
+  const dates = Array.from(new Set(
     matches.filter(m=>m.homeTeam.name!=="TBD").map(m=>getISTDate(m.utcDate))
   )].sort();
 
