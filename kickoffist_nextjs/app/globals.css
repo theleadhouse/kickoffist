@@ -2,102 +2,173 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Teko:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html{scroll-behavior:smooth;}
 
-/* ═══════════════════════════════════════════════
-   THE DREAM — MATCH PROGRAMME MEETS FOTMOB
-   Deep navy #0B1426 — premium, stadium dark
-   Cream cards #FFF8F0 — warm, editorial, unique
-   Saffron #FF9933 — India, energy, IST times
-   Bebas Neue — jerseys, scoreboards
-   Teko — sports editorial
-   Inter — readable body text
-   ═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════
+   STADIUM WALL — THE DREAM THEME
+   
+   #0D0D0D — blackboard dark
+   #FF9933 — saffron PRIMARY (not accent)
+   #FFFFFF — pure white scores
+   #1A1A1A — warm dark cards
+   #242424 — card hover
+   Bebas Neue — massive scoreboard font
+   Barlow Condensed — sports editorial
+   ═══════════════════════════════════════ */
 :root{
-  --bg:       #0B1426;
-  --card:     #141e33;
-  --card2:    #1a2640;
-  --cream:    #FFF8F0;
+  --black:    #0D0D0D;
+  --card:     #161616;
+  --card2:    #1F1F1F;
+  --card3:    #262626;
   --saff:     #FF9933;
-  --saff-dk:  #e07000;
-  --navy:     #0B1426;
-  --white:    #ffffff;
-  --soft:     #CBD5E8;
-  --muted:    #6B7FA8;
-  --faint:    rgba(255,255,255,.06);
-  --border:   rgba(255,255,255,.08);
-  --border2:  rgba(255,255,255,.14);
-  --green:    #22c55e;
-  --red:      #ef4444;
-  --shadow:   0 2px 20px rgba(0,0,0,.5);
+  --saff-lt:  #FFB366;
+  --saff-dk:  #CC7A00;
+  --white:    #FFFFFF;
+  --off:      #E8E0D5;
+  --muted:    #888880;
+  --faint:    #333330;
+  --border:   rgba(255,255,255,.07);
+  --border-s: rgba(255,153,51,.2);
+  --green:    #00D26A;
+  --red:      #FF3B3B;
+  --shadow:   0 4px 24px rgba(0,0,0,.6);
 }
 
 body{
   font-family:'Inter',system-ui,sans-serif;
-  background:var(--bg);
-  color:var(--soft);
+  background:var(--black);
+  color:var(--off);
   -webkit-font-smoothing:antialiased;
   min-height:100vh;
   font-size:14px;
   line-height:1.5;
 }
 
-/* Stadium floodlight atmosphere */
+/* Subtle warm texture */
 body::before{
   content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   background:
-    radial-gradient(ellipse 80% 20% at 50% 0%,rgba(255,153,51,.05) 0%,transparent 55%),
-    radial-gradient(ellipse 40% 40% at 0% 100%,rgba(34,197,94,.03) 0%,transparent 50%),
-    radial-gradient(ellipse 40% 40% at 100% 100%,rgba(34,197,94,.03) 0%,transparent 50%);
+    radial-gradient(ellipse 100% 30% at 50% 0%,rgba(255,153,51,.04) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 60% at 0% 100%,rgba(255,153,51,.02) 0%,transparent 50%),
+    radial-gradient(ellipse 60% 60% at 100% 100%,rgba(255,153,51,.02) 0%,transparent 50%);
 }
 main,header,footer,nav{position:relative;z-index:1;}
 
-/* ── CARDS ── */
-.card{background:var(--card);border:1px solid var(--border);border-radius:14px;}
+/* ── CARDS — warm dark, not cold ── */
+.card{
+  background:var(--card);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;
+}
 .card-hover{transition:all .15s;cursor:pointer;}
-.card-hover:hover{background:var(--card2);border-color:rgba(255,153,51,.22);transform:translateY(-1px);box-shadow:0 8px 32px rgba(0,0,0,.4);}
+.card-hover:hover{
+  background:var(--card2);
+  border-color:rgba(255,153,51,.25);
+  transform:translateY(-2px);
+  box-shadow:0 8px 32px rgba(0,0,0,.5);
+}
 
-/* ── MATCH CARDS — cream accent strip, editorial ── */
+/* ── MATCH CARDS — scoreboard style ── */
 .mc{
   background:var(--card);
-  border:1px solid var(--border);
-  border-radius:14px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;overflow:hidden;
   transition:all .15s;margin-bottom:8px;
   position:relative;
 }
-.mc:hover{background:var(--card2);border-color:rgba(255,153,51,.2);box-shadow:0 6px 24px rgba(0,0,0,.4);}
-.mc-live{border-color:rgba(239,68,68,.4)!important;background:rgba(239,68,68,.04)!important;}
-
-/* ── SECTION HEADERS ── */
-.sh{
-  font-family:'Teko',sans-serif;font-size:13px;font-weight:600;
-  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
-  display:flex;align-items:center;gap:8px;
-  padding:16px 0 10px;border-bottom:1px solid var(--border);margin-bottom:12px;
+.mc::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--saff);border-radius:12px 0 0 12px;
 }
-.sh-line{flex:1;height:1px;background:var(--border);}
-.sh-accent{color:var(--saff)!important;}
+.mc.mc-done::before{background:var(--green);}
+.mc.mc-live::before{background:var(--red);}
+.mc:hover{
+  background:var(--card2);
+  border-color:rgba(255,153,51,.2);
+  box-shadow:0 4px 20px rgba(0,0,0,.4);
+}
+.mc-live{
+  border-color:rgba(255,59,59,.3)!important;
+  background:rgba(255,59,59,.03)!important;
+}
+
+/* ── SECTION HEADERS — bold, graphic ── */
+.sh{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);
+  display:flex;align-items:center;gap:10px;
+  padding:18px 0 10px;
+  border-bottom:1px solid var(--faint);
+  margin-bottom:12px;
+}
+.sh-line{flex:1;height:1px;background:var(--faint);}
+.sh-saff{color:var(--saff)!important;}
 
 /* ── BADGES ── */
-.badge-live{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.3);font-family:'Teko',sans-serif;font-size:11px;font-weight:600;padding:2px 8px;border-radius:5px;display:inline-flex;align-items:center;gap:4px;letter-spacing:.06em;text-transform:uppercase;}
-.badge-ft{background:rgba(255,255,255,.06);color:var(--muted);border:1px solid var(--border);font-family:'Teko',sans-serif;font-size:11px;font-weight:600;padding:2px 8px;border-radius:5px;}
-.badge-up{background:rgba(255,153,51,.1);color:var(--saff);border:1px solid rgba(255,153,51,.25);font-family:'Teko',sans-serif;font-size:11px;font-weight:600;padding:2px 8px;border-radius:5px;}
-.badge-grp{background:rgba(255,153,51,.08);color:var(--saff);font-family:'Teko',sans-serif;font-size:10px;font-weight:600;padding:1px 6px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;}
+.badge-live{
+  background:rgba(255,59,59,.15);color:#FF6B6B;
+  border:1px solid rgba(255,59,59,.3);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;
+  display:inline-flex;align-items:center;gap:4px;letter-spacing:.06em;
+}
+.badge-ft{
+  background:rgba(0,210,106,.1);color:var(--green);
+  border:1px solid rgba(0,210,106,.2);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;
+}
+.badge-up{
+  background:rgba(255,153,51,.12);color:var(--saff);
+  border:1px solid rgba(255,153,51,.25);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;
+}
+.badge-grp{
+  background:rgba(255,153,51,.1);color:var(--saff);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:800;padding:1px 7px;border-radius:3px;
+  letter-spacing:.08em;text-transform:uppercase;
+}
 
 /* ── LIVE DOT ── */
-.live-dot{width:7px;height:7px;border-radius:50%;background:var(--red);display:inline-block;flex-shrink:0;animation:pulse-r 1.4s ease infinite;}
-@keyframes pulse-r{0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(239,68,68,.6);}50%{opacity:.4;transform:scale(.8);box-shadow:0 0 0 6px rgba(239,68,68,0);}}
+.live-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--red);display:inline-block;flex-shrink:0;
+  animation:pulse-r 1.2s ease infinite;
+}
+@keyframes pulse-r{
+  0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(255,59,59,.6);}
+  50%{opacity:.3;transform:scale(.7);box-shadow:0 0 0 8px rgba(255,59,59,0);}
+}
 
 /* ── STANDINGS ── */
-.st-row{display:flex;align-items:center;gap:6px;padding:8px 12px;border-bottom:1px solid var(--border);transition:background .1s;}
+.st-row{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 14px;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  transition:background .1s;
+}
 .st-row:last-child{border:none;}
 .st-row:hover{background:var(--card2);}
-.st-q{width:3px;height:20px;border-radius:2px;background:rgba(255,255,255,.08);flex-shrink:0;}
+.st-q{width:3px;height:20px;border-radius:2px;background:var(--faint);flex-shrink:0;}
 .st-q.q{background:var(--green);}
+
+/* ── BTN ── */
+.btn-saff{
+  background:var(--saff);color:#000;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:14px;font-weight:800;letter-spacing:.1em;
+  padding:11px 20px;border-radius:8px;border:none;
+  cursor:pointer;transition:all .15s;text-decoration:none;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.btn-saff:hover{background:var(--saff-lt);transform:translateY(-1px);}
 
 ::-webkit-scrollbar{width:3px;height:3px;}
 ::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px;}
+::-webkit-scrollbar-thumb{background:var(--faint);border-radius:2px;}
