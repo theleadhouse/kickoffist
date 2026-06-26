@@ -12,14 +12,14 @@ function ISTClock() {
     };
     tick(); const id = setInterval(tick, 1000); return () => clearInterval(id);
   }, []);
-  return <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"20px",letterSpacing:"2px",color:"#FF9933",lineHeight:1}}>{t}</span>;
+  return <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"22px",letterSpacing:"2px",color:"#FF9933",lineHeight:1}}>{t}</span>;
 }
 
 const NAV = [
-  {href:"/today",    label:"HOME",    icon:"⚡"},
-  {href:"/results",  label:"RESULTS", icon:"📋"},
-  {href:"/world-cup",label:"SCHEDULE",icon:"📅"},
-  {href:"/standings",label:"TABLES",  icon:"📊"},
+  {href:"/today",    label:"HOME",     icon:"⚡"},
+  {href:"/results",  label:"RESULTS",  icon:"📋"},
+  {href:"/world-cup",label:"SCHEDULE", icon:"📅"},
+  {href:"/standings",label:"TABLES",   icon:"📊"},
   {href:"/news",     label:"IST GUIDE",icon:"🇮🇳"},
 ];
 
@@ -28,39 +28,35 @@ export default function TopBar() {
   const [liveCount, setLiveCount] = useState(0);
   useEffect(() => {
     const poll = async () => { try { const r = await fetch("/api/live"); const d = await r.json(); setLiveCount(d.matches?.length||0); } catch {} };
-    poll(); const id = setInterval(poll,15000); return () => clearInterval(id);
+    poll(); const id = setInterval(poll, 15000); return () => clearInterval(id);
   }, []);
 
   return (
-    <header style={{background:"rgba(17,19,24,.98)",backdropFilter:"blur(20px)",borderBottom:"1px solid rgba(255,153,51,.15)",position:"sticky",top:0,zIndex:100,boxShadow:"0 2px 20px rgba(0,0,0,.5)"}}>
-      {/* Brand */}
-      <div style={{maxWidth:"1100px",margin:"0 auto",padding:"0 16px",height:"56px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:"12px"}}>
+    <header style={{background:"rgba(11,20,38,.97)",backdropFilter:"blur(20px)",borderBottom:"1px solid rgba(255,153,51,.18)",position:"sticky",top:0,zIndex:100,boxShadow:"0 4px 30px rgba(0,0,0,.6)"}}>
+      <div style={{maxWidth:"1100px",margin:"0 auto",padding:"0 16px",height:"58px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:"12px"}}>
         <Link href="/today" style={{display:"flex",alignItems:"center",gap:"12px",textDecoration:"none",flexShrink:0}}>
-          {/* Football logo — simple, bold */}
-          <div style={{width:"40px",height:"40px",borderRadius:"10px",background:"linear-gradient(135deg,#FF9933 0%,#cc7a00 100%)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 3px 12px rgba(255,153,51,.3)",flexShrink:0}}>
-            <span style={{fontSize:"22px",lineHeight:1}}>⚽</span>
+          {/* Logo — saffron square, football, clean */}
+          <div style={{width:"42px",height:"42px",borderRadius:"10px",background:"linear-gradient(135deg,#FF9933 0%,#cc7a00 100%)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 3px 14px rgba(255,153,51,.35)",flexShrink:0}}>
+            <span style={{fontSize:"23px",lineHeight:1,filter:"drop-shadow(0 1px 2px rgba(0,0,0,.4))"}}>⚽</span>
           </div>
           <div>
-            {/* KICKOFFIST — Bebas Neue, bold, tricolor letters */}
-            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"26px",letterSpacing:"3px",lineHeight:1}}>
-              <span style={{color:"#FF9933"}}>KICK</span>
-              <span style={{color:"#ffffff"}}>OFF</span>
-              <span style={{color:"#FF9933"}}>IST</span>
+            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"26px",letterSpacing:"3px",lineHeight:1,color:"#fff"}}>
+              KICKOFF<span style={{color:"#FF9933"}}>IST</span>
             </div>
-            <div style={{fontSize:"9px",color:"rgba(255,255,255,.3)",fontWeight:600,marginTop:"1px",letterSpacing:".08em"}}>FOOTBALL IN YOUR TIME 🇮🇳</div>
+            <div style={{fontSize:"9px",color:"rgba(255,255,255,.3)",fontWeight:600,marginTop:"1px",letterSpacing:".1em"}}>FOOTBALL IN YOUR TIME 🇮🇳</div>
           </div>
         </Link>
 
         <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
           {liveCount > 0 && (
-            <Link href="/today" style={{display:"flex",alignItems:"center",gap:"5px",background:"rgba(239,68,68,.12)",border:"1px solid rgba(239,68,68,.3)",borderRadius:"7px",padding:"6px 12px",textDecoration:"none"}}>
+            <Link href="/today" style={{display:"flex",alignItems:"center",gap:"5px",background:"rgba(239,68,68,.12)",border:"1px solid rgba(239,68,68,.3)",borderRadius:"8px",padding:"6px 12px",textDecoration:"none"}}>
               <span className="live-dot" style={{width:"6px",height:"6px"}}/>
               <span style={{fontFamily:"'Teko',sans-serif",fontSize:"13px",fontWeight:600,color:"#f87171",letterSpacing:".06em"}}>{liveCount} LIVE</span>
             </Link>
           )}
           <div style={{background:"rgba(255,153,51,.08)",border:"1px solid rgba(255,153,51,.2)",borderRadius:"10px",padding:"7px 14px",display:"flex",alignItems:"center",gap:"8px"}}>
-            <span style={{fontSize:"9px",color:"rgba(255,153,51,.6)",fontWeight:700,letterSpacing:".08em"}}>IST</span>
-            <div style={{width:"1px",height:"14px",background:"rgba(255,153,51,.2)"}}/>
+            <span style={{fontSize:"9px",color:"rgba(255,153,51,.6)",fontWeight:700,letterSpacing:".1em"}}>IST</span>
+            <div style={{width:"1px",height:"16px",background:"rgba(255,153,51,.2)"}}/>
             <ISTClock/>
           </div>
         </div>
@@ -75,8 +71,8 @@ export default function TopBar() {
               display:"flex",alignItems:"center",gap:"5px",
               padding:"10px 16px",whiteSpace:"nowrap",textDecoration:"none",flexShrink:0,
               fontFamily:"'Teko',sans-serif",fontSize:"13px",fontWeight:600,letterSpacing:".1em",
-              color: active ? "#FF9933" : "rgba(255,255,255,.38)",
-              borderBottom: active ? "2px solid #FF9933" : "2px solid transparent",
+              color:active?"#FF9933":"rgba(255,255,255,.38)",
+              borderBottom:active?"2px solid #FF9933":"2px solid transparent",
               transition:"color .15s",
             }}>
               <span style={{fontSize:"12px"}}>{item.icon}</span>
@@ -85,7 +81,6 @@ export default function TopBar() {
           );
         })}
       </div>
-      <style>{`@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}`}</style>
     </header>
   );
 }
