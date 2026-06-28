@@ -13,7 +13,7 @@ function flagUrl(name:string):string {
     "Egypt":"eg","Belgium":"be","Switzerland":"ch","Canada":"ca","Sweden":"se",
     "South Africa":"za","Ecuador":"ec","Ivory Coast":"ci","Senegal":"sn","Bosnia & Herz.":"ba",
     "Australia":"au","Uruguay":"uy","Austria":"at","Algeria":"dz","DR Congo":"cd",
-    "Cape Verde":"cv","South Korea":"kr","Ghana":"gh","Bosnia":"ba","Ghana":"gh",
+    "Cape Verde":"cv","South Korea":"kr","Ghana":"gh","Bosnia":"ba",
     "Panama":"pa","Iraq":"iq","Italy":"it","Tunisia":"tn","Paraguay":"py","Turkey":"tr",
     "Curaçao":"cw","Scotland":"gb-sct","Haiti":"ht","Qatar":"qa","Jordan":"jo",
     "Saudi Arabia":"sa","Iran":"ir","New Zealand":"nz","Uzbekistan":"uz","Cabo Verde":"cv",
