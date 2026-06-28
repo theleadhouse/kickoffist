@@ -58,8 +58,8 @@ export default function MatchInfoPanel({ match }: { match: Match }) {
         onClick={() => setOpen(!open)}
         style={{
           flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:"5px",
-          background:open?"rgba(99,102,241,.15)":"rgba(99,102,241,.07)",
-          border:`1px solid ${open?"rgba(99,102,241,.4)":"rgba(99,102,241,.18)"}`,
+          background:open?"#F0F0FF":"#F5F5FF",
+          border:`1px solid ${open?"#6366f1":"#C7D2FE"}`,
           borderRadius:"6px",padding:"8px",cursor:"pointer",transition:"all .15s",
         }}
       >
@@ -72,50 +72,50 @@ export default function MatchInfoPanel({ match }: { match: Match }) {
       {open && (
         <div style={{
           gridColumn:"1/-1",
-          borderTop:"1px solid rgba(99,102,241,.15)",
-          background:"rgba(10,10,18,.6)",
+          borderTop:"1px solid #E5E5E0",
+          background:"#F8F8F5",
           padding:"14px 16px",
           marginTop:"0",
         }}>
           {/* Context */}
-          <div style={{background:"rgba(255,153,51,.07)",border:"1px solid rgba(255,153,51,.15)",borderRadius:"8px",padding:"10px 14px",marginBottom:"12px"}}>
+          <div style={{background:"#FFF9F0",border:"1px solid rgba(255,153,51,.2)",borderRadius:"8px",padding:"10px 14px",marginBottom:"12px"}}>
             <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:800,color:"#FF9933",letterSpacing:".14em",marginBottom:"4px"}}>⚽ WHAT'S AT STAKE</div>
-            <p style={{fontSize:"12px",color:"rgba(255,255,255,.75)",lineHeight:1.6}}>{info.context}</p>
+            <p style={{fontSize:"12px",color:"#333",lineHeight:1.6}}>{info.context}</p>
           </div>
 
           {/* Team notes */}
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"8px"}}>
-            <div style={{background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.07)",borderRadius:"8px",padding:"10px 12px"}}>
+            <div style={{background:"#fff",border:"1px solid #E5E5E0",borderRadius:"8px",padding:"10px 12px"}}>
               <div style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"6px"}}>
                 <span style={{fontSize:"16px"}}>{match.homeTeam.flag}</span>
-                <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"rgba(255,255,255,.5)",letterSpacing:".1em"}}>{match.homeTeam.name.toUpperCase()}</span>
+                <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"#666",letterSpacing:".1em"}}>{match.homeTeam.name.toUpperCase()}</span>
               </div>
-              <p style={{fontSize:"11px",color:"rgba(255,255,255,.55)",lineHeight:1.6}}>{info.homeNotes}</p>
+              <p style={{fontSize:"11px",color:"#555",lineHeight:1.6}}>{info.homeNotes}</p>
             </div>
-            <div style={{background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.07)",borderRadius:"8px",padding:"10px 12px"}}>
+            <div style={{background:"#fff",border:"1px solid #E5E5E0",borderRadius:"8px",padding:"10px 12px"}}>
               <div style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"6px"}}>
                 <span style={{fontSize:"16px"}}>{match.awayTeam.flag}</span>
-                <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"rgba(255,255,255,.5)",letterSpacing:".1em"}}>{match.awayTeam.name.toUpperCase()}</span>
+                <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"#666",letterSpacing:".1em"}}>{match.awayTeam.name.toUpperCase()}</span>
               </div>
-              <p style={{fontSize:"11px",color:"rgba(255,255,255,.55)",lineHeight:1.6}}>{info.awayNotes}</p>
+              <p style={{fontSize:"11px",color:"#555",lineHeight:1.6}}>{info.awayNotes}</p>
             </div>
           </div>
 
           {/* H2H + Key Player */}
           <div style={{display:"grid",gridTemplateColumns:info.h2h&&info.keyPlayer?"1fr 1fr":"1fr",gap:"8px"}}>
             {info.h2h&&(
-              <div style={{background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.06)",borderRadius:"8px",padding:"8px 12px"}}>
-                <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:800,color:"rgba(255,255,255,.3)",letterSpacing:".12em",marginBottom:"4px"}}>HEAD TO HEAD</div>
-                <p style={{fontSize:"11px",color:"rgba(255,255,255,.5)",lineHeight:1.5}}>{info.h2h}</p>
+              <div style={{background:"#FAFAF8",border:"1px solid #E5E5E0",borderRadius:"8px",padding:"8px 12px"}}>
+                <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:800,color:"#999",letterSpacing:".12em",marginBottom:"4px"}}>HEAD TO HEAD</div>
+                <p style={{fontSize:"11px",color:"#555",lineHeight:1.5}}>{info.h2h}</p>
               </div>
             )}
             {info.keyPlayer&&(
-              <div style={{background:"rgba(255,153,51,.05)",border:"1px solid rgba(255,153,51,.12)",borderRadius:"8px",padding:"8px 12px"}}>
+              <div style={{background:"#FFF9F0",border:"1px solid rgba(255,153,51,.25)",borderRadius:"8px",padding:"8px 12px"}}>
                 <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:800,color:"#FF9933",letterSpacing:".12em",marginBottom:"2px"}}>
                   ⭐ KEY PLAYER · {info.keyPlayer.team.toUpperCase()}
                 </div>
                 <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"14px",fontWeight:700,color:"#fff",marginBottom:"2px"}}>{info.keyPlayer.name}</div>
-                <p style={{fontSize:"11px",color:"rgba(255,255,255,.5)",lineHeight:1.5}}>{info.keyPlayer.note}</p>
+                <p style={{fontSize:"11px",color:"#555",lineHeight:1.5}}>{info.keyPlayer.note}</p>
               </div>
             )}
           </div>
