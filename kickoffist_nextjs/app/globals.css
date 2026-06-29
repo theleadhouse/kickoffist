@@ -2,86 +2,119 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html{scroll-behavior:smooth;}
 
+/* ══════════════════════════════════════════
+   SPORTS ILLUSTRATED × ESPN × INDIA
+   
+   Forest green #1B4332 — classic sports
+   Cream #FFF8F0 — old newsprint warmth  
+   Saffron #FF9933 — India, energy, fire
+   Black #0A0A0A — bold authority
+   Playfair Display — sports magazine serif
+   Bebas Neue — scoreboard
+   Barlow Condensed — punchy sports text
+   ══════════════════════════════════════════ */
 :root{
-  --bg:       #0F172A;
-  --card:     rgba(30,41,59,0.7);
-  --card2:    rgba(30,41,59,0.9);
-  --saff:     #FF9933;
-  --saff-dk:  #CC7A00;
-  --white:    #ffffff;
-  --soft:     #CBD5E8;
-  --muted:    #64748B;
-  --border:   rgba(255,255,255,0.1);
-  --green:    #22c55e;
-  --red:      #ef4444;
+  --green:     #1B4332;
+  --green2:    #2D6A4F;
+  --green3:    #40916C;
+  --cream:     #FFF8F0;
+  --cream2:    #FFF3E5;
+  --black:     #0A0A0A;
+  --ink:       #1A1A1A;
+  --saff:      #FF9933;
+  --saff-dk:   #CC7A00;
+  --saff-lt:   #FFF3E0;
+  --white:     #FFFFFF;
+  --red:       #CC1100;
+  --border:    #E5DDD5;
+  --muted:     #888;
+  --shadow:    0 2px 12px rgba(0,0,0,.1);
+  --shadow2:   0 8px 32px rgba(0,0,0,.15);
 }
 
 body{
-  font-family:'Inter',system-ui,sans-serif;
-  background:var(--bg);
-  color:var(--soft);
+  font-family:'Barlow Condensed',system-ui,sans-serif;
+  background:var(--cream);
+  color:var(--ink);
   -webkit-font-smoothing:antialiased;
   min-height:100vh;
   font-size:14px;
   line-height:1.5;
 }
 
-.glass{
-  background:rgba(30,41,59,0.7);
-  backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,0.1);
+/* ── CARDS ── */
+.card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:8px;
+  box-shadow:var(--shadow);
 }
 
-.card{background:rgba(30,41,59,0.7);border:1px solid rgba(255,255,255,.08);border-radius:16px;}
-.card-hover{transition:all .15s;cursor:pointer;}
-.card-hover:hover{background:rgba(30,41,59,.9);border-color:rgba(255,153,51,.3);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.4);}
-
+/* ── MATCH CARD — magazine box score ── */
 .mc{
-  background:rgba(30,41,59,0.6);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:16px;
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:8px;
   overflow:hidden;
   transition:all .15s;
-  margin-bottom:8px;
-  backdrop-filter:blur(8px);
+  margin-bottom:6px;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
 }
-.mc:hover{background:rgba(30,41,59,.9);border-color:rgba(255,153,51,.25);box-shadow:0 4px 20px rgba(0,0,0,.4);}
-.mc-live{border-color:rgba(239,68,68,.4)!important;background:rgba(239,68,68,.05)!important;}
-.mc-done{border-left:3px solid var(--green)!important;}
-.mc-up{border-left:3px solid var(--saff)!important;}
+.mc:hover{border-color:var(--saff);box-shadow:0 4px 16px rgba(0,0,0,.12);transform:translateY(-1px);}
+.mc-live{border-left:4px solid var(--red)!important;}
+.mc-done{border-left:4px solid var(--green)!important;}
+.mc-up{border-left:4px solid var(--saff)!important;}
 
+/* ── SECTION HEADERS — magazine style ── */
 .sh{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--muted);
-  display:flex;align-items:center;gap:10px;
-  padding:16px 0 10px;
-  border-bottom:1px solid rgba(255,255,255,.08);
-  margin-bottom:12px;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:22px;letter-spacing:3px;
+  color:var(--black);
+  display:flex;align-items:center;gap:12px;
+  padding:20px 0 10px;
+  border-bottom:3px solid var(--black);
+  margin-bottom:14px;
 }
-.sh-line{flex:1;height:1px;background:rgba(255,255,255,.08);}
-.sh-saff{color:var(--saff)!important;}
+.sh-line{flex:1;height:1px;background:var(--border);}
+.sh-green{color:var(--green)!important;border-color:var(--green)!important;}
+.sh-saff{color:var(--saff)!important;border-color:var(--saff)!important;}
 
-.badge-live{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;padding:2px 8px;border-radius:5px;display:inline-flex;align-items:center;gap:4px;letter-spacing:.06em;}
-.badge-ft{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.2);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;padding:2px 8px;border-radius:5px;}
-.badge-up{background:rgba(255,153,51,.1);color:var(--saff);border:1px solid rgba(255,153,51,.25);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;padding:2px 8px;border-radius:5px;}
-.badge-grp{background:rgba(255,153,51,.1);color:var(--saff);font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;padding:1px 7px;border-radius:4px;letter-spacing:.08em;text-transform:uppercase;}
-.badge-r32{background:rgba(255,255,255,.15);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;padding:1px 7px;border-radius:4px;letter-spacing:.08em;}
+/* ── BADGES ── */
+.badge-live{background:var(--red);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;padding:2px 8px;border-radius:3px;display:inline-flex;align-items:center;gap:4px;letter-spacing:.08em;text-transform:uppercase;}
+.badge-ft{background:var(--green);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;padding:2px 8px;border-radius:3px;}
+.badge-up{background:var(--saff);color:#000;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;padding:2px 8px;border-radius:3px;}
+.badge-r32{background:var(--black);color:var(--saff);font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;padding:2px 8px;border-radius:3px;letter-spacing:.08em;}
 
-.live-dot{width:7px;height:7px;border-radius:50%;background:var(--red);display:inline-block;flex-shrink:0;animation:pulse-r 1.4s ease infinite;}
-@keyframes pulse-r{0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(239,68,68,.6);}50%{opacity:.3;transform:scale(.7);box-shadow:0 0 0 8px rgba(239,68,68,0);}}
+/* ── LIVE DOT ── */
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--red);display:inline-block;flex-shrink:0;animation:pulse-r 1.2s ease infinite;}
+@keyframes pulse-r{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.3;transform:scale(.7);}}
 
-.st-row{display:flex;align-items:center;gap:6px;padding:8px 14px;border-bottom:1px solid rgba(255,255,255,.05);transition:background .1s;}
+/* ── STANDINGS ── */
+.st-row{display:flex;align-items:center;gap:6px;padding:8px 14px;border-bottom:1px solid var(--border);transition:background .1s;font-size:13px;}
 .st-row:last-child{border:none;}
-.st-row:hover{background:rgba(255,255,255,.04);}
-.st-q{width:3px;height:20px;border-radius:2px;background:rgba(255,255,255,.1);flex-shrink:0;}
+.st-row:hover{background:var(--cream2);}
+.st-q{width:3px;height:20px;border-radius:2px;background:var(--border);flex-shrink:0;}
 .st-q.q{background:var(--green);}
+
+/* ── BRACKET CARD ── */
+.bracket-card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-left:4px solid var(--saff);
+  border-radius:8px;
+  padding:14px;
+  box-shadow:var(--shadow);
+  transition:all .15s;
+}
+.bracket-card:hover{border-left-color:var(--green);box-shadow:var(--shadow2);transform:translateY(-2px);}
+.bracket-card.done{border-left-color:var(--green);}
+.bracket-card.live{border-left-color:var(--red);}
 
 ::-webkit-scrollbar{width:3px;height:3px;}
 ::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
