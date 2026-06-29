@@ -4,16 +4,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 function ISTClock() {
-  const [t, setT] = useState("");
+  const [t, setT] = useState("--:--:--");
   useEffect(() => {
     const tick = () => {
-      const d = new Date();
-      const ist = new Date(d.toLocaleString("en-US",{timeZone:"Asia/Kolkata"}));
+      const now = new Date();
+      const ist = new Date(now.toLocaleString("en-US",{timeZone:"Asia/Kolkata"}));
       setT(`${String(ist.getHours()).padStart(2,"0")}:${String(ist.getMinutes()).padStart(2,"0")}:${String(ist.getSeconds()).padStart(2,"0")}`);
     };
     tick(); const id=setInterval(tick,1000); return()=>clearInterval(id);
   },[]);
-  return <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"18px",letterSpacing:"2px",color:"#FF9933"}}>{t} <span style={{color:"rgba(0,0,0,.5)",fontSize:"12px"}}>IST</span></span>;
+  return <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"17px",letterSpacing:"2px",color:"#FF9933"}}>{t}</span>;
 }
 
 const NAV=[
@@ -33,66 +33,83 @@ export default function TopBar(){
   },[]);
 
   return(
-    <header style={{background:"#1B4332",position:"sticky",top:0,zIndex:100,boxShadow:"0 2px 20px rgba(0,0,0,.2)"}}>
-      {/* Top strip — magazine masthead */}
-      <div style={{background:"#FF9933",padding:"3px 16px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:800,color:"#000",letterSpacing:".14em"}}>🏆 FIFA WORLD CUP 2026 · ROUND OF 32 · LIVE IN IST</span>
-        <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:700,color:"rgba(0,0,0,.6)",letterSpacing:".06em"}}>📺 ZEE5 INDIA · EXCLUSIVE</span>
-      </div>
+    <header style={{
+      background:"rgba(10,22,40,.95)",
+      backdropFilter:"blur(20px)",
+      borderBottom:"1px solid rgba(255,153,51,.25)",
+      position:"sticky",top:0,zIndex:100,
+      boxShadow:"0 4px 30px rgba(0,0,0,.5)",
+    }}>
+      {/* SAFFRON TOP STRIP */}
+      <div style={{background:"linear-gradient(90deg,#FF9933,#FFB347,#FF9933)",height:"3px"}}/>
 
-      <div style={{maxWidth:"1200px",margin:"0 auto",padding:"0 16px",height:"52px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:"12px"}}>
+      <div style={{maxWidth:"1280px",margin:"0 auto",padding:"0 16px",height:"54px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:"12px"}}>
+        {/* Logo */}
         <Link href="/today" style={{display:"flex",alignItems:"center",gap:"10px",textDecoration:"none",flexShrink:0}}>
-          <div style={{background:"#FF9933",width:"36px",height:"36px",borderRadius:"6px",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,boxShadow:"0 2px 8px rgba(0,0,0,.3)"}}>
-            <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"22px",color:"#1B4332",lineHeight:1}}>K</span>
+          <div style={{
+            width:"38px",height:"38px",
+            background:"linear-gradient(135deg,#FF9933,#cc7a00)",
+            borderRadius:"8px",
+            display:"flex",alignItems:"center",justifyContent:"center",
+            boxShadow:"0 4px 14px rgba(255,153,51,.4)",
+            flexShrink:0,
+          }}>
+            <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"24px",color:"#000",lineHeight:1}}>K</span>
           </div>
           <div>
-            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"24px",letterSpacing:"4px",color:"#fff",lineHeight:1}}>
+            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"22px",letterSpacing:"4px",color:"#fff",lineHeight:1}}>
               KICKOFF<span style={{color:"#FF9933"}}>IST</span>
             </div>
-            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"8px",fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:".1em",marginTop:"1px"}}>INDIA'S #1 WORLD CUP HUB 🇮🇳</div>
+            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"8px",fontWeight:700,color:"rgba(255,255,255,.4)",letterSpacing:".1em"}}>INDIA'S WORLD CUP HUB 🇮🇳</div>
           </div>
         </Link>
 
-        <nav style={{display:"flex",alignItems:"center",gap:"2px"}} className="hidden md:flex">
+        {/* Desktop nav */}
+        <nav style={{display:"flex",alignItems:"center",gap:"2px",flex:1,justifyContent:"center"}} className="hidden md:flex">
           {NAV.map(item=>{
             const active=path===item.href||(item.href!=="/today"&&path?.startsWith(item.href));
             return(
               <Link key={item.href} href={item.href} style={{
-                padding:"6px 14px",borderRadius:"4px",
+                padding:"7px 16px",borderRadius:"8px",
                 fontFamily:"'Barlow Condensed',sans-serif",
                 fontSize:"13px",fontWeight:800,letterSpacing:".12em",
                 textDecoration:"none",transition:"all .15s",
-                background:active?"#FF9933":"transparent",
-                color:active?"#000":"rgba(255,255,255,.7)",
+                background:active?"rgba(255,153,51,.15)":"transparent",
+                color:active?"#FF9933":"rgba(255,255,255,.5)",
+                border:active?"1px solid rgba(255,153,51,.3)":"1px solid transparent",
               }}>{item.label}</Link>
             );
           })}
         </nav>
 
+        {/* Right */}
         <div style={{display:"flex",alignItems:"center",gap:"8px",flexShrink:0}}>
           {live>0&&(
-            <Link href="/today" style={{display:"flex",alignItems:"center",gap:"5px",background:"rgba(204,17,0,.9)",borderRadius:"4px",padding:"4px 10px",textDecoration:"none"}}>
-              <span className="live-dot" style={{background:"#fff",width:"5px",height:"5px"}}/>
-              <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",fontWeight:800,color:"#fff",letterSpacing:".08em"}}>{live} LIVE</span>
+            <Link href="/today" style={{display:"flex",alignItems:"center",gap:"5px",background:"rgba(244,67,54,.2)",border:"1px solid rgba(244,67,54,.35)",borderRadius:"20px",padding:"5px 12px",textDecoration:"none"}}>
+              <span className="live-dot" style={{width:"6px",height:"6px"}}/>
+              <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",fontWeight:800,color:"#ff6b6b",letterSpacing:".06em"}}>{live} LIVE</span>
             </Link>
           )}
-          <div style={{background:"rgba(0,0,0,.25)",borderRadius:"4px",padding:"5px 12px"}}>
+          <div style={{display:"flex",alignItems:"center",gap:"6px",background:"rgba(255,153,51,.1)",border:"1px solid rgba(255,153,51,.2)",borderRadius:"20px",padding:"6px 14px"}}>
+            <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:800,color:"rgba(255,153,51,.6)",letterSpacing:".1em"}}>IST</span>
             <ISTClock/>
           </div>
         </div>
       </div>
 
-      {/* Mobile nav */}
-      <div style={{maxWidth:"1200px",margin:"0 auto",display:"flex",overflowX:"auto",scrollbarWidth:"none",borderTop:"1px solid rgba(255,255,255,.1)",padding:"0 8px"}} className="md:hidden">
+      {/* Mobile nav tabs */}
+      <div style={{display:"flex",overflowX:"auto",scrollbarWidth:"none",borderTop:"1px solid rgba(255,255,255,.06)"}} className="md:hidden">
         {NAV.map(item=>{
           const active=path===item.href||(item.href!=="/today"&&path?.startsWith(item.href));
           return(
             <Link key={item.href} href={item.href} style={{
-              padding:"8px 16px",whiteSpace:"nowrap",
+              flex:1,display:"flex",alignItems:"center",justifyContent:"center",
+              padding:"9px 8px",whiteSpace:"nowrap",
               fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",fontWeight:800,letterSpacing:".1em",
               textDecoration:"none",flexShrink:0,
-              color:active?"#FF9933":"rgba(255,255,255,.55)",
+              color:active?"#FF9933":"rgba(255,255,255,.4)",
               borderBottom:active?"2px solid #FF9933":"2px solid transparent",
+              background:active?"rgba(255,153,51,.06)":"transparent",
             }}>{item.label}</Link>
           );
         })}

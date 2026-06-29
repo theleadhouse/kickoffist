@@ -4,21 +4,20 @@ import { Match } from "@/lib/types";
 import { getCountdown } from "@/lib/utils";
 import MatchInfoPanel from "@/components/MatchInfoPanel";
 
-function flagUrl(name:string){
-  const c:Record<string,string>={
-    "Argentina":"ar","Brazil":"br","France":"fr","England":"gb-eng","Germany":"de",
-    "Spain":"es","Portugal":"pt","Netherlands":"nl","Norway":"no","USA":"us",
-    "Mexico":"mx","Japan":"jp","Morocco":"ma","Colombia":"co","Croatia":"hr",
-    "Egypt":"eg","Belgium":"be","Switzerland":"ch","Canada":"ca","Sweden":"se",
-    "South Africa":"za","Ecuador":"ec","Ivory Coast":"ci","Senegal":"sn",
-    "Bosnia & Herz.":"ba","Bosnia":"ba","Australia":"au","Uruguay":"uy","Austria":"at",
-    "Algeria":"dz","DR Congo":"cd","Cape Verde":"cv","Cabo Verde":"cv","South Korea":"kr",
-    "Ghana":"gh","Panama":"pa","Iraq":"iq","Tunisia":"tn","Paraguay":"py","Turkey":"tr",
-    "Curaçao":"cw","Scotland":"gb-sct","Haiti":"ht","Qatar":"qa","Jordan":"jo",
-    "Saudi Arabia":"sa","Iran":"ir","New Zealand":"nz","Uzbekistan":"uz",
-  };
-  return `https://flagcdn.com/32x24/${c[name]||"un"}.png`;
-}
+const FLAG:Record<string,string>={
+  "Argentina":"ar","Brazil":"br","France":"fr","England":"gb-eng","Germany":"de",
+  "Spain":"es","Portugal":"pt","Netherlands":"nl","Norway":"no","USA":"us",
+  "Mexico":"mx","Japan":"jp","Morocco":"ma","Colombia":"co","Croatia":"hr",
+  "Egypt":"eg","Belgium":"be","Switzerland":"ch","Canada":"ca","Sweden":"se",
+  "South Africa":"za","Ecuador":"ec","Ivory Coast":"ci","Senegal":"sn",
+  "Bosnia & Herz.":"ba","Australia":"au","Uruguay":"uy","Austria":"at",
+  "Algeria":"dz","DR Congo":"cd","Cape Verde":"cv","Cabo Verde":"cv",
+  "South Korea":"kr","Ghana":"gh","Panama":"pa","Iraq":"iq","Tunisia":"tn",
+  "Paraguay":"py","Turkey":"tr","Scotland":"gb-sct","Haiti":"ht",
+  "Qatar":"qa","Jordan":"jo","Saudi Arabia":"sa","Iran":"ir",
+  "New Zealand":"nz","Uzbekistan":"uz","Curaçao":"cw",
+};
+const F=(n:string)=>`https://flagcdn.com/32x24/${FLAG[n]||"un"}.png`;
 
 function gcalUrl(m:Match){
   const p=(s:string)=>s.replace(/[-:]/g,"").replace(/\.\d+/,"");
@@ -31,128 +30,131 @@ export default function PortalMatchCard({match,showDate=false}:{match:Match;show
   const [expanded,setExpanded]=useState(false);
   const [showAlarm,setShowAlarm]=useState(false);
   const [showShare,setShowShare]=useState(false);
-  const [countdown,setCountdown]=useState("");
+  const [cd,setCd]=useState("");
   const [copied,setCopied]=useState(false);
 
-  const isLive=match.status==="LIVE",isFinished=match.status==="FINISHED",isUpcoming=match.status==="UPCOMING";
+  const isLive=match.status==="LIVE",isDone=match.status==="FINISHED",isUp=match.status==="UPCOMING";
   const h=match.score.home,a=match.score.away;
-  const homeWin=isFinished&&h!==null&&a!==null&&h>a;
-  const awayWin=isFinished&&h!==null&&a!==null&&a>h;
-  const isDraw=isFinished&&h===a&&h!==null;
+  const hw=isDone&&h!==null&&a!==null&&h>a;
+  const aw=isDone&&h!==null&&a!==null&&a>h;
+  const dr=isDone&&h===a&&h!==null;
   const isR32=match.group==="R32";
 
   useEffect(()=>{
-    if(!isUpcoming) return;
-    const tick=()=>setCountdown(getCountdown(match.utcDate)??"");
+    if(!isUp) return;
+    const tick=()=>setCd(getCountdown(match.utcDate)??"");
     tick(); const id=setInterval(tick,30000); return()=>clearInterval(id);
-  },[match.utcDate,isUpcoming]);
+  },[match.utcDate,isUp]);
 
-  const hGoals=match.goals?.filter(g=>g.team===match.homeTeam.name)||[];
-  const aGoals=match.goals?.filter(g=>g.team===match.awayTeam.name)||[];
-  const shareText=isFinished
+  const hG=match.goals?.filter(g=>g.team===match.homeTeam.name)||[];
+  const aG=match.goals?.filter(g=>g.team===match.awayTeam.name)||[];
+  const shareTxt=isDone
     ?`⚽ ${match.homeTeam.flag} ${match.homeTeam.name} ${h}–${a} ${match.awayTeam.name} ${match.awayTeam.flag}\nFT · ${match.istDateLabel} · FIFA WC 2026\n→ kickoffist.com 🇮🇳`
-    :`⚽ ${match.homeTeam.flag} ${match.homeTeam.name} vs ${match.awayTeam.name} ${match.awayTeam.flag}\n📅 ${match.istDateLabel} · 🕐 ${match.istTime} IST\n📺 Zee5 India → kickoffist.com 🇮🇳`;
+    :`⚽ ${match.homeTeam.flag} ${match.homeTeam.name} vs ${match.awayTeam.name} ${match.awayTeam.flag}\n📅 ${match.istDateLabel} · ⏰ ${match.istTime} IST\n📺 Zee5 India → kickoffist.com 🇮🇳`;
 
-  const lc=isLive?"#CC1100":isFinished?"#1B4332":"#FF9933";
+  const bc=isLive?"#f44336":isDone?"#00c853":"#FF9933";
 
   return(
-    <div className={`mc ${isLive?"mc-live":""} ${isFinished?"mc-done":""} ${isUpcoming?"mc-up":""}`}
-      style={{borderLeftColor:lc,borderLeftWidth:"4px",borderLeftStyle:"solid"}}>
+    <div className={`mc ${isLive?"mc-live":""} ${isDone?"mc-done":""} ${isUp?"mc-up":""}`}
+      style={{borderLeftColor:bc,borderLeftWidth:"3px",borderLeftStyle:"solid"}}>
 
       {/* MAIN ROW */}
-      <div style={{display:"flex",alignItems:"stretch",minHeight:"76px",cursor:(isFinished||isLive)?"pointer":"default",background:"#fff"}}
-        onClick={()=>(isFinished||isLive)&&setExpanded(!expanded)}>
+      <div style={{display:"flex",alignItems:"stretch",minHeight:"72px",cursor:(isDone||isLive)?"pointer":"default"}}
+        onClick={()=>(isDone||isLive)&&setExpanded(!expanded)}>
 
-        {/* Stage */}
-        <div style={{width:"68px",flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"6px",gap:"4px",borderRight:"1px solid #F0EDE8",background:"#FAFAF7"}}>
-          <span className={isR32?"badge-r32":"badge-grp"}>{isR32?"R32":match.group?.replace("Group ","G")||"WC"}</span>
+        {/* Stage tag */}
+        <div style={{width:"64px",flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"6px",gap:"3px",borderRight:"1px solid rgba(255,255,255,.06)",background:"rgba(0,0,0,.2)"}}>
+          {isR32
+            ?<span className="badge-r32" style={{fontSize:"9px"}}>R32</span>
+            :<span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:800,color:"rgba(255,153,51,.7)",letterSpacing:".06em",textAlign:"center"}}>{match.group?.replace("Group ","G")||"WC"}</span>
+          }
           {isLive&&<span className="badge-live" style={{fontSize:"9px"}}><span className="live-dot" style={{width:"5px",height:"5px"}}/>{match.minute?`${match.minute}'`:"LIVE"}</span>}
-          {isFinished&&<span className="badge-ft">FT</span>}
-          {isUpcoming&&showDate&&match.istDateLabel&&<span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:800,color:"#CC7A00",textAlign:"center",lineHeight:1.2}}>{match.istDateLabel.slice(0,8)}</span>}
+          {isDone&&<span className="badge-ft">FT</span>}
+          {isUp&&showDate&&match.istDateLabel&&<span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"8px",fontWeight:700,color:"rgba(255,153,51,.6)",textAlign:"center",lineHeight:1.2}}>{match.istDateLabel.slice(0,8)}</span>}
         </div>
 
-        {/* Teams */}
-        <div style={{flex:1,minWidth:0,padding:"11px 14px"}}>
+        {/* Teams + Scores */}
+        <div style={{flex:1,minWidth:0,padding:"10px 12px"}}>
+          {/* Home */}
           <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"8px"}}>
-            <img src={flagUrl(match.homeTeam.name)} alt="" style={{width:"26px",height:"auto",borderRadius:"2px",flexShrink:0,border:"1px solid rgba(0,0,0,.08)"}} onError={e=>{e.currentTarget.style.display="none";}}/>
-            <span style={{flex:1,fontFamily:"'Barlow Condensed',sans-serif",fontSize:"19px",fontWeight:700,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",
-              color:homeWin?"#1B4332":isDraw?"#0A0A0A":isFinished?"#AAA":"#0A0A0A"
-            }}>{match.homeTeam.name}</span>
-            {(isLive||isFinished)&&h!==null&&<span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"32px",letterSpacing:"2px",flexShrink:0,lineHeight:1,color:homeWin?"#1B4332":isDraw?"#0A0A0A":"#AAA"}}>{h}</span>}
+            <img src={F(match.homeTeam.name)} alt="" style={{width:"26px",height:"auto",borderRadius:"3px",flexShrink:0}} onError={e=>{e.currentTarget.style.display="none";}}/>
+            <span style={{flex:1,fontFamily:"'Barlow Condensed',sans-serif",fontSize:"18px",fontWeight:700,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",
+              color:hw?"#00e676":dr?"#fff":isDone?"rgba(255,255,255,.4)":"#fff"}}>{match.homeTeam.name}</span>
+            {(isLive||isDone)&&h!==null&&<span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"30px",letterSpacing:"1px",flexShrink:0,lineHeight:1,color:hw?"#00e676":dr?"#fff":"rgba(255,255,255,.5)"}}>{h}</span>}
           </div>
+          {/* Away */}
           <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
-            <img src={flagUrl(match.awayTeam.name)} alt="" style={{width:"26px",height:"auto",borderRadius:"2px",flexShrink:0,border:"1px solid rgba(0,0,0,.08)"}} onError={e=>{e.currentTarget.style.display="none";}}/>
-            <span style={{flex:1,fontFamily:"'Barlow Condensed',sans-serif",fontSize:"19px",fontWeight:700,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",
-              color:awayWin?"#1B4332":isDraw?"#0A0A0A":isFinished?"#AAA":"#0A0A0A"
-            }}>{match.awayTeam.name}</span>
-            {(isLive||isFinished)&&a!==null&&<span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"32px",letterSpacing:"2px",flexShrink:0,lineHeight:1,color:awayWin?"#1B4332":isDraw?"#0A0A0A":"#AAA"}}>{a}</span>}
+            <img src={F(match.awayTeam.name)} alt="" style={{width:"26px",height:"auto",borderRadius:"3px",flexShrink:0}} onError={e=>{e.currentTarget.style.display="none";}}/>
+            <span style={{flex:1,fontFamily:"'Barlow Condensed',sans-serif",fontSize:"18px",fontWeight:700,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",
+              color:aw?"#00e676":dr?"#fff":isDone?"rgba(255,255,255,.4)":"#fff"}}>{match.awayTeam.name}</span>
+            {(isLive||isDone)&&a!==null&&<span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"30px",letterSpacing:"1px",flexShrink:0,lineHeight:1,color:aw?"#00e676":dr?"#fff":"rgba(255,255,255,.5)"}}>{a}</span>}
           </div>
-          {(match.venue||match.city)&&<div style={{marginTop:"5px",fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:600,color:"#AAA",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>📍 {[match.venue,match.city].filter(Boolean).join(" · ")}</div>}
+          {(match.venue||match.city)&&<div style={{marginTop:"4px",fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:500,color:"rgba(255,255,255,.25)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>📍 {[match.venue,match.city].filter(Boolean).join(" · ")}</div>}
         </div>
 
         {/* Time */}
-        <div style={{flexShrink:0,display:"flex",flexDirection:"column",alignItems:"flex-end",justifyContent:"center",padding:"10px 14px",borderLeft:"1px solid #F0EDE8",minWidth:"70px",background:"#FAFAF7"}}>
-          {isUpcoming&&(
+        <div style={{flexShrink:0,display:"flex",flexDirection:"column",alignItems:"flex-end",justifyContent:"center",padding:"8px 12px",borderLeft:"1px solid rgba(255,255,255,.06)",minWidth:"70px",background:"rgba(0,0,0,.1)"}}>
+          {isUp&&(
             <div style={{textAlign:"right"}}>
-              <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"20px",letterSpacing:"1px",color:"#FF9933",lineHeight:1}}>{match.istTime}</div>
-              <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:700,color:"#AAA",marginTop:"1px"}}>IST</div>
-              {match.istDateLabel&&<div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:700,color:"#CC7A00",marginTop:"2px"}}>{match.istDateLabel.slice(0,8)}</div>}
-              {countdown&&<div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",color:"#CCC",marginTop:"1px"}}>{countdown}</div>}
+              <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"19px",letterSpacing:"1px",color:"#FF9933",lineHeight:1}}>{match.istTime}</div>
+              <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"8px",fontWeight:700,color:"rgba(255,255,255,.35)",marginTop:"1px"}}>IST</div>
+              {match.istDateLabel&&<div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:700,color:"rgba(255,153,51,.55)",marginTop:"2px"}}>{match.istDateLabel.slice(0,8)}</div>}
+              {cd&&<div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",color:"rgba(255,255,255,.25)",marginTop:"1px"}}>{cd}</div>}
             </div>
           )}
           {isLive&&(
             <div style={{textAlign:"right"}}>
-              <div style={{display:"flex",alignItems:"center",gap:"4px",justifyContent:"flex-end",marginBottom:"4px"}}><span className="live-dot" style={{width:"6px",height:"6px"}}/><span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"#CC1100",letterSpacing:".08em"}}>LIVE</span></div>
-              {match.minute&&<div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"24px",letterSpacing:"1px",color:"#CC1100",lineHeight:1}}>{match.minute}&apos;</div>}
+              <div style={{display:"flex",alignItems:"center",gap:"4px",justifyContent:"flex-end",marginBottom:"3px"}}><span className="live-dot" style={{width:"5px",height:"5px"}}/><span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:800,color:"#ff6b6b"}}>LIVE</span></div>
+              {match.minute&&<div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"22px",letterSpacing:"1px",color:"#ff6b6b",lineHeight:1}}>{match.minute}&apos;</div>}
             </div>
           )}
-          {isFinished&&(
+          {isDone&&(
             <div style={{textAlign:"right"}}>
-              <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"16px",letterSpacing:"1px",color:"#AAA"}}>{match.istTime}</div>
-              <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:700,color:"#CCC"}}>IST</div>
-              <div style={{fontSize:"12px",color:"#CCC",marginTop:"4px"}}>{expanded?"▲":"▼"}</div>
+              <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"15px",color:"rgba(255,255,255,.3)"}}>{match.istTime}</div>
+              <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"8px",fontWeight:700,color:"rgba(255,255,255,.2)"}}>IST</div>
+              <div style={{fontSize:"11px",color:"rgba(255,255,255,.2)",marginTop:"3px"}}>{expanded?"▲":"▼"}</div>
             </div>
           )}
         </div>
       </div>
 
       {/* ACTIONS */}
-      {(isUpcoming||isFinished)&&(
-        <div style={{borderTop:"1px solid #F0EDE8",padding:"7px 10px",display:"flex",gap:"5px",background:"#FAFAF7"}}>
-          {isUpcoming&&<>
-            <button onClick={()=>setShowAlarm(!showAlarm)} style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:"4px",background:"#FFF3E0",border:"1px solid rgba(255,153,51,.3)",borderRadius:"5px",padding:"7px",cursor:"pointer"}}>
-              <span style={{fontSize:"12px"}}>⏰</span>
-              <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"#CC7A00",letterSpacing:".06em"}}>ALARM</span>
+      {(isUp||isDone)&&(
+        <div style={{borderTop:"1px solid rgba(255,255,255,.06)",padding:"7px 10px",display:"flex",gap:"5px",background:"rgba(0,0,0,.15)"}}>
+          {isUp&&<>
+            <button onClick={()=>setShowAlarm(!showAlarm)} style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:"4px",background:"rgba(255,153,51,.1)",border:"1px solid rgba(255,153,51,.2)",borderRadius:"6px",padding:"7px",cursor:"pointer"}}>
+              <span style={{fontSize:"11px"}}>⏰</span>
+              <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"#FF9933",letterSpacing:".06em"}}>ALARM</span>
             </button>
             <MatchInfoPanel match={match}/>
           </>}
-          {isFinished&&(
-            <button onClick={()=>setExpanded(!expanded)} style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:"4px",background:"#E8F5EE",border:"1px solid rgba(27,67,50,.15)",borderRadius:"5px",padding:"7px",cursor:"pointer"}}>
-              <span style={{fontSize:"12px"}}>⚽</span>
-              <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"#1B4332",letterSpacing:".06em"}}>GOALS</span>
+          {isDone&&(
+            <button onClick={()=>setExpanded(!expanded)} style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:"4px",background:"rgba(0,200,83,.08)",border:"1px solid rgba(0,200,83,.15)",borderRadius:"6px",padding:"7px",cursor:"pointer"}}>
+              <span style={{fontSize:"11px"}}>⚽</span>
+              <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"#00e676",letterSpacing:".06em"}}>GOALS</span>
             </button>
           )}
-          <button onClick={()=>setShowShare(!showShare)} style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:"4px",background:"#fff",border:"1px solid #E5DDD5",borderRadius:"5px",padding:"7px",cursor:"pointer"}}>
-            <span style={{fontSize:"12px"}}>📤</span>
-            <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"#888",letterSpacing:".06em"}}>SHARE</span>
+          <button onClick={()=>setShowShare(!showShare)} style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:"4px",background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.08)",borderRadius:"6px",padding:"7px",cursor:"pointer"}}>
+            <span style={{fontSize:"11px"}}>📤</span>
+            <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"rgba(255,255,255,.4)",letterSpacing:".06em"}}>SHARE</span>
           </button>
         </div>
       )}
 
       {/* ALARM */}
-      {showAlarm&&isUpcoming&&(
-        <div style={{borderTop:"1px solid #FFE8CC",background:"#FFFAF5",padding:"12px 14px"}}>
-          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"#CC7A00",letterSpacing:".12em",marginBottom:"8px"}}>⏰ NEVER MISS THIS MATCH</div>
+      {showAlarm&&isUp&&(
+        <div style={{borderTop:"1px solid rgba(255,153,51,.15)",background:"rgba(255,153,51,.05)",padding:"12px 14px"}}>
+          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"#FF9933",letterSpacing:".12em",marginBottom:"8px"}}>⏰ NEVER MISS THIS MATCH</div>
           <div style={{display:"flex",flexDirection:"column",gap:"6px"}}>
-            <a href={gcalUrl(match)} target="_blank" rel="noopener noreferrer" style={{display:"flex",alignItems:"center",gap:"10px",background:"#fff",border:"1px solid #E5DDD5",borderRadius:"7px",padding:"10px 12px",textDecoration:"none",boxShadow:"0 1px 4px rgba(0,0,0,.06)"}}>
+            <a href={gcalUrl(match)} target="_blank" rel="noopener noreferrer" style={{display:"flex",alignItems:"center",gap:"10px",background:"rgba(255,255,255,.06)",border:"1px solid rgba(255,255,255,.1)",borderRadius:"8px",padding:"10px 12px",textDecoration:"none"}}>
               <span style={{fontSize:"18px",flexShrink:0}}>📅</span>
-              <div><div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"14px",fontWeight:700,color:"#0A0A0A"}}>Google Calendar</div><div style={{fontSize:"10px",color:"#999"}}>Match day reminder</div></div>
-              <span style={{marginLeft:"auto",color:"#CCC"}}>→</span>
+              <div><div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"14px",fontWeight:700,color:"#fff"}}>Google Calendar</div><div style={{fontSize:"10px",color:"rgba(255,255,255,.4)"}}>Set reminder before kickoff</div></div>
+              <span style={{marginLeft:"auto",color:"rgba(255,255,255,.3)"}}>→</span>
             </a>
-            <a href={`https://wa.me/?text=${encodeURIComponent(`⚽ ${match.homeTeam.flag} ${match.homeTeam.name} vs ${match.awayTeam.name} ${match.awayTeam.flag}\n📅 ${match.istDateLabel} · 🕐 ${match.istTime} IST\n📺 Zee5 India\n→ kickoffist.com 🇮🇳`)}`} target="_blank" rel="noopener noreferrer" style={{display:"flex",alignItems:"center",gap:"10px",background:"rgba(37,211,102,.06)",border:"1px solid rgba(37,211,102,.2)",borderRadius:"7px",padding:"10px 12px",textDecoration:"none"}}>
+            <a href={`https://wa.me/?text=${encodeURIComponent(`⚽ ${match.homeTeam.flag} ${match.homeTeam.name} vs ${match.awayTeam.name} ${match.awayTeam.flag}\n📅 ${match.istDateLabel} · ⏰ ${match.istTime} IST\n📺 Zee5 India\n→ kickoffist.com 🇮🇳`)}`} target="_blank" rel="noopener noreferrer" style={{display:"flex",alignItems:"center",gap:"10px",background:"rgba(37,211,102,.06)",border:"1px solid rgba(37,211,102,.2)",borderRadius:"8px",padding:"10px 12px",textDecoration:"none"}}>
               <span style={{fontSize:"18px",flexShrink:0}}>💬</span>
-              <div><div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"14px",fontWeight:700,color:"#1a7a3a"}}>WhatsApp</div><div style={{fontSize:"10px",color:"#999"}}>Share with friends</div></div>
-              <span style={{marginLeft:"auto",color:"#25d366"}}>→</span>
+              <div><div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"14px",fontWeight:700,color:"#25d366"}}>WhatsApp</div><div style={{fontSize:"10px",color:"rgba(255,255,255,.4)"}}>Share with your squad</div></div>
+              <span style={{marginLeft:"auto",color:"rgba(37,211,102,.3)"}}>→</span>
             </a>
           </div>
         </div>
@@ -160,13 +162,13 @@ export default function PortalMatchCard({match,showDate=false}:{match:Match;show
 
       {/* SHARE */}
       {showShare&&(
-        <div style={{borderTop:"1px solid #E5DDD5",background:"#FAFAF7",padding:"12px 14px"}}>
-          <div style={{background:"#fff",border:"1px solid #E5DDD5",borderRadius:"6px",padding:"10px 12px",marginBottom:"8px",fontSize:"12px",color:"#333",lineHeight:1.7,whiteSpace:"pre-wrap"}}>{shareText}</div>
+        <div style={{borderTop:"1px solid rgba(255,255,255,.06)",background:"rgba(0,0,0,.2)",padding:"12px 14px"}}>
+          <div style={{background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.06)",borderRadius:"6px",padding:"10px 12px",marginBottom:"8px",fontSize:"12px",color:"rgba(255,255,255,.65)",lineHeight:1.7,whiteSpace:"pre-wrap"}}>{shareTxt}</div>
           <div style={{display:"flex",gap:"6px"}}>
-            <button onClick={()=>{navigator.clipboard.writeText(shareText).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2000);}).catch(()=>{});}} style={{flex:1,padding:"8px",background:copied?"#E8F5EE":"#FFF3E0",border:copied?"1px solid rgba(27,67,50,.2)":"1px solid rgba(255,153,51,.3)",borderRadius:"6px",cursor:"pointer",fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",fontWeight:800,color:copied?"#1B4332":"#CC7A00",letterSpacing:".06em",transition:"all .15s"}}>
+            <button onClick={()=>{navigator.clipboard.writeText(shareTxt).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2000);}).catch(()=>{});}} style={{flex:1,padding:"8px",background:copied?"rgba(0,200,83,.1)":"rgba(255,153,51,.1)",border:copied?"1px solid rgba(0,200,83,.3)":"1px solid rgba(255,153,51,.25)",borderRadius:"6px",cursor:"pointer",fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",fontWeight:800,color:copied?"#00e676":"#FF9933",letterSpacing:".06em",transition:"all .15s"}}>
               {copied?"✅ COPIED":"📋 COPY"}
             </button>
-            <a href={`https://wa.me/?text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer" style={{flex:1,padding:"8px",background:"rgba(37,211,102,.08)",border:"1px solid rgba(37,211,102,.2)",borderRadius:"6px",fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",fontWeight:800,color:"#1a7a3a",letterSpacing:".06em",textDecoration:"none",display:"flex",alignItems:"center",justifyContent:"center",gap:"4px"}}>
+            <a href={`https://wa.me/?text=${encodeURIComponent(shareTxt)}`} target="_blank" rel="noopener noreferrer" style={{flex:1,padding:"8px",background:"rgba(37,211,102,.08)",border:"1px solid rgba(37,211,102,.2)",borderRadius:"6px",fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",fontWeight:800,color:"#25d366",letterSpacing:".06em",textDecoration:"none",display:"flex",alignItems:"center",justifyContent:"center",gap:"4px"}}>
               💬 WHATSAPP
             </a>
           </div>
@@ -174,14 +176,14 @@ export default function PortalMatchCard({match,showDate=false}:{match:Match;show
       )}
 
       {/* GOALS */}
-      {expanded&&(isFinished||isLive)&&(
-        <div style={{borderTop:"1px solid #E5DDD5",background:"#fff",padding:"12px 14px"}}>
-          {(hGoals.length>0||aGoals.length>0)?(
+      {expanded&&(isDone||isLive)&&(
+        <div style={{borderTop:"1px solid rgba(255,255,255,.06)",background:"rgba(0,0,0,.25)",padding:"12px 14px"}}>
+          {(hG.length>0||aG.length>0)?(
             <div style={{display:"flex",gap:"12px"}}>
-              <div style={{flex:1}}>{hGoals.map((g,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"5px"}}><span>⚽</span><span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"14px",fontWeight:700,color:"#0A0A0A"}}>{g.player}</span><span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",color:"#AAA"}}>{g.minute}&apos;</span></div>)}</div>
-              <div style={{flex:1,textAlign:"right"}}>{aGoals.map((g,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"5px",justifyContent:"flex-end"}}><span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",color:"#AAA"}}>{g.minute}&apos;</span><span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"14px",fontWeight:700,color:"#0A0A0A"}}>{g.player}</span><span>⚽</span></div>)}</div>
+              <div style={{flex:1}}>{hG.map((g,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"5px"}}><span style={{fontSize:"12px"}}>⚽</span><span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"14px",fontWeight:700,color:"rgba(255,255,255,.85)"}}>{g.player}</span><span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",color:"rgba(255,255,255,.3)"}}>{g.minute}&apos;</span></div>)}</div>
+              <div style={{flex:1,textAlign:"right"}}>{aG.map((g,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"5px",justifyContent:"flex-end"}}><span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",color:"rgba(255,255,255,.3)"}}>{g.minute}&apos;</span><span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"14px",fontWeight:700,color:"rgba(255,255,255,.85)"}}>{g.player}</span><span style={{fontSize:"12px"}}>⚽</span></div>)}</div>
             </div>
-          ):<div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",color:"#AAA",textAlign:"center",letterSpacing:".06em"}}>GOALSCORER DATA UNAVAILABLE</div>}
+          ):<div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",color:"rgba(255,255,255,.25)",textAlign:"center"}}>GOALSCORER DATA UNAVAILABLE</div>}
         </div>
       )}
     </div>

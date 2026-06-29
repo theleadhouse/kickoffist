@@ -2,119 +2,124 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Inter:wght@400;500;600;700&display=swap');
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html{scroll-behavior:smooth;}
 
-/* ══════════════════════════════════════════
-   SPORTS ILLUSTRATED × ESPN × INDIA
-   
-   Forest green #1B4332 — classic sports
-   Cream #FFF8F0 — old newsprint warmth  
-   Saffron #FF9933 — India, energy, fire
-   Black #0A0A0A — bold authority
-   Playfair Display — sports magazine serif
-   Bebas Neue — scoreboard
-   Barlow Condensed — punchy sports text
-   ══════════════════════════════════════════ */
+/* KICKOFFIST V21 — IMMERSIVE PITCH THEME
+   Deep navy pitch · Saffron fire · White clarity
+   No gaps · Full bleed · Sports TV energy */
 :root{
-  --green:     #1B4332;
-  --green2:    #2D6A4F;
-  --green3:    #40916C;
-  --cream:     #FFF8F0;
-  --cream2:    #FFF3E5;
-  --black:     #0A0A0A;
-  --ink:       #1A1A1A;
-  --saff:      #FF9933;
-  --saff-dk:   #CC7A00;
-  --saff-lt:   #FFF3E0;
-  --white:     #FFFFFF;
-  --red:       #CC1100;
-  --border:    #E5DDD5;
-  --muted:     #888;
-  --shadow:    0 2px 12px rgba(0,0,0,.1);
-  --shadow2:   0 8px 32px rgba(0,0,0,.15);
+  --pitch:    #0a1628;
+  --pitch2:   #0d1f35;
+  --card:     #111f38;
+  --card2:    #162440;
+  --saff:     #FF9933;
+  --saff2:    #FFB347;
+  --white:    #ffffff;
+  --soft:     #e2e8f0;
+  --muted:    #64748b;
+  --green:    #00c853;
+  --red:      #f44336;
+  --border:   rgba(255,255,255,.08);
+  --glow:     rgba(255,153,51,.15);
 }
 
+html,body{width:100%;overflow-x:hidden;}
+
 body{
-  font-family:'Barlow Condensed',system-ui,sans-serif;
-  background:var(--cream);
-  color:var(--ink);
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--pitch);
+  color:var(--soft);
   -webkit-font-smoothing:antialiased;
   min-height:100vh;
   font-size:14px;
   line-height:1.5;
 }
 
-/* ── CARDS ── */
+/* Pitch grass lines across entire background */
+body::before{
+  content:'';
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  pointer-events:none;z-index:0;
+  background-image:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0px,
+      transparent 59px,
+      rgba(255,255,255,.015) 59px,
+      rgba(255,255,255,.015) 60px
+    );
+  background-size:100% 60px;
+}
+
+main,header,footer,nav{position:relative;z-index:1;}
+
+/* CARDS */
 .card{
-  background:var(--white);
+  background:var(--card);
   border:1px solid var(--border);
-  border-radius:8px;
-  box-shadow:var(--shadow);
+  border-radius:12px;
+  backdrop-filter:blur(8px);
+}
+.card-hover{transition:all .2s;cursor:pointer;}
+.card-hover:hover{
+  background:var(--card2);
+  border-color:rgba(255,153,51,.3);
+  transform:translateY(-2px);
+  box-shadow:0 8px 32px rgba(0,0,0,.4),0 0 0 1px rgba(255,153,51,.1);
 }
 
-/* ── MATCH CARD — magazine box score ── */
+/* MATCH CARDS */
 .mc{
-  background:var(--white);
+  background:var(--card);
   border:1px solid var(--border);
-  border-radius:8px;
+  border-radius:12px;
   overflow:hidden;
-  transition:all .15s;
-  margin-bottom:6px;
-  box-shadow:0 1px 4px rgba(0,0,0,.06);
+  transition:all .2s;
+  margin-bottom:8px;
+  position:relative;
 }
-.mc:hover{border-color:var(--saff);box-shadow:0 4px 16px rgba(0,0,0,.12);transform:translateY(-1px);}
-.mc-live{border-left:4px solid var(--red)!important;}
-.mc-done{border-left:4px solid var(--green)!important;}
-.mc-up{border-left:4px solid var(--saff)!important;}
+.mc::after{
+  content:'';
+  position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--saff);
+}
+.mc.mc-done::after{background:var(--green);}
+.mc.mc-live::after{background:var(--red);}
+.mc:hover{background:var(--card2);border-color:rgba(255,153,51,.25);box-shadow:0 4px 20px rgba(0,0,0,.4);}
+.mc-live{border-color:rgba(244,67,54,.3)!important;}
 
-/* ── SECTION HEADERS — magazine style ── */
+/* SECTION HEADERS */
 .sh{
   font-family:'Bebas Neue',sans-serif;
-  font-size:22px;letter-spacing:3px;
-  color:var(--black);
-  display:flex;align-items:center;gap:12px;
-  padding:20px 0 10px;
-  border-bottom:3px solid var(--black);
-  margin-bottom:14px;
+  font-size:20px;letter-spacing:3px;
+  color:var(--saff);
+  display:flex;align-items:center;gap:10px;
+  padding:16px 0 10px;
+  border-bottom:2px solid rgba(255,153,51,.2);
+  margin-bottom:12px;
 }
 .sh-line{flex:1;height:1px;background:var(--border);}
-.sh-green{color:var(--green)!important;border-color:var(--green)!important;}
-.sh-saff{color:var(--saff)!important;border-color:var(--saff)!important;}
 
-/* ── BADGES ── */
-.badge-live{background:var(--red);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;padding:2px 8px;border-radius:3px;display:inline-flex;align-items:center;gap:4px;letter-spacing:.08em;text-transform:uppercase;}
-.badge-ft{background:var(--green);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;padding:2px 8px;border-radius:3px;}
-.badge-up{background:var(--saff);color:#000;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;padding:2px 8px;border-radius:3px;}
-.badge-r32{background:var(--black);color:var(--saff);font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;padding:2px 8px;border-radius:3px;letter-spacing:.08em;}
+/* BADGES */
+.badge-live{background:rgba(244,67,54,.2);color:#ff6b6b;border:1px solid rgba(244,67,54,.3);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;display:inline-flex;align-items:center;gap:4px;letter-spacing:.06em;}
+.badge-ft{background:rgba(0,200,83,.15);color:#00e676;border:1px solid rgba(0,200,83,.25);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;}
+.badge-up{background:rgba(255,153,51,.15);color:var(--saff);border:1px solid rgba(255,153,51,.25);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;}
+.badge-r32{background:var(--saff);color:#000;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:900;padding:2px 8px;border-radius:20px;letter-spacing:.06em;}
 
-/* ── LIVE DOT ── */
-.live-dot{width:7px;height:7px;border-radius:50%;background:var(--red);display:inline-block;flex-shrink:0;animation:pulse-r 1.2s ease infinite;}
-@keyframes pulse-r{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.3;transform:scale(.7);}}
+/* LIVE DOT */
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--red);display:inline-block;flex-shrink:0;animation:pulse-r 1.2s ease infinite;}
+@keyframes pulse-r{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(244,67,54,.5);}50%{opacity:.5;box-shadow:0 0 0 6px rgba(244,67,54,0);}}
 
-/* ── STANDINGS ── */
-.st-row{display:flex;align-items:center;gap:6px;padding:8px 14px;border-bottom:1px solid var(--border);transition:background .1s;font-size:13px;}
+/* STANDINGS */
+.st-row{display:flex;align-items:center;gap:6px;padding:8px 14px;border-bottom:1px solid var(--border);transition:background .1s;}
 .st-row:last-child{border:none;}
-.st-row:hover{background:var(--cream2);}
-.st-q{width:3px;height:20px;border-radius:2px;background:var(--border);flex-shrink:0;}
+.st-row:hover{background:rgba(255,255,255,.04);}
+.st-q{width:3px;height:20px;border-radius:2px;background:rgba(255,255,255,.1);flex-shrink:0;}
 .st-q.q{background:var(--green);}
-
-/* ── BRACKET CARD ── */
-.bracket-card{
-  background:var(--white);
-  border:1px solid var(--border);
-  border-left:4px solid var(--saff);
-  border-radius:8px;
-  padding:14px;
-  box-shadow:var(--shadow);
-  transition:all .15s;
-}
-.bracket-card:hover{border-left-color:var(--green);box-shadow:var(--shadow2);transform:translateY(-2px);}
-.bracket-card.done{border-left-color:var(--green);}
-.bracket-card.live{border-left-color:var(--red);}
 
 ::-webkit-scrollbar{width:3px;height:3px;}
 ::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px;}
