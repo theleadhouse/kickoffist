@@ -1,19 +1,20 @@
+// VERIFIED July 2 2026 — ESPN + Yahoo + CBS + Sky Sports
 const S=[
-  {n:"Haaland", t:"Norway",      f:"🇳🇴",g:6},
+  {n:"Haaland", t:"Norway",      f:"🇳🇴",g:7},
+  {n:"Mbappe",  t:"France",      f:"🇫🇷",g:6},
   {n:"Messi",   t:"Argentina",   f:"🇦🇷",g:5},
-  {n:"Mbappe",  t:"France",      f:"🇫🇷",g:4},
+  {n:"Kane",    t:"England",     f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",g:4},
   {n:"Sarr",    t:"Senegal",     f:"🇸🇳",g:3},
   {n:"Brobbey", t:"Netherlands", f:"🇳🇱",g:3},
   {n:"Vinicius",t:"Brazil",      f:"🇧🇷",g:3},
   {n:"J. David",t:"Canada",      f:"🇨🇦",g:3},
-  {n:"Kane",    t:"England",     f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",g:2},
   {n:"Ronaldo", t:"Portugal",    f:"🇵🇹",g:2},
-  {n:"Havertz", t:"Germany",     f:"🇩🇪",g:2},
+  {n:"Jimenez", t:"Mexico",      f:"🇲🇽",g:2},
 ];
 export default function TopScorers(){
   return(
     <div>
-      <div className="sh">⚽ GOLDEN BOOT<div className="sh-line"/><span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:700,color:"rgba(255,255,255,.25)"}}>JUN 29</span></div>
+      <div className="sh">⚽ GOLDEN BOOT<div className="sh-line"/><span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:700,color:"rgba(255,255,255,.25)"}}>JUL 2</span></div>
       <div className="card" style={{overflow:"hidden"}}>
         {S.map((s,i)=>(
           <div key={s.n+i} style={{display:"flex",alignItems:"center",gap:"8px",padding:"9px 14px",borderBottom:"1px solid rgba(255,255,255,.04)"}}>
@@ -29,7 +30,9 @@ export default function TopScorers(){
             </div>
           </div>
         ))}
-        <div style={{padding:"6px 14px",borderTop:"1px solid rgba(255,255,255,.05)",fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:700,color:"rgba(255,255,255,.18)",textAlign:"center"}}>🐐 MESSI 18 CAREER WC GOALS · ALL-TIME RECORD</div>
+        <div style={{padding:"6px 14px",borderTop:"1px solid rgba(255,255,255,.05)",fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:700,color:"rgba(255,255,255,.18)",textAlign:"center"}}>
+          Kane 11 goals — England all-time WC record 🏴󠁧󠁢󠁥󠁮󠁧󠁿
+        </div>
       </div>
     </div>
   );
