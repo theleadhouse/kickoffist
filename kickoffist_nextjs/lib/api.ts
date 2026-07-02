@@ -90,7 +90,7 @@ const FIXTURES: {
   {id:100,h:"TBD",a:"TBD",utc:"2026-07-09T20:00:00Z",group:"",stage:"Quarter-Final", venue:"TBD",city:"USA"},
   {id:110,h:"TBD",a:"TBD",utc:"2026-07-14T20:00:00Z",group:"",stage:"Semi-Final",    venue:"TBD",city:"USA"},
     // ══════════ ROUND OF 32 ══════════
-  {id:101,h:"South Africa", a:"Canada",        utc:"2026-06-28T19:00:00Z",group:"R32",stage:"Round of 32",venue:"SoFi Stadium",          city:"Los Angeles, CA",res:[0,1],goals:[{team:"Canada",player:"Eustaquio",minute:91}]},
+  {id:101,h:"South Africa", a:"Canada",        utc:"2026-06-28T19:00:00Z",group:"R32",stage:"Round of 32",venue:"SoFi Stadium",          city:"Los Angeles, CA",goals:[{team:"Canada",player:"Eustaquio",minute:91,res:[0,1],goals:[{team:"Canada",player:"Eustaquio",minute:91}]}]},
   {id:102,h:"Brazil",       a:"Japan",         utc:"2026-06-29T17:00:00Z",group:"R32",stage:"Round of 32",venue:"NRG Stadium",            city:"Houston",res:[2,1],goals:[{team:"Japan",player:"Sano",minute:28},{team:"Brazil",player:"Casemiro",minute:58},{team:"Brazil",player:"Martinelli",minute:92}]},
   {id:103,h:"Germany",      a:"Paraguay",      utc:"2026-06-29T20:30:00Z",group:"R32",stage:"Round of 32",venue:"Gillette Stadium",       city:"Boston",res:[1,1],goals:[{team:"Paraguay",player:"Enciso",minute:38},{team:"Germany",player:"Havertz",minute:67}]},
   {id:104,h:"Netherlands",  a:"Morocco",       utc:"2026-06-30T01:00:00Z",group:"R32",stage:"Round of 32",venue:"Estadio BBVA",           city:"Monterrey, Mexico",res:[1,1],goals:[{team:"Netherlands",player:"Gakpo",minute:88},{team:"Morocco",player:"Diop",minute:94}]},
@@ -106,12 +106,16 @@ const FIXTURES: {
   {id:114,h:"Colombia",     a:"Ghana",     utc:"2026-07-03T22:00:00Z",group:"R32",stage:"Round of 32",venue:"Arrowhead Stadium",           city:"Kansas City"},
   {id:115,h:"Portugal",     a:"Croatia",    utc:"2026-07-02T23:00:00Z",group:"R32",stage:"Round of 32",venue:"BMO Field",      city:"Toronto, Canada"},
   {id:116,h:"Australia",      a:"Egypt",   utc:"2026-07-04T01:30:00Z",group:"R32",stage:"Round of 32",venue:"AT&T Stadium",      city:"Arlington, TX"},
-    // ══════════ ROUND OF 16 ══════════
-  {id:201,h:"Canada",   a:"Morocco",  utc:"2026-07-04T17:00:00Z",group:"R16",stage:"Round of 16",venue:"NRG Stadium",             city:"Houston, TX"},
-  {id:202,h:"Paraguay", a:"France",   utc:"2026-07-04T21:00:00Z",group:"R16",stage:"Round of 16",venue:"Lincoln Financial Field",  city:"Philadelphia, PA"},
-  {id:203,h:"Brazil",   a:"Norway",   utc:"2026-07-05T20:00:00Z",group:"R16",stage:"Round of 16",venue:"MetLife Stadium",          city:"East Rutherford, NJ"},
-  {id:204,h:"Mexico",   a:"England",  utc:"2026-07-06T00:00:00Z",group:"R16",stage:"Round of 16",venue:"Estadio Azteca",           city:"Mexico City"},
-  {id:205,h:"USA",      a:"Belgium",  utc:"2026-07-07T00:00:00Z",group:"R16",stage:"Round of 16",venue:"Lumen Field",              city:"Seattle, WA"},
+  
+  // ══════════ ROUND OF 16 ══════════
+  {id:201,h:"Canada",a:"Morocco",utc:"2026-07-04T17:00:00Z",group:"R16",stage:"Round of 16",venue:"NRG Stadium",city:"Houston, TX"},
+  {id:202,h:"Paraguay",a:"France",utc:"2026-07-04T21:00:00Z",group:"R16",stage:"Round of 16",venue:"Lincoln Financial Field",city:"Philadelphia, PA"},
+  {id:203,h:"Brazil",a:"Norway",utc:"2026-07-05T20:00:00Z",group:"R16",stage:"Round of 16",venue:"MetLife Stadium",city:"East Rutherford, NJ"},
+  {id:204,h:"Mexico",a:"England",utc:"2026-07-06T00:00:00Z",group:"R16",stage:"Round of 16",venue:"Estadio Azteca",city:"Mexico City"},
+  {id:205,h:"TBD",a:"TBD",utc:"2026-07-06T19:00:00Z",group:"R16",stage:"Round of 16",venue:"AT&T Stadium",city:"Arlington, TX"},
+  {id:206,h:"USA",a:"Belgium",utc:"2026-07-07T00:00:00Z",group:"R16",stage:"Round of 16",venue:"Lumen Field",city:"Seattle, WA"},
+  {id:207,h:"TBD",a:"TBD",utc:"2026-07-07T16:00:00Z",group:"R16",stage:"Round of 16",venue:"Mercedes-Benz Stadium",city:"Atlanta, GA"},
+  {id:208,h:"TBD",a:"TBD",utc:"2026-07-07T20:00:00Z",group:"R16",stage:"Round of 16",venue:"BC Place",city:"Vancouver, Canada"},
   {id:120,h:"TBD",a:"TBD",utc:"2026-07-19T19:00:00Z",group:"",stage:"🏆 FINAL",     venue:"MetLife Stadium",city:"East Rutherford, NJ"},
 ];
 
