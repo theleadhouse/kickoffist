@@ -90,7 +90,7 @@ const FIXTURES: {
   {id:100,h:"TBD",a:"TBD",utc:"2026-07-09T20:00:00Z",group:"",stage:"Quarter-Final", venue:"TBD",city:"USA"},
   {id:110,h:"TBD",a:"TBD",utc:"2026-07-14T20:00:00Z",group:"",stage:"Semi-Final",    venue:"TBD",city:"USA"},
     // ══════════ ROUND OF 32 ══════════
-  {id:101,h:"South Africa", a:"Canada",        utc:"2026-06-28T19:00:00Z",group:"R32",stage:"Round of 32",venue:"SoFi Stadium",          city:"Los Angeles, CA",goals:[{team:"Canada",player:"Eustaquio",minute:91,res:[0,1],goals:[{team:"Canada",player:"Eustaquio",minute:91}]}]},
+  {id:101,h:"South Africa", a:"Canada",        utc:"2026-06-28T19:00:00Z",group:"R32",stage:"Round of 32",venue:"SoFi Stadium",          city:"Los Angeles, CA",res:[0,1],goals:[{team:"Canada",player:"Eustaquio",minute:91}]},
   {id:102,h:"Brazil",       a:"Japan",         utc:"2026-06-29T17:00:00Z",group:"R32",stage:"Round of 32",venue:"NRG Stadium",            city:"Houston",res:[2,1],goals:[{team:"Japan",player:"Sano",minute:28},{team:"Brazil",player:"Casemiro",minute:58},{team:"Brazil",player:"Martinelli",minute:92}]},
   {id:103,h:"Germany",      a:"Paraguay",      utc:"2026-06-29T20:30:00Z",group:"R32",stage:"Round of 32",venue:"Gillette Stadium",       city:"Boston",res:[1,1],goals:[{team:"Paraguay",player:"Enciso",minute:38},{team:"Germany",player:"Havertz",minute:67}]},
   {id:104,h:"Netherlands",  a:"Morocco",       utc:"2026-06-30T01:00:00Z",group:"R32",stage:"Round of 32",venue:"Estadio BBVA",           city:"Monterrey, Mexico",res:[1,1],goals:[{team:"Netherlands",player:"Gakpo",minute:88},{team:"Morocco",player:"Diop",minute:94}]},
