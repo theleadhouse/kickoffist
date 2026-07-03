@@ -14,7 +14,7 @@ export default function MiniStandings(){
       <div className="card" style={{overflow:"hidden"}}>
         {G.map(({id,t},gi)=>(
           <div key={id} style={{borderTop:gi>0?"1px solid rgba(255,255,255,.05)":"none"}}>
-            <div style={{padding:"5px 14px",background:"rgba(255,153,51,.06)",display:"flex",justifyContent:"space-between"}}>
+            <div style={{padding:"4px 14px",background:"rgba(255,153,51,.05)",display:"flex",justifyContent:"space-between"}}>
               <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"#FF9933",letterSpacing:".12em"}}>GROUP {id}</span>
               <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:700,color:"rgba(255,255,255,.2)"}}>MP PTS</span>
             </div>
@@ -22,8 +22,8 @@ export default function MiniStandings(){
               <div key={tm.n} className="st-row">
                 <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:700,color:"rgba(255,255,255,.25)",width:"14px",textAlign:"center"}}>{i+1}</span>
                 <span className={`st-q ${tm.q?"q":""}`}/>
-                <span style={{fontSize:"16px",width:"20px",textAlign:"center",lineHeight:1}}>{tm.f}</span>
-                <span style={{flex:1,fontFamily:"'Barlow Condensed',sans-serif",fontSize:"13px",fontWeight:tm.q?700:500,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:tm.q?"rgba(255,255,255,.9)":"rgba(255,255,255,.35)"}}>{tm.n}{tm.q?" ✓":""}</span>
+                <span style={{fontSize:"15px",width:"19px",textAlign:"center",lineHeight:1}}>{tm.f}</span>
+                <span style={{flex:1,fontFamily:"'Barlow Condensed',sans-serif",fontSize:"13px",fontWeight:tm.q?700:500,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:tm.q?"rgba(255,255,255,.9)":"rgba(255,255,255,.3)"}}>{tm.n}{tm.q?" ✓":""}</span>
                 <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:600,color:"rgba(255,255,255,.25)",width:"16px",textAlign:"center"}}>{tm.p}</span>
                 <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"15px",letterSpacing:"1px",width:"22px",textAlign:"center",color:tm.pts>0?"#FF9933":"rgba(255,255,255,.2)"}}>{tm.pts}</span>
               </div>
@@ -31,8 +31,8 @@ export default function MiniStandings(){
           </div>
         ))}
         <div style={{padding:"5px 14px",borderTop:"1px solid rgba(255,255,255,.05)",display:"flex",alignItems:"center",gap:"5px"}}>
-          <span style={{width:"6px",height:"6px",borderRadius:"2px",background:"#00c853"}}/>
-          <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:700,color:"rgba(255,255,255,.2)"}}>✓ QUALIFIED · R32 UNDERWAY</span>
+          <span style={{width:"6px",height:"6px",borderRadius:"2px",background:"#00A651"}}/>
+          <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:700,color:"rgba(255,255,255,.2)"}}>✓ QUALIFIED · R32 COMPLETE JUL 3</span>
         </div>
       </div>
     </div>
