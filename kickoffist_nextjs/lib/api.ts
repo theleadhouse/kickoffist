@@ -103,20 +103,29 @@ const FIXTURES: {
   {id:110,h:"USA",          a:"Bosnia & Herz.",        utc:"2026-07-02T00:00:00Z",group:"R32",stage:"Round of 32",venue:"Levi's Stadium",        city:"Santa Clara, CA",res:[2,0],goals:[{team:"USA",player:"Balogun",minute:44},{team:"USA",player:"Tillman",minute:81}]},
   {id:111,h:"Spain",        a:"Austria",    utc:"2026-07-02T19:00:00Z",group:"R32",stage:"Round of 32",venue:"SoFi Stadium",      city:"Inglewood, CA",res:[3,0],goals:[{team:"Spain",player:"Oyarzabal",minute:34},{team:"Spain",player:"Porro",minute:67},{team:"Spain",player:"Oyarzabal",minute:88}]},
   {id:112,h:"Switzerland",  a:"Algeria",       utc:"2026-07-03T03:00:00Z",group:"R32",stage:"Round of 32",venue:"BC Place",              city:"Vancouver, Canada",res:[2,0],goals:[{team:"Switzerland",player:"Embolo",minute:10},{team:"Switzerland",player:"Ndoye",minute:46}]},
-  {id:113,h:"Argentina",    a:"Cabo Verde",         utc:"2026-07-03T18:00:00Z",group:"R32",stage:"Round of 32",venue:"Hard Rock Stadium",      city:"Miami"},
-  {id:114,h:"Colombia",     a:"Ghana",     utc:"2026-07-03T22:00:00Z",group:"R32",stage:"Round of 32",venue:"Arrowhead Stadium",           city:"Kansas City"},
+  {id:113,h:"Argentina",    a:"Cabo Verde",         utc:"2026-07-03T18:00:00Z",group:"R32",stage:"Round of 32",venue:"Hard Rock Stadium",      city:"Miami",res:[3,2],goals:[{team:"Argentina",player:"Messi",minute:34},{team:"Cabo Verde",player:"Lopes Cabral",minute:67},{team:"Argentina",player:"Lautaro",minute:88},{team:"Cabo Verde",player:"Andrade",minute:94},{team:"Argentina",player:"L.Martinez",minute:112}]},
+  {id:114,h:"Colombia",     a:"Ghana",     utc:"2026-07-03T22:00:00Z",group:"R32",stage:"Round of 32",venue:"Arrowhead Stadium",           city:"Kansas City",res:[1,0],goals:[{team:"Colombia",player:"Diaz",minute:71}]},
   {id:115,h:"Portugal",     a:"Croatia",    utc:"2026-07-02T23:00:00Z",group:"R32",stage:"Round of 32",venue:"BMO Field",      city:"Toronto, Canada",res:[2,1],goals:[{team:"Croatia",player:"Perisic",minute:54},{team:"Portugal",player:"Ronaldo",minute:71},{team:"Portugal",player:"G.Ramos",minute:94}]},
-  {id:116,h:"Australia",      a:"Egypt",   utc:"2026-07-04T01:30:00Z",group:"R32",stage:"Round of 32",venue:"AT&T Stadium",      city:"Arlington, TX"},
+  {id:116,h:"Australia",      a:"Egypt",   utc:"2026-07-04T01:30:00Z",group:"R32",stage:"Round of 32",venue:"AT&T Stadium",      city:"Arlington, TX",res:[1,1],goals:[{team:"Australia",player:"Irankunda",minute:23},{team:"Egypt",player:"Salah",minute:78}]},
   
   // ══════════ ROUND OF 16 ══════════
-  {id:201,h:"Canada",a:"Morocco",utc:"2026-07-04T17:00:00Z",group:"R16",stage:"Round of 16",venue:"NRG Stadium",city:"Houston, TX"},
-  {id:202,h:"Paraguay",a:"France",utc:"2026-07-04T21:00:00Z",group:"R16",stage:"Round of 16",venue:"Lincoln Financial Field",city:"Philadelphia, PA"},
-  {id:203,h:"Brazil",a:"Norway",utc:"2026-07-05T20:00:00Z",group:"R16",stage:"Round of 16",venue:"MetLife Stadium",city:"East Rutherford, NJ"},
-  {id:204,h:"Mexico",a:"England",utc:"2026-07-06T00:00:00Z",group:"R16",stage:"Round of 16",venue:"Estadio Azteca",city:"Mexico City"},
-  {id:205,h:"Spain",a:"Portugal",utc:"2026-07-06T19:00:00Z",group:"R16",stage:"Round of 16",venue:"AT&T Stadium",city:"Arlington, TX"},
-  {id:206,h:"USA",a:"Belgium",utc:"2026-07-07T00:00:00Z",group:"R16",stage:"Round of 16",venue:"Lumen Field",city:"Seattle, WA"},
-  {id:207,h:"TBD",a:"TBD",utc:"2026-07-07T16:00:00Z",group:"R16",stage:"Round of 16",venue:"Mercedes-Benz Stadium",city:"Atlanta, GA"},
-  {id:208,h:"TBD",a:"TBD",utc:"2026-07-07T20:00:00Z",group:"R16",stage:"Round of 16",venue:"BC Place",city:"Vancouver, Canada"},
+  {id:201,h:"Canada",a:"Morocco",utc:"2026-07-04T17:00:00Z",group:"R16",stage:"Round of 16",venue:"NRG Stadium",city:"Houston, TX",res:[0,3],goals:[{team:"Morocco",player:"Ounahi",minute:18},{team:"Morocco",player:"Ziyech",minute:44},{team:"Morocco",player:"En-Nesyri",minute:87}]},
+  {id:202,h:"Paraguay",a:"France",utc:"2026-07-04T21:00:00Z",group:"R16",stage:"Round of 16",venue:"Lincoln Financial Field",city:"Philadelphia, PA",res:[0,1],goals:[{team:"France",player:"Mbappe",minute:34}]},
+  {id:203,h:"Brazil",a:"Norway",utc:"2026-07-05T20:00:00Z",group:"R16",stage:"Round of 16",venue:"MetLife Stadium",city:"East Rutherford, NJ",res:[1,2],goals:[{team:"Norway",player:"Haaland",minute:28},{team:"Brazil",player:"Vinicius",minute:55},{team:"Norway",player:"Haaland",minute:78}]},
+  {id:204,h:"Mexico",a:"England",utc:"2026-07-06T00:00:00Z",group:"R16",stage:"Round of 16",venue:"Estadio Azteca",city:"Mexico City",res:[2,3],goals:[{team:"Mexico",player:"Jimenez",minute:12},{team:"England",player:"Kane",minute:44},{team:"England",player:"Bellingham",minute:67},{team:"Mexico",player:"Lozano",minute:79},{team:"England",player:"Saka",minute:88}]},
+  {id:205,h:"Spain",a:"Portugal",utc:"2026-07-06T19:00:00Z",group:"R16",stage:"Round of 16",venue:"AT&T Stadium",city:"Arlington, TX",res:[1,0],goals:[{team:"Spain",player:"Merino",minute:91}]},
+  {id:206,h:"USA",a:"Belgium",utc:"2026-07-07T00:00:00Z",group:"R16",stage:"Round of 16",venue:"Lumen Field",city:"Seattle, WA",res:[1,4],goals:[{team:"Belgium",player:"De Ketelaere",minute:9},{team:"USA",player:"Tillman",minute:31},{team:"Belgium",player:"De Ketelaere",minute:57},{team:"Belgium",player:"Vanaken",minute:71},{team:"Belgium",player:"Lukebakio",minute:84}]},
+  {id:207,h:"Argentina",a:"Egypt",utc:"2026-07-07T16:00:00Z",group:"R16",stage:"Round of 16",venue:"Mercedes-Benz Stadium",city:"Atlanta, GA"},
+  {id:208,h:"Switzerland",a:"Colombia",utc:"2026-07-07T20:00:00Z",group:"R16",stage:"Round of 16",venue:"BC Place",city:"Vancouver, Canada"},
+  
+  // ══════════ QUARTER-FINALS ══════════
+  {id:301,h:"France",    a:"Morocco",   utc:"2026-07-09T20:00:00Z",group:"QF",stage:"Quarter-Final",venue:"Gillette Stadium",    city:"Foxborough, MA"},
+  {id:302,h:"Spain",     a:"Belgium",   utc:"2026-07-10T19:00:00Z",group:"QF",stage:"Quarter-Final",venue:"SoFi Stadium",         city:"Inglewood, CA"},
+  {id:303,h:"Norway",    a:"England",   utc:"2026-07-11T21:00:00Z",group:"QF",stage:"Quarter-Final",venue:"Hard Rock Stadium",     city:"Miami Gardens, FL"},
+  {id:304,h:"TBD",       a:"TBD",       utc:"2026-07-12T01:00:00Z",group:"QF",stage:"Quarter-Final",venue:"Arrowhead Stadium",    city:"Kansas City, MO"},
+  // ══════════ SEMI-FINALS ══════════  
+  {id:401,h:"TBD",a:"TBD",utc:"2026-07-14T19:00:00Z",group:"SF",stage:"Semi-Final",venue:"AT&T Stadium",         city:"Arlington, TX"},
+  {id:402,h:"TBD",a:"TBD",utc:"2026-07-15T19:00:00Z",group:"SF",stage:"Semi-Final",venue:"Mercedes-Benz Stadium",city:"Atlanta, GA"},
   {id:120,h:"TBD",a:"TBD",utc:"2026-07-19T19:00:00Z",group:"",stage:"🏆 FINAL",     venue:"MetLife Stadium",city:"East Rutherford, NJ"},
 ];
 
