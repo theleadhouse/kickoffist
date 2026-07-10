@@ -1,298 +1,275 @@
-import { getStaticWCMatches, getStaticTodayMatches, getStaticTomorrowMatches, getLiveMatches } from "@/lib/api";
-import PortalMatchCard from "@/components/PortalMatchCard";
-import HeroMatch from "@/components/HeroMatch";
-import LiveSection from "@/components/LiveSection";
-import MiniStandings from "@/components/MiniStandings";
-import TopScorers from "@/components/TopScorers";
-import Link from "next/link";
+"use client";
+import { useEffect, useState } from "react";
 
-export const revalidate = 0;
+function ISTClock(){
+  const [t,setT]=useState("--:--:--");
+  useEffect(()=>{
+    const tick=()=>{
+      const ist=new Date(new Date().toLocaleString("en-US",{timeZone:"Asia/Kolkata"}));
+      setT(`${String(ist.getHours()).padStart(2,"0")}:${String(ist.getMinutes()).padStart(2,"0")}:${String(ist.getSeconds()).padStart(2,"0")}`);
+    };
+    tick(); const id=setInterval(tick,1000); return()=>clearInterval(id);
+  },[]);
+  return <>{t}</>;
+}
 
-// Match previews - real form, real facts, no betting language
-const PREVIEWS: Record<number,{
-  headline: string;
-  homeForm: string;
-  awayForm: string;
-  context: string;
-  keyBattle: string;
-  oneToWatch: {team:string;name:string;note:string};
-  prediction: string;
-}> = {
-  // QF matches
-  301:{
-    headline:"France vs Morocco — The Atlas Lions seek revenge on Deschamps' side",
-    homeForm:"France: Beat Paraguay 1-0, Sweden 3-0, Ivory Coast 2-1. Mbappe with 7 goals. Deschamps' system finally clicking.",
-    awayForm:"Morocco: Stunning 3-0 win vs Canada R16. Ounahi, Ziyech, En-Nesyri all scoring. Best African team in WC history.",
-    context:"Morocco are the first African nation to reach a WC Quarter-Final since 2022. They knocked out Netherlands in R32. France have won all 4 knockout games since 2018 Final defeat.",
-    keyBattle:"Ounahi vs Rabiot in central midfield — the engine rooms of both sides battle for control.",
-    oneToWatch:{team:"Morocco",name:"Azzedine Ounahi",note:"The most underrated player at this WC. Scored vs Canada, links everything for Morocco."},
-    prediction:"France narrow favourites based on squad depth, but Morocco have defied every prediction. Expect a tight game.",
+const FLAGS:Record<string,string>={France:"fr",Morocco:"ma",Spain:"es",Belgium:"be",Norway:"no",England:"gb-eng",Argentina:"ar",Switzerland:"ch"};
+const F=(n:string)=>`https://flagcdn.com/80x60/${FLAGS[n]||"un"}.png`;
+
+const QF_UP=[
+  {home:"Spain",away:"Belgium",date:"FRI 11 JUL",ist:"12:30 AM IST",venue:"SoFi Stadium · Los Angeles",
+   gcal:"https://calendar.google.com/calendar/render?action=TEMPLATE&text=⚽+Spain+vs+Belgium+QF+WC2026&dates=20260710T190000Z/20260710T210000Z",
+   wa:"⚽ 🇪🇸 Spain vs Belgium 🇧🇪\n🏆 WC 2026 Quarter-Final\n📅 Fri 11 Jul · 12:30 AM IST\n📺 Zee5 India → kickoffist.com 🇮🇳",
+   headline:"Spain's perfect record vs Belgium's fire — something has to give",
+   lead:"Spain have not conceded a SINGLE goal in 6 matches. Belgium destroyed USA 4-1. Lamine Yamal, 18, vs De Bruyne in his last great tournament. One of the most mouth-watering QFs in recent memory.",
+   homeForm:"0 goals conceded all tournament. Beat Portugal 1-0 in stoppage time. Merino the late hero.",
+   awayForm:"4-1 vs USA. De Ketelaere 3 goals in 2 games. De Bruyne finally playing his best football.",
+   battle:"Pedri vs De Bruyne — midfield masterclass decides everything",
+   starFlag:"🇪🇸",starName:"Lamine Yamal",starNote:"18 years old. The most exciting player at this World Cup. Every defender in this tournament has feared him. If Yamal fires, Spain reach the semis.",
+   read:"Spain are favourites — their defensive record is extraordinary. But Belgium have the quality to hurt anyone, and De Bruyne is playing like a man with something to prove. I think Spain win 1-0. But watch Belgium to push them all the way.",
   },
-  302:{
-    headline:"Spain vs Belgium — The tournament favourites against Europe's most dangerous attack",
-    homeForm:"Spain: Beat Austria 3-0, Portugal 1-0 (Merino 90+1'). Yamal and Oyarzabal in form. Most clinical team left.",
-    awayForm:"Belgium: Demolished USA 4-1. De Ketelaere with 3 goals. De Bruyne finally finding his best form of the tournament.",
-    context:"Spain have the best defensive record in the tournament — conceded just 1 goal. Belgium's De Bruyne is arguably the best player still standing.",
-    keyBattle:"Pedri vs De Bruyne — two of Europe's best midfielders in a generational clash.",
-    oneToWatch:{team:"Spain",name:"Lamine Yamal",note:"18 years old. Already the best young player in the world. Spain's creative spark and the player every defender fears."},
-    prediction:"Spain are slight favourites — their defensive organisation has been exceptional. But Belgium have the firepower to hurt anyone.",
+  {home:"Norway",away:"England",date:"SAT 12 JUL",ist:"2:30 AM IST",venue:"Hard Rock Stadium · Miami",
+   gcal:"https://calendar.google.com/calendar/render?action=TEMPLATE&text=⚽+Norway+vs+England+QF+WC2026&dates=20260711T210000Z/20260711T230000Z",
+   wa:"⚽ 🇳🇴 Norway vs England 🏴󠁧󠁢󠁥󠁮󠁧󠁿\n🏆 WC 2026 Quarter-Final\n📅 Sat 12 Jul · 2:30 AM IST\n📺 Zee5 India → kickoffist.com 🇮🇳",
+   headline:"Haaland vs Kane — the Golden Boot battle becomes a World Cup QF in Miami",
+   lead:"Erling Haaland has 9 goals and ELIMINATED BRAZIL. Harry Kane has 6 and ended Mexico's perfect home tournament. Two of the greatest strikers alive. One ticket to the semi-finals. This is the match of the tournament.",
+   homeForm:"Shocked Brazil 2-1 in R16. Haaland scored twice in the second half. Norway's FIRST EVER World Cup QF.",
+   awayForm:"3-2 thriller in Mexico City. England's best ever win on foreign soil. Kane brace, Bellingham the match-winner.",
+   battle:"Haaland vs Guehi/Konsa — can England stop the most unstoppable striker in world football right now?",
+   starFlag:"🇳🇴",starName:"Erling Haaland — 9 Goals",starNote:"He watched Mbappe's penalty attempt on Snapchat and commented on it. Then he eliminated BRAZIL. He's 6'4, 94kg, runs at 37km/h. England have a massive problem tonight.",
+   read:"My heart says England. My brain says Norway. Haaland eliminated Brazil — if he can do that, he can do anything. But England showed genuine belief vs Mexico and Bellingham is playing the football of his life. This is 50-50. SET YOUR ALARM — worth staying up for.",
   },
-  303:{
-    headline:"Norway vs England — Haaland's machine vs England's Three Lions dream",
-    homeForm:"Norway: SHOCK 2-1 win over Brazil. Haaland now with 9 goals — golden boot runaway leader. Odegaard controlling midfield.",
-    awayForm:"England: Dramatic 3-2 win in Mexico City. Kane 6 goals, Bellingham match-winner. Tuchel's side improving every game.",
-    context:"The biggest shock of the tournament — Norway eliminated Brazil. England's best win on foreign soil in their history in Mexico City. Two sides in brilliant form.",
-    keyBattle:"Haaland vs Guehi/Konsa — England's centre-backs must contain the most unstoppable striker on the planet right now.",
-    oneToWatch:{team:"Norway",name:"Erling Haaland",note:"9 WC goals. A record-breaking pace. If Norway are to reach the semi-final, it goes through him."},
-    prediction:"The most unpredictable QF. Norway have momentum and Haaland. England have experience and depth. Could go either way.",
+  {home:"Argentina",away:"Switzerland",date:"SAT 12 JUL",ist:"6:30 AM IST",venue:"Arrowhead Stadium · Kansas City",
+   gcal:"https://calendar.google.com/calendar/render?action=TEMPLATE&text=⚽+Argentina+vs+Switzerland+QF+WC2026&dates=20260712T010000Z/20260712T030000Z",
+   wa:"⚽ 🇦🇷 Argentina vs Switzerland 🇨🇭\n🏆 WC 2026 Quarter-Final\n📅 Sat 12 Jul · 6:30 AM IST\n📺 Zee5 India → kickoffist.com 🇮🇳",
+   headline:"Messi's last chapter — Argentina's luck running out or one more miracle?",
+   lead:"Argentina were 0-2 down to Egypt and came back to win 3-2. Messi has 8 goals and 19 career WC goals — an all-time record that may never be broken. But they look fragile. Switzerland beat Colombia on penalties, are organised, and are dangerous. This is where the magic ends — or continues.",
+   homeForm:"Survived Egypt scare 3-2. 0-2 down → Messi brace + Romero. Incredible comeback spirit but defensive questions remain.",
+   awayForm:"Beat Colombia 0-0 on pens (4-3). Xhaka captain and leader. Most underrated team left in the tournament.",
+   battle:"Messi vs Xhaka/Freuler — can the Swiss midfield cage the greatest player of all time?",
+   starFlag:"🇦🇷",starName:"Lionel Messi — 8 Goals · 19 Career WC Goals",starNote:"All-time WC goalscorer record. 38 years old. Every touch in Kansas City could be his last at a World Cup. Watch carefully. You are watching the greatest to ever play the game.",
+   read:"Switzerland are the most underrated team left. Nobody talks about them — but they beat Colombia and Xhaka is playing the tournament of his life. Argentina have Messi and that comeback spirit but they look fragile. I think extra time. I think Messi finds one more moment. That's just who he is.",
   },
-  304:{
-    headline:"Argentina vs Egypt / Switzerland vs Colombia — Last QF spot up for grabs",
-    homeForm:"Argentina: Survived Cape Verde scare (3-2 AET). Messi 5 goals but showing age. Lautaro and L.Martinez stepped up.",
-    awayForm:"Switzerland: Beat Algeria 2-0 in R32. Xhaka the leader. Compact, organised, dangerous on the counter.",
-    context:"Argentina are defending champions but have struggled. Egypt beat Australia on penalties. Switzerland beat Algeria. Colombia beat Ghana 1-0 through Luis Diaz.",
-    keyBattle:"Messi vs Xhaka/Freuler — if Argentina face Switzerland. Or Salah vs Diaz in an alternative dream matchup.",
-    oneToWatch:{team:"Argentina",name:"Lionel Messi",note:"The greatest of all time playing his final World Cup. 19 career WC goals. Every touch could be his last on this stage."},
-    prediction:"Argentina favourites if they come through. Switzerland or Colombia would be a massive upset.",
-  },
-};
+];
 
-export default async function TodayPage() {
-  const [today, tomorrow, all, live] = await Promise.all([
-    getStaticTodayMatches(), getStaticTomorrowMatches(),
-    getStaticWCMatches(), getLiveMatches(),
-  ]);
+const R16=[
+  {h:"🇲🇦 Morocco",a:"Canada 🇨🇦",s:"3–0",n:"Ounahi ×2 · En-Nesyri",d:"Sat 4 Jul · 10:30 PM IST"},
+  {h:"🇫🇷 France",a:"Paraguay 🇵🇾",s:"1–0",n:"Mbappé pen 34'",d:"Sun 5 Jul · 2:30 AM IST"},
+  {h:"🇳🇴 Norway",a:"Brazil 🇧🇷",s:"2–1",n:"Haaland ×2 — BIGGEST UPSET 2026",d:"Mon 6 Jul · 1:30 AM IST"},
+  {h:"🇲🇽 Mexico",a:"England 🏴󠁧󠁢󠁥󠁮󠁧󠁿",s:"2–3",n:"Kane · Bellingham · Saka",d:"Mon 6 Jul · 5:30 AM IST"},
+  {h:"🇵🇹 Portugal",a:"Spain 🇪🇸",s:"0–1",n:"Merino 90+1' — Ronaldo's last WC",d:"Tue 7 Jul · 12:30 AM IST"},
+  {h:"🇺🇸 USA",a:"Belgium 🇧🇪",s:"1–4",n:"De Ketelaere ×2 · Vanaken · Lukebakio",d:"Tue 7 Jul · 5:30 AM IST"},
+  {h:"🇦🇷 Argentina",a:"Egypt 🇪🇬",s:"3–2",n:"0-2 down → Messi brace — comeback of the tournament",d:"Tue 7 Jul · 9:30 PM IST"},
+  {h:"🇨🇭 Switzerland",a:"Colombia 🇨🇴",s:"0–0",n:"SUI win 4-3 on pens — Xhaka the hero",d:"Wed 8 Jul · 1:30 AM IST"},
+];
 
-  const played = all.filter(m=>m.status==="FINISHED").length;
-  const todayUp = today.filter(m=>m.status==="UPCOMING"&&m.homeTeam.name!=="TBD");
-  const heroMatch = live[0]||todayUp[0]||null;
-  const otherToday = todayUp.filter(m=>m.id!==heroMatch?.id);
+const BOOT=[
+  {f:"🇫🇷",n:"Mbappé",t:"France · SF",g:8},
+  {f:"🇦🇷",n:"Messi",t:"Argentina · QF",g:8},
+  {f:"🇳🇴",n:"Haaland",t:"Norway · QF",g:9},
+  {f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",n:"Kane",t:"England · QF",g:6},
+  {f:"🇫🇷",n:"Dembélé",t:"France · SF",g:4},
+  {f:"🇲🇦",n:"En-Nesyri",t:"Morocco · OUT",g:4},
+];
 
-  const r16Done = all.filter(m=>m.group==="R16"&&m.status==="FINISHED");
-  const r16Up = all.filter(m=>m.group==="R16"&&m.status==="UPCOMING"&&m.homeTeam.name!=="TBD")
-    .sort((a,b)=>new Date(a.utcDate).getTime()-new Date(b.utcDate).getTime());
-  const qfAll = all.filter(m=>m.group==="QF"&&m.homeTeam.name!=="TBD")
-    .sort((a,b)=>new Date(a.utcDate).getTime()-new Date(b.utcDate).getTime());
-  const qfUp = qfAll.filter(m=>m.status==="UPCOMING");
-  const qfDone = qfAll.filter(m=>m.status==="FINISHED");
+const s=(obj:Record<string,string>)=>({...obj});
+const C=(x:string)=>{const o:Record<string,string>={};return o;};
 
-  const istNow = new Date(Date.now()+5.5*3600000);
-  const isMorning = istNow.getUTCHours()>=5&&istNow.getUTCHours()<12;
-  const yesterday = new Date(Date.now()+5.5*3600000-86400000).toISOString().slice(0,10);
-  const overnight = all.filter(m=>m.status==="FINISHED"&&m.istDate===yesterday)
-    .sort((a,b)=>new Date(b.utcDate).getTime()-new Date(a.utcDate).getTime()).slice(0,3);
-  const dateStr = istNow.toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long",timeZone:"UTC"});
-
-  const FLAGS:Record<string,string>={
-    "Argentina":"ar","Brazil":"br","France":"fr","England":"gb-eng","Germany":"de",
-    "Spain":"es","Portugal":"pt","Netherlands":"nl","Norway":"no","USA":"us",
-    "Morocco":"ma","Colombia":"co","Belgium":"be","Switzerland":"ch",
-    "Egypt":"eg","Mexico":"mx",
-  };
-
+export default function Page(){
   return(
-    <div>
-      {/* MASTHEAD */}
-      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 0 12px",borderBottom:"1px solid rgba(255,153,51,.12)",marginBottom:"14px",flexWrap:"wrap",gap:"8px"}}>
-        <div>
-          <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"clamp(11px,2.5vw,13px)",letterSpacing:"4px",color:"rgba(255,153,51,.6)",marginBottom:"2px"}}>
-            {qfUp.length>0?"QUARTER-FINALS":"ROUND OF 16"} · FIFA WORLD CUP 2026
-          </div>
-          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",fontWeight:600,color:"rgba(255,255,255,.35)",letterSpacing:".04em"}}>{dateStr} · IST 🇮🇳</div>
-        </div>
-        <div style={{display:"flex",gap:"14px"}}>
-          {[{n:`${r16Done.length}/8`,l:"R16 DONE"},{n:`${played}`,l:"PLAYED"},{n:`${104-played}`,l:"LEFT"}].map((s,i)=>(
-            <div key={i} style={{textAlign:"center"}}>
-              <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"21px",letterSpacing:"1px",color:"#FF9933",lineHeight:1}}>{s.n}</div>
-              <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"8px",fontWeight:700,color:"rgba(255,255,255,.3)",letterSpacing:".1em"}}>{s.l}</div>
+    <div style={{background:"#050A14",minHeight:"100vh",color:"#E2E8F0"}}>
+
+      {/* HERO */}
+      <div style={{padding:"clamp(28px,5vw,48px) 16px",textAlign:"center",borderBottom:"1px solid rgba(255,153,51,.15)",background:"radial-gradient(ellipse 80% 50% at 50% 0%,rgba(255,153,51,.07),transparent 70%)"}}>
+        <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",fontWeight:800,color:"rgba(255,153,51,.6)",letterSpacing:".2em",marginBottom:"8px"}}>🏆 FIFA WORLD CUP 2026</div>
+        <h1 style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"clamp(36px,8vw,72px)",letterSpacing:"4px",color:"#fff",lineHeight:1,marginBottom:"10px"}}>QUARTER-FINALS <span style={{color:"#FF9933"}}>IST</span></h1>
+        <p style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"15px",fontWeight:600,color:"rgba(255,255,255,.45)",marginBottom:"20px"}}>India's Guide · All times IST 🇮🇳 · Powered by kickoffist.com</p>
+        <div style={{display:"flex",justifyContent:"center",gap:"clamp(16px,4vw,32px)",flexWrap:"wrap"}}>
+          {[["France 2–0","QF1 DONE"],["3 QFs","REMAINING"],["Jul 20","FINAL · NY/NJ"]].map(([n,l])=>(
+            <div key={l} style={{textAlign:"center"}}>
+              <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"clamp(22px,4vw,34px)",letterSpacing:"2px",color:"#FF9933",lineHeight:1}}>{n}</div>
+              <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:700,color:"rgba(255,255,255,.3)",letterSpacing:".12em"}}>{l}</div>
             </div>
           ))}
         </div>
       </div>
 
-      {live.length>0&&<LiveSection initialMatches={live}/>}
+      <div style={{maxWidth:"760px",margin:"0 auto",padding:"20px 14px 100px"}}>
 
-      {/* HERO */}
-      {heroMatch
-        ?<HeroMatch match={heroMatch} played={played} total={104}/>
-        :<div style={{background:"linear-gradient(150deg,#0d1f10 0%,#0a1a0c 50%,#080f09 100%)",borderRadius:"16px",padding:"32px 20px",textAlign:"center",marginBottom:"16px",border:"1px solid rgba(0,166,81,.2)"}}>
-          <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"clamp(22px,4vw,36px)",letterSpacing:"4px",color:"#fff",marginBottom:"6px"}}>🏆 FIFA WORLD CUP 2026</div>
-          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"13px",color:"rgba(255,255,255,.4)",marginBottom:"16px"}}>Quarter-Finals begin July 9 · {played} matches played</div>
-          <div style={{display:"flex",gap:"8px",justifyContent:"center",flexWrap:"wrap"}}>
-            <Link href="/results" style={{background:"#FF9933",color:"#000",fontFamily:"'Barlow Condensed',sans-serif",fontSize:"13px",fontWeight:800,padding:"10px 20px",borderRadius:"8px",textDecoration:"none",letterSpacing:".08em"}}>ALL RESULTS →</Link>
-            <Link href="/world-cup" style={{background:"rgba(255,255,255,.08)",color:"#fff",fontFamily:"'Barlow Condensed',sans-serif",fontSize:"13px",fontWeight:800,padding:"10px 20px",borderRadius:"8px",textDecoration:"none",letterSpacing:".08em",border:"1px solid rgba(255,255,255,.12)"}}>BRACKET →</Link>
+        {/* QF1 DONE */}
+        <SH color="#00D26A" title="✅ QF RESULT — FRANCE 2–0 MOROCCO" tag="FULL TIME" tagColor="rgba(0,210,106,.1)" tagBorder="rgba(0,210,106,.2)" tagText="#00D26A"/>
+        <div style={{background:"rgba(0,210,106,.04)",border:"1px solid rgba(0,210,106,.15)",borderRadius:"14px",overflow:"hidden",marginBottom:"20px"}}>
+          <div style={{background:"rgba(0,0,0,.4)",padding:"8px 16px",display:"flex",justifyContent:"space-between",borderBottom:"1px solid rgba(255,255,255,.06)"}}>
+            <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"#00D26A",letterSpacing:".08em"}}>⚽ QUARTER-FINAL 1 · FULL TIME</span>
+            <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:700,color:"rgba(255,255,255,.3)"}}>Thu 10 Jul · 1:30 AM IST</span>
           </div>
-        </div>
-      }
-
-      <div style={{display:"grid",gap:"20px"}} className="lg:grid-cols-[1fr_280px]">
-        <div>
-
-          {/* OVERNIGHT RESULTS */}
-          {isMorning&&overnight.length>0&&(
-            <div style={{marginBottom:"18px",background:"rgba(255,153,51,.04)",border:"1px solid rgba(255,153,51,.12)",borderRadius:"12px",overflow:"hidden"}}>
-              <div style={{padding:"10px 14px",background:"rgba(255,153,51,.08)",borderBottom:"1px solid rgba(255,153,51,.1)"}}><div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"15px",letterSpacing:"3px",color:"#FF9933"}}>☀️ OVERNIGHT RESULTS</div></div>
-              <div style={{padding:"12px"}}>{overnight.map(m=><PortalMatchCard key={m.id} match={m}/>)}</div>
-            </div>
-          )}
-
-          {/* TODAY UPCOMING */}
-          {otherToday.length>0&&(
-            <div style={{marginBottom:"18px"}}>
-              <div className="sh">⚡ MORE TODAY<span className="badge-up">{otherToday.length}</span><div className="sh-line"/></div>
-              {otherToday.map(m=><PortalMatchCard key={m.id} match={m}/>)}
-            </div>
-          )}
-
-          {/* R16 UPCOMING WITH PREVIEWS */}
-          {r16Up.length>0&&(
-            <div style={{marginBottom:"22px"}}>
-              <div className="sh">
-                <span className="badge-r16" style={{fontSize:"12px",padding:"2px 10px"}}>R16</span>
-                UPCOMING MATCHES
-                <div className="sh-line"/>
-                <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:700,color:"rgba(99,102,241,.7)",flexShrink:0}}>{r16Done.length}/8 DONE</span>
-              </div>
-              {r16Up.map(m=>(
-                <div key={m.id} style={{marginBottom:"12px"}}>
-                  <PortalMatchCard match={m} showDate/>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* QF MATCHES WITH DEEP PREVIEWS */}
-          {qfUp.length>0&&(
-            <div style={{marginBottom:"22px"}}>
-              <div className="sh">
-                <span style={{background:"#FF9933",color:"#000",fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,padding:"2px 10px",borderRadius:"20px",letterSpacing:".06em"}}>QF</span>
-                QUARTER-FINALS
-                <div className="sh-line"/>
-                <Link href="/world-cup" style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"#FF9933",textDecoration:"none",flexShrink:0}}>BRACKET →</Link>
-              </div>
-
-              {qfUp.map(m=>{
-                const preview = PREVIEWS[m.id];
-                return(
-                  <div key={m.id} style={{marginBottom:"14px"}}>
-                    <PortalMatchCard match={m} showDate/>
-                    {preview&&(
-                      <div style={{background:"rgba(255,153,51,.04)",border:"1px solid rgba(255,153,51,.1)",borderRadius:"0 0 12px 12px",marginTop:"-6px",padding:"14px",borderTop:"none"}}>
-                        {/* Headline */}
-                        <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"15px",fontWeight:800,color:"#fff",letterSpacing:".02em",marginBottom:"10px",lineHeight:1.3}}>{preview.headline}</div>
-
-                        {/* Form */}
-                        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"10px"}}>
-                          <div style={{background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.07)",borderRadius:"8px",padding:"8px 10px"}}>
-                            <div style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"4px"}}>
-                              <img src={`https://flagcdn.com/20x15/${FLAGS[m.homeTeam.name]||"un"}.png`} alt="" style={{width:"20px",borderRadius:"2px"}} onError={e=>{e.currentTarget.style.display="none";}}/>
-                              <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"rgba(255,255,255,.5)",letterSpacing:".08em"}}>{m.homeTeam.name.toUpperCase()}</span>
-                            </div>
-                            <p style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:500,color:"rgba(255,255,255,.55)",lineHeight:1.5}}>{preview.homeForm}</p>
-                          </div>
-                          <div style={{background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.07)",borderRadius:"8px",padding:"8px 10px"}}>
-                            <div style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"4px"}}>
-                              <img src={`https://flagcdn.com/20x15/${FLAGS[m.awayTeam.name]||"un"}.png`} alt="" style={{width:"20px",borderRadius:"2px"}} onError={e=>{e.currentTarget.style.display="none";}}/>
-                              <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"rgba(255,255,255,.5)",letterSpacing:".08em"}}>{m.awayTeam.name.toUpperCase()}</span>
-                            </div>
-                            <p style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:500,color:"rgba(255,255,255,.55)",lineHeight:1.5}}>{preview.awayForm}</p>
-                          </div>
-                        </div>
-
-                        {/* Context */}
-                        <div style={{background:"rgba(0,166,81,.06)",border:"1px solid rgba(0,166,81,.12)",borderRadius:"8px",padding:"8px 10px",marginBottom:"8px"}}>
-                          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:800,color:"rgba(0,166,81,.8)",letterSpacing:".1em",marginBottom:"3px"}}>⚽ THE STORY</div>
-                          <p style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",fontWeight:500,color:"rgba(255,255,255,.65)",lineHeight:1.5}}>{preview.context}</p>
-                        </div>
-
-                        {/* Key battle + One to watch */}
-                        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"8px"}}>
-                          <div style={{background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.06)",borderRadius:"8px",padding:"8px 10px"}}>
-                            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:800,color:"rgba(255,255,255,.35)",letterSpacing:".1em",marginBottom:"3px"}}>⚔️ KEY BATTLE</div>
-                            <p style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:500,color:"rgba(255,255,255,.55)",lineHeight:1.5}}>{preview.keyBattle}</p>
-                          </div>
-                          <div style={{background:"rgba(255,153,51,.05)",border:"1px solid rgba(255,153,51,.12)",borderRadius:"8px",padding:"8px 10px"}}>
-                            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:800,color:"#FF9933",letterSpacing:".1em",marginBottom:"2px"}}>⭐ ONE TO WATCH</div>
-                            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"13px",fontWeight:800,color:"#fff",marginBottom:"2px"}}>{preview.oneToWatch.name} · {preview.oneToWatch.team}</div>
-                            <p style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:500,color:"rgba(255,255,255,.5)",lineHeight:1.4}}>{preview.oneToWatch.note}</p>
-                          </div>
-                        </div>
-
-                        {/* Prediction */}
-                        <div style={{background:"rgba(255,153,51,.08)",border:"1px solid rgba(255,153,51,.15)",borderRadius:"8px",padding:"8px 12px",display:"flex",alignItems:"flex-start",gap:"8px"}}>
-                          <span style={{fontSize:"16px",flexShrink:0}}>🔮</span>
-                          <div>
-                            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:800,color:"#FF9933",letterSpacing:".1em",marginBottom:"2px"}}>OUR READ</div>
-                            <p style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",fontWeight:600,color:"rgba(255,255,255,.7)",lineHeight:1.5}}>{preview.prediction}</p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
-
-          {/* QF DONE */}
-          {qfDone.length>0&&(
-            <div style={{marginBottom:"18px"}}>
-              <div className="sh">✅ QF RESULTS<div className="sh-line"/></div>
-              {qfDone.map(m=><PortalMatchCard key={m.id} match={m}/>)}
-            </div>
-          )}
-
-          {/* R16 DONE */}
-          {r16Done.length>0&&(
-            <div style={{marginBottom:"18px"}}>
-              <div className="sh">
-                <span className="badge-r16" style={{fontSize:"11px",padding:"1px 8px"}}>R16</span>
-                RESULTS
-                <div className="sh-line"/>
-                <Link href="/results" style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"#FF9933",textDecoration:"none",flexShrink:0}}>ALL →</Link>
-              </div>
-              {r16Done.slice(0,4).map(m=><PortalMatchCard key={m.id} match={m}/>)}
-              {r16Done.length>4&&<Link href="/results" style={{display:"block",textAlign:"center",padding:"10px",fontFamily:"'Barlow Condensed',sans-serif",fontSize:"13px",fontWeight:800,color:"#FF9933",textDecoration:"none",letterSpacing:".06em"}}>+ {r16Done.length-4} MORE RESULTS →</Link>}
-            </div>
-          )}
-
-          {/* WATCH */}
-          <div style={{background:"rgba(255,153,51,.06)",border:"1px solid rgba(255,153,51,.12)",borderRadius:"12px",padding:"14px",marginBottom:"14px"}}>
-            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"15px",letterSpacing:"3px",color:"#FF9933",marginBottom:"8px"}}>📺 WATCH IN INDIA</div>
-            <div style={{display:"flex",alignItems:"center",gap:"12px",flexWrap:"wrap"}}>
-              <div style={{background:"rgba(0,0,0,.3)",border:"1px solid rgba(255,153,51,.18)",borderRadius:"8px",padding:"8px 16px"}}>
-                <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"19px",letterSpacing:"3px",color:"#FF9933"}}>ZEE5</div>
-                <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:600,color:"rgba(255,255,255,.45)"}}>Exclusive · India · zee5.com</div>
-              </div>
-              <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",color:"rgba(255,255,255,.35)",lineHeight:1.6}}>Every WC 2026 match live. All times in IST.</div>
-            </div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",alignItems:"center",padding:"20px 16px 14px",gap:"8px"}}>
+            <FlagTeam name="France" won/>
+            <div style={{textAlign:"center"}}><div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"clamp(44px,8vw,72px)",letterSpacing:"4px",color:"#00D26A",lineHeight:1}}>2–0</div><div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:700,color:"rgba(255,255,255,.4)",letterSpacing:".12em",marginTop:"4px"}}>FULL TIME</div></div>
+            <FlagTeam name="Morocco"/>
           </div>
-
-          {/* QUICK LINKS */}
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"7px"}}>
-            {[
-              {href:"/results",  icon:"📋",label:"All Results",  sub:"Every score · Goals"},
-              {href:"/world-cup",icon:"🏆",label:"Full Bracket",  sub:"QF · SF · Final"},
-              {href:"/standings",icon:"📊",label:"Group Tables",  sub:"Final standings"},
-              {href:"/news",     icon:"🇮🇳",label:"IST Guide",   sub:"When to watch"},
-            ].map(l=>(
-              <Link key={l.href} href={l.href} style={{textDecoration:"none"}}>
-                <div className="card card-hover" style={{padding:"13px"}}>
-                  <div style={{fontSize:"18px",marginBottom:"4px"}}>{l.icon}</div>
-                  <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"14px",fontWeight:800,color:"#fff",letterSpacing:".04em"}}>{l.label}</div>
-                  <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:600,color:"rgba(255,255,255,.3)",marginTop:"2px"}}>{l.sub}</div>
-                </div>
-              </Link>
-            ))}
+          <div style={{padding:"0 16px 14px"}}>
+            <p style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",fontWeight:600,color:"rgba(255,255,255,.5)",marginBottom:"6px"}}>⚽ Mbappé 60' · Dembélé 84'</p>
+            <p style={{fontSize:"13px",color:"rgba(255,255,255,.65)",lineHeight:1.6}}>Mbappé missed a first-half penalty then scored a stunning 60th-minute goal. Dembélé sealed it. France are unbeaten in 90 minutes across 7 matches. Morocco's incredible back-to-back QF run ends — the first African nation to achieve it in history.</p>
           </div>
         </div>
 
-        {/* SIDEBAR */}
-        <div style={{display:"none"}} className="lg:block">
-          <div style={{position:"sticky",top:"76px",display:"flex",flexDirection:"column",gap:"14px"}}>
-            <MiniStandings/>
-            <TopScorers/>
+        {/* 3 UPCOMING QFs */}
+        <SH color="#FF9933" title="🔥 UPCOMING QUARTER-FINALS" tag="3 TO GO" tagColor="rgba(255,153,51,.1)" tagBorder="rgba(255,153,51,.2)" tagText="#FF9933"/>
+        {QF_UP.map((m,i)=>(
+          <QFCard key={m.home} m={m} num={i+2}/>
+        ))}
+
+        {/* SEMI FINALS */}
+        <SH color="#FF9933" title="📅 SEMI-FINALS" tag="JUL 14–15" tagColor="rgba(255,255,255,.05)" tagBorder="rgba(255,255,255,.1)" tagText="rgba(255,255,255,.4)"/>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"20px"}}>
+          {[
+            {l:"SF 1",t:"France vs Spain/Belgium",d:"Tue 15 Jul · 12:30 AM IST",v:"AT&T Stadium · Dallas"},
+            {l:"SF 2",t:"Nor/Eng vs Arg/Sui",d:"Wed 16 Jul · 12:30 AM IST",v:"Mercedes-Benz · Atlanta"},
+          ].map(sf=>(
+            <div key={sf.l} style={{background:"rgba(13,24,41,.8)",border:"1px solid rgba(255,255,255,.08)",borderRadius:"12px",padding:"14px",textAlign:"center"}}>
+              <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:800,color:"rgba(255,255,255,.3)",letterSpacing:".1em",marginBottom:"5px"}}>{sf.l}</div>
+              <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"clamp(13px,2.5vw,18px)",color:"#FF9933",letterSpacing:"1px",marginBottom:"5px",lineHeight:1.2}}>{sf.t}</div>
+              <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:700,color:"rgba(255,255,255,.4)"}}>{sf.d}</div>
+              <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",color:"rgba(255,255,255,.2)",marginTop:"2px"}}>{sf.v}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* FINAL */}
+        <div style={{background:"linear-gradient(135deg,#1a0d00,#261500,#1a0d00)",border:"2px solid rgba(255,153,51,.4)",borderRadius:"16px",padding:"24px",textAlign:"center",marginBottom:"24px",position:"relative",overflow:"hidden"}}>
+          <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 50% 0%,rgba(255,153,51,.08),transparent 60%)",pointerEvents:"none"}}/>
+          <div style={{position:"relative",zIndex:1}}>
+            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"rgba(255,153,51,.5)",letterSpacing:".2em",marginBottom:"8px"}}>🏆 THE BIGGEST MATCH IN HISTORY</div>
+            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"clamp(32px,6vw,52px)",letterSpacing:"4px",color:"#fff",marginBottom:"4px"}}>THE FINAL</div>
+            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"clamp(18px,3.5vw,28px)",letterSpacing:"3px",color:"#FF9933",marginBottom:"10px"}}>SUN 20 JUL · 12:30 AM IST</div>
+            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"13px",fontWeight:600,color:"rgba(255,255,255,.4)"}}>MetLife Stadium · East Rutherford, New Jersey</div>
           </div>
+        </div>
+
+        {/* GOLDEN BOOT */}
+        <SH color="#FF9933" title="⚽ GOLDEN BOOT" tag="JUL 10 · LIVE" tagColor="rgba(255,153,51,.08)" tagBorder="rgba(255,153,51,.2)" tagText="#FF9933"/>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))",gap:"7px",marginBottom:"24px"}}>
+          {BOOT.map((b,i)=>(
+            <div key={b.n} style={{background:"rgba(13,24,41,.8)",border:`1px solid ${i<2?"rgba(255,153,51,.25)":"rgba(255,255,255,.07)"}`,borderRadius:"10px",padding:"10px 12px",display:"flex",alignItems:"center",gap:"8px"}}>
+              <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"18px",color:i<2?"#FF9933":"rgba(255,255,255,.2)",width:"16px",flexShrink:0}}>{i+1}</div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:"14px"}}>{b.f}</div>
+                <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"13px",fontWeight:800,color:i<2?"#fff":"rgba(255,255,255,.5)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{b.n}</div>
+                <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",color:"rgba(255,255,255,.3)"}}>{b.t}</div>
+              </div>
+              <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"26px",color:i<2?"#FF9933":"rgba(255,255,255,.4)",flexShrink:0,lineHeight:1}}>{b.g}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* R16 RESULTS */}
+        <SH color="#00D26A" title="📋 R16 RESULTS" tag="ALL 8 DONE" tagColor="rgba(0,210,106,.1)" tagBorder="rgba(0,210,106,.2)" tagText="#00D26A"/>
+        <div style={{marginBottom:"24px"}}>
+          {R16.map(r=>(
+            <div key={r.h} style={{background:"rgba(13,24,41,.8)",border:"1px solid rgba(255,255,255,.07)",borderLeft:"3px solid #00D26A",borderRadius:"10px",padding:"10px 14px",marginBottom:"6px",display:"flex",alignItems:"center",gap:"10px"}}>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"16px",fontWeight:700,color:"#fff",display:"flex",alignItems:"center",gap:"8px",flexWrap:"wrap"}}>
+                  {r.h} <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"20px",color:"#00D26A",letterSpacing:"1px"}}>{r.s}</span> {r.a}
+                </div>
+                <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:600,color:"rgba(255,255,255,.3)",marginTop:"2px"}}>{r.n}</div>
+              </div>
+              <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:700,color:"rgba(255,255,255,.2)",textAlign:"right",flexShrink:0,lineHeight:1.5}}>{r.d}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* WATCH */}
+        <div style={{background:"rgba(255,153,51,.06)",border:"1px solid rgba(255,153,51,.15)",borderRadius:"12px",padding:"16px",textAlign:"center"}}>
+          <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"16px",letterSpacing:"3px",color:"#FF9933",marginBottom:"6px"}}>📺 WATCH IN INDIA</div>
+          <div style={{display:"inline-block",background:"rgba(255,153,51,.12)",border:"1px solid rgba(255,153,51,.25)",borderRadius:"8px",padding:"8px 20px",fontFamily:"'Bebas Neue',sans-serif",fontSize:"22px",color:"#FF9933",letterSpacing:"3px",marginBottom:"6px"}}>ZEE5</div>
+          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",color:"rgba(255,255,255,.35)"}}>Exclusive FIFA WC 2026 rights in India · Every match live · zee5.com</div>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+function SH({color,title,tag,tagColor,tagBorder,tagText}:{color:string;title:string;tag:string;tagColor:string;tagBorder:string;tagText:string}){
+  return(
+    <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"17px",letterSpacing:"3px",color,display:"flex",alignItems:"center",gap:"10px",padding:"16px 0 10px",borderBottom:`1px solid ${color}30`,marginBottom:"14px"}}>
+      {title}<div style={{flex:1,height:"1px",background:"rgba(255,255,255,.07)"}}/>
+      <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,background:tagColor,color:tagText,border:`1px solid ${tagBorder}`,padding:"2px 8px",borderRadius:"20px"}}>{tag}</span>
+    </div>
+  );
+}
+
+function FlagTeam({name,won=false}:{name:string;won?:boolean}){
+  const F=(n:string)=>`https://flagcdn.com/80x60/${({France:"fr",Morocco:"ma",Spain:"es",Belgium:"be",Norway:"no",England:"gb-eng",Argentina:"ar",Switzerland:"ch"})[n]||"un"}.png`;
+  return(
+    <div style={{textAlign:"center"}}>
+      <img src={F(name)} alt={name} style={{width:"clamp(50px,9vw,72px)",borderRadius:"6px",border:"2px solid rgba(255,255,255,.12)",display:"block",margin:"0 auto 8px",boxShadow:"0 6px 20px rgba(0,0,0,.4)"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
+      <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"clamp(14px,3vw,22px)",letterSpacing:"2px",color:won?"#00D26A":"#fff"}}>{name}</div>
+    </div>
+  );
+}
+
+function QFCard({m,num}:{m:typeof QF_UP[0];num:number}){
+  const F=(n:string)=>`https://flagcdn.com/80x60/${({France:"fr",Morocco:"ma",Spain:"es",Belgium:"be",Norway:"no",England:"gb-eng",Argentina:"ar",Switzerland:"ch"})[n]||"un"}.png`;
+  return(
+    <div style={{background:"rgba(13,24,41,.9)",border:"1px solid rgba(255,255,255,.09)",borderRadius:"14px",overflow:"hidden",marginBottom:"20px"}}>
+      <div style={{background:"rgba(0,0,0,.4)",padding:"8px 16px",display:"flex",justifyContent:"space-between",borderBottom:"1px solid rgba(255,255,255,.06)"}}>
+        <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"#FF9933",letterSpacing:".08em"}}>🏆 QUARTER-FINAL {num}</span>
+        <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"11px",fontWeight:800,color:"#FF9933"}}>{m.ist}</span>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",alignItems:"center",padding:"22px 16px 14px",gap:"8px"}}>
+        <div style={{textAlign:"center"}}>
+          <img src={F(m.home)} alt={m.home} style={{width:"clamp(52px,10vw,80px)",borderRadius:"7px",border:"2px solid rgba(255,255,255,.12)",display:"block",margin:"0 auto 8px",boxShadow:"0 6px 20px rgba(0,0,0,.4)"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
+          <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"clamp(14px,3vw,24px)",letterSpacing:"2px",color:"#fff"}}>{m.home}</div>
+        </div>
+        <div style={{textAlign:"center",padding:"0 8px"}}>
+          <div style={{background:"#FF9933",color:"#000",fontFamily:"'Bebas Neue',sans-serif",fontSize:"12px",letterSpacing:"2px",padding:"3px 12px",borderRadius:"20px",display:"inline-block",marginBottom:"8px"}}>{m.date}</div>
+          <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"clamp(22px,4.5vw,40px)",letterSpacing:"2px",color:"#FF9933",lineHeight:1,textShadow:"0 0 24px rgba(255,153,51,.4)"}}>{m.ist.split(" · ")[1]}</div>
+          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:700,color:"rgba(255,255,255,.4)",letterSpacing:".12em",marginTop:"3px"}}>IST</div>
+        </div>
+        <div style={{textAlign:"center"}}>
+          <img src={F(m.away)} alt={m.away} style={{width:"clamp(52px,10vw,80px)",borderRadius:"7px",border:"2px solid rgba(255,255,255,.12)",display:"block",margin:"0 auto 8px",boxShadow:"0 6px 20px rgba(0,0,0,.4)"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
+          <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"clamp(14px,3vw,24px)",letterSpacing:"2px",color:"#fff"}}>{m.away}</div>
+        </div>
+      </div>
+      <div style={{textAlign:"center",fontFamily:"'Barlow Condensed',sans-serif",fontSize:"10px",fontWeight:600,color:"rgba(255,255,255,.25)",padding:"0 16px 10px"}}>📍 {m.venue}</div>
+      <div style={{padding:"0 16px 16px"}}>
+        <h2 style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"clamp(17px,3vw,21px)",fontWeight:900,color:"#fff",lineHeight:1.3,marginBottom:"10px"}}>{m.headline}</h2>
+        <p style={{fontSize:"13px",color:"rgba(255,255,255,.6)",lineHeight:1.7,marginBottom:"14px"}}>{m.lead}</p>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"10px"}}>
+          <div style={{background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.07)",borderRadius:"10px",padding:"10px 12px"}}>
+            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:800,color:"rgba(255,255,255,.3)",letterSpacing:".1em",marginBottom:"3px"}}>{m.home.toUpperCase()} FORM</div>
+            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",fontWeight:600,color:"rgba(255,255,255,.65)",lineHeight:1.4}}>{m.homeForm}</div>
+          </div>
+          <div style={{background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.07)",borderRadius:"10px",padding:"10px 12px"}}>
+            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:800,color:"rgba(255,255,255,.3)",letterSpacing:".1em",marginBottom:"3px"}}>{m.away.toUpperCase()} FORM</div>
+            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"12px",fontWeight:600,color:"rgba(255,255,255,.65)",lineHeight:1.4}}>{m.awayForm}</div>
+          </div>
+        </div>
+        <div style={{background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.06)",borderRadius:"10px",padding:"10px 12px",marginBottom:"10px"}}>
+          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:800,color:"rgba(255,255,255,.3)",letterSpacing:".1em",marginBottom:"3px"}}>⚔️ KEY BATTLE</div>
+          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"13px",fontWeight:700,color:"rgba(255,255,255,.7)"}}>{m.battle}</div>
+        </div>
+        <div style={{background:"rgba(255,153,51,.06)",border:"1px solid rgba(255,153,51,.15)",borderRadius:"10px",padding:"12px 14px",marginBottom:"10px",display:"flex",alignItems:"flex-start",gap:"12px"}}>
+          <span style={{fontSize:"26px",flexShrink:0,lineHeight:1}}>{m.starFlag}</span>
+          <div>
+            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:800,color:"rgba(255,153,51,.6)",letterSpacing:".1em",marginBottom:"3px"}}>⭐ ONE TO WATCH</div>
+            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"17px",fontWeight:900,color:"#FF9933",marginBottom:"4px"}}>{m.starName}</div>
+            <div style={{fontSize:"12px",color:"rgba(255,255,255,.55)",lineHeight:1.5}}>{m.starNote}</div>
+          </div>
+        </div>
+        <div style={{background:"rgba(255,51,102,.04)",border:"1px solid rgba(255,51,102,.12)",borderRadius:"10px",padding:"12px 14px",marginBottom:"14px"}}>
+          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"9px",fontWeight:800,color:"rgba(255,51,102,.7)",letterSpacing:".14em",marginBottom:"5px"}}>🔮 OUR READ — AS A FOOTBALL LOVER</div>
+          <div style={{fontSize:"13px",fontWeight:600,color:"rgba(255,255,255,.75)",lineHeight:1.6}}>{m.read}</div>
+        </div>
+        <div style={{display:"flex",gap:"7px"}}>
+          <a href={m.gcal} target="_blank" rel="noopener noreferrer" style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",background:"#FF9933",borderRadius:"10px",padding:"12px",textDecoration:"none",boxShadow:"0 4px 16px rgba(255,153,51,.3)"}}>
+            <span>⏰</span><span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"14px",fontWeight:800,color:"#000",letterSpacing:".08em"}}>SET ALARM</span>
+          </a>
+          <a href={`https://wa.me/?text=${encodeURIComponent(m.wa)}`} target="_blank" rel="noopener noreferrer" style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",background:"rgba(37,211,102,.1)",border:"1px solid rgba(37,211,102,.25)",borderRadius:"10px",padding:"12px",textDecoration:"none"}}>
+            <span>💬</span><span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"14px",fontWeight:800,color:"#25d366",letterSpacing:".08em"}}>WHATSAPP</span>
+          </a>
         </div>
       </div>
     </div>
