@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KickoffIST — India's Football Magazine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── MAGAZINE DESIGN SYSTEM ──
+   Think: Sports Illustrated · ESPN Magazine · Sportstar
+   Print-ready · Mobile-first · Football-obsessed */
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:#F5F0E8;color:#111;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+img{display:block;max-width:100%;}
+
+/* ── COLOUR PALETTE ──
+   Newsprint cream #F5F0E8 · Ink black #111 · Grass green #0A5C2E
+   Match red #C41E3A · Gold #C8960C · Sky blue #1565C0 */
+:root{
+  --paper:#F5F0E8;
+  --paper2:#EDE8DF;
+  --ink:#111111;
+  --ink2:#333333;
+  --muted:#666666;
+  --rule:#C8BFB0;
+  --green:#0A5C2E;
+  --red:#C41E3A;
+  --gold:#C8960C;
+  --blue:#1565C0;
+  --white:#FFFFFF;
+}
+
+/* ── MASTHEAD ── */
+.masthead{
+  background:var(--ink);
+  border-bottom:5px solid var(--red);
+  padding:0;
+}
+.mast-top{
+  background:var(--red);
+  text-align:center;
+  padding:5px 16px;
+  font-family:'Inter',sans-serif;
+  font-size:11px;font-weight:700;
+  color:rgba(255,255,255,.85);
+  letter-spacing:.08em;
+}
+.mast-main{
+  max-width:1100px;margin:0 auto;
+  padding:16px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;
+}
+.mast-logo{text-align:center;flex:1;}
+.mast-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(36px,7vw,72px);
+  font-weight:900;color:#fff;
+  letter-spacing:-1px;line-height:1;
+}
+.mast-title em{color:var(--red);font-style:normal;}
+.mast-tagline{
+  font-family:'Oswald',sans-serif;
+  font-size:12px;font-weight:400;
+  color:rgba(255,255,255,.5);
+  letter-spacing:.3em;text-transform:uppercase;
+  margin-top:4px;
+}
+.mast-meta{
+  display:flex;flex-direction:column;align-items:flex-end;gap:4px;
+}
+.mast-issue{
+  font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;
+  color:rgba(255,255,255,.4);letter-spacing:.1em;
+}
+.mast-clock{
+  font-family:'Oswald',sans-serif;font-size:22px;font-weight:700;
+  color:var(--gold);letter-spacing:2px;
+}
+.mast-meta-left{
+  display:flex;flex-direction:column;gap:4px;
+}
+.mast-edition{
+  font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;
+  color:rgba(255,255,255,.4);letter-spacing:.1em;
+}
+.mast-price{
+  font-family:'Inter',sans-serif;font-size:11px;
+  color:rgba(255,255,255,.35);
+}
+
+/* ── NAV BAR ── */
+.navbar{
+  background:var(--ink);
+  border-bottom:1px solid rgba(255,255,255,.1);
+  overflow-x:auto;scrollbar-width:none;
+}
+.nav-inner{
+  max-width:1100px;margin:0 auto;
+  display:flex;padding:0 20px;
+}
+.nlink{
+  font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;
+  color:rgba(255,255,255,.5);
+  padding:11px 16px;letter-spacing:.06em;
+  border-bottom:3px solid transparent;
+  white-space:nowrap;cursor:pointer;
+  transition:all .15s;
+  background:none;border-top:none;border-left:none;border-right:none;
+}
+.nlink:hover{color:#fff;}
+.nlink.on{color:#fff;border-bottom-color:var(--red);}
+
+/* ── RULE DIVIDERS ── */
+.rule-double{
+  border:none;
+  border-top:3px solid var(--ink);
+  border-bottom:1px solid var(--ink);
+  margin:20px 0 16px;
+  padding-bottom:3px;
+}
+.rule-single{border-top:1px solid var(--rule);margin:16px 0;}
+.rule-red{border-top:3px solid var(--red);margin:20px 0 16px;}
+
+/* ── SECTION HEADERS — magazine style ── */
+.sh{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:16px;
+  padding-bottom:8px;
+  border-bottom:3px solid var(--ink);
+}
+.sh-label{
+  font-family:'Oswald',sans-serif;font-size:10px;font-weight:600;
+  color:var(--red);letter-spacing:.2em;text-transform:uppercase;
+  background:var(--red);color:#fff;
+  padding:3px 10px;border-radius:2px;
+  flex-shrink:0;
+}
+.sh-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(18px,3.5vw,26px);font-weight:700;
+  color:var(--ink);line-height:1;
+}
+.sh-rule{flex:1;height:1px;background:var(--rule);}
+.sh-sub{
+  font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;
+  color:var(--muted);letter-spacing:.08em;
+}
+
+/* ── LAYOUT ── */
+.page-wrap{max-width:1100px;margin:0 auto;padding:0 20px 60px;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.grid-65-35{display:grid;grid-template-columns:1.8fr 1fr;gap:24px;}
+@media(max-width:768px){.grid-2,.grid-3,.grid-65-35{grid-template-columns:1fr;}}
+
+/* ── COVER STORY ── */
+.cover-story{
+  position:relative;overflow:hidden;
+  border-radius:4px;
+  height:clamp(320px,50vw,520px);
+  background:linear-gradient(160deg,#0a1a0a 0%,#1a3a1a 40%,#0a2a0a 100%);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  margin-bottom:24px;
+}
+.cover-bg{
+  position:absolute;inset:0;
+  background:url('https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop') center/cover;
+  opacity:.35;
+}
+.cover-gradient{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.3) 40%,rgba(0,0,0,.95) 100%);
+}
+.cover-body{position:relative;z-index:1;padding:24px 28px;}
+.cover-kicker{
+  font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;
+  color:var(--red);background:var(--red);color:#fff;
+  display:inline-block;padding:3px 12px;letter-spacing:.1em;
+  margin-bottom:10px;
+}
+.cover-headline{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(28px,5.5vw,52px);font-weight:900;
+  color:#fff;line-height:1.05;margin-bottom:8px;
+}
+.cover-headline em{color:var(--gold);font-style:normal;}
+.cover-deck{
+  font-family:'Inter',sans-serif;font-size:14px;
+  color:rgba(255,255,255,.7);line-height:1.6;
+  max-width:520px;margin-bottom:16px;
+}
+.cover-byline{
+  font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;
+  color:rgba(255,255,255,.4);letter-spacing:.1em;
+}
+
+/* ── FIXTURE CARD — THE CORE UNIT ── */
+.fixture{
+  background:var(--white);
+  border:1px solid var(--rule);
+  border-radius:3px;
+  overflow:hidden;
+  margin-bottom:10px;
+  transition:box-shadow .15s,transform .15s;
+  page-break-inside:avoid;
+}
+.fixture:hover{
+  box-shadow:0 4px 20px rgba(0,0,0,.1);
+  transform:translateY(-1px);
+}
+.fixture-top{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--paper2);
+  padding:6px 14px;
+  border-bottom:1px solid var(--rule);
+}
+.fixture-tournament{
+  font-family:'Oswald',sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:.1em;color:var(--muted);
+  display:flex;align-items:center;gap:6px;
+}
+.t-badge{
+  font-size:9px;font-weight:800;padding:2px 8px;border-radius:2px;
+  letter-spacing:.06em;
+}
+.t-wc{background:var(--green);color:#fff;}
+.t-epl{background:#37003C;color:#fff;}
+.t-ucl{background:#001489;color:#C8A000;}
+.t-isl{background:#FF6B00;color:#fff;}
+.fixture-round{
+  font-family:'Oswald',sans-serif;font-size:10px;font-weight:600;
+  color:var(--muted);letter-spacing:.08em;
+}
+
+.fixture-body{
+  display:grid;
+  grid-template-columns:1fr 120px 1fr;
+  align-items:center;
+  padding:16px 14px;gap:8px;
+}
+.fx-team{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.fx-team.home{align-items:flex-start;}
+.fx-team.away{align-items:flex-end;}
+.fx-flag{font-size:28px;line-height:1;}
+.fx-flag-img{width:36px;height:auto;border-radius:2px;border:1px solid var(--rule);}
+.fx-name{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(14px,3vw,20px);font-weight:600;
+  color:var(--ink);line-height:1;letter-spacing:.02em;
+}
+.fx-name.winner{color:var(--green);}
+
+.fx-centre{text-align:center;}
+.fx-vs{
+  font-family:'Oswald',sans-serif;font-size:10px;font-weight:600;
+  color:var(--muted);letter-spacing:.1em;margin-bottom:4px;
+}
+.fx-time{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(22px,4.5vw,34px);font-weight:700;
+  color:var(--green);line-height:1;
+}
+.fx-time.result{color:var(--ink);}
+.fx-date{
+  font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;
+  color:var(--ink2);letter-spacing:.04em;margin-bottom:2px;
+}
+.fx-ist{
+  font-family:'Inter',sans-serif;font-size:9px;font-weight:700;
+  color:var(--muted);letter-spacing:.06em;margin-top:3px;
+}
+.fx-score{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(32px,6vw,48px);font-weight:900;
+  color:var(--ink);line-height:1;
+  letter-spacing:2px;
+}
+
+.fixture-footer{
+  padding:8px 14px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:1px solid var(--paper2);
+  background:var(--paper2);
+}
+.fx-venue{
+  font-family:'Inter',sans-serif;font-size:10px;
+  color:var(--muted);
+}
+.fx-actions{display:flex;gap:6px;}
+.fx-btn{
+  font-family:'Oswald',sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:.06em;padding:5px 10px;border-radius:2px;
+  border:none;cursor:pointer;transition:all .15s;text-decoration:none;
+  display:flex;align-items:center;gap:4px;
+}
+.fx-btn-alarm{background:var(--green);color:#fff;}
+.fx-btn-alarm:hover{background:#083d1e;}
+.fx-btn-wa{background:#E8F5E9;color:#1B5E20;border:1px solid #A5D6A7;}
+.fx-btn-wa:hover{background:#C8E6C9;}
+
+/* ── DAY HEADER ── */
+.day-header{
+  display:flex;align-items:center;gap:12px;
+  margin:20px 0 10px;
+}
+.day-label{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(16px,3vw,22px);font-weight:700;
+  color:var(--ink);line-height:1;
+  flex-shrink:0;
+}
+.day-date{
+  font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;
+  color:var(--muted);letter-spacing:.06em;
+}
+.day-rule{flex:1;height:1px;background:var(--rule);}
+.day-count{
+  font-family:'Oswald',sans-serif;font-size:10px;font-weight:700;
+  color:var(--white);background:var(--ink);
+  padding:2px 8px;border-radius:2px;letter-spacing:.06em;
+  flex-shrink:0;
+}
+
+/* ── TICKER ── */
+.ticker{
+  background:var(--red);
+  overflow:hidden;padding:8px 0;
+  border-bottom:2px solid #9e1a2e;
+}
+.ticker-track{
+  display:flex;gap:28px;
+  animation:scroll 35s linear infinite;
+  white-space:nowrap;padding:0 20px;
+}
+@keyframes scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.ti{
+  font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;
+  color:#fff;display:inline-flex;align-items:center;gap:8px;flex-shrink:0;
+  letter-spacing:.04em;
+}
+.ti-score{
+  background:rgba(0,0,0,.2);padding:1px 7px;
+  border-radius:2px;font-weight:700;
+}
+.ti-sep{color:rgba(255,255,255,.3);font-size:16px;}
+
+/* ── SIDEBAR ── */
+.sidebar{display:flex;flex-direction:column;gap:16px;}
+
+/* ── GOLDEN BOOT WIDGET ── */
+.widget{
+  background:var(--white);border:1px solid var(--rule);
+  border-radius:3px;overflow:hidden;
+}
+.widget-head{
+  background:var(--ink);padding:10px 14px;
+  font-family:'Oswald',sans-serif;font-size:13px;font-weight:700;
+  color:#fff;letter-spacing:.08em;
+  display:flex;align-items:center;gap:8px;
+}
+.widget-head-red{background:var(--red);}
+.widget-head-green{background:var(--green);}
+.widget-head-gold{background:var(--gold);color:var(--ink);}
+.widget-body{padding:0;}
+.w-row{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;border-bottom:1px solid var(--paper2);
+  transition:background .1s;
+}
+.w-row:last-child{border:none;}
+.w-row:hover{background:var(--paper2);}
+.w-pos{
+  font-family:'Playfair Display',serif;font-size:16px;font-weight:700;
+  color:var(--muted);width:18px;text-align:center;flex-shrink:0;
+}
+.w-pos.gold{color:var(--gold);}
+.w-flag{font-size:20px;flex-shrink:0;line-height:1;}
+.w-info{flex:1;min-width:0;}
+.w-name{
+  font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;
+  color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.w-team{font-family:'Inter',sans-serif;font-size:10px;color:var(--muted);}
+.w-goals{
+  font-family:'Playfair Display',serif;font-size:24px;font-weight:700;
+  color:var(--green);flex-shrink:0;line-height:1;
+}
+.w-goals.gold{color:var(--gold);}
+
+/* ── STANDINGS TABLE ── */
+.standings{width:100%;border-collapse:collapse;}
+.standings th{
+  font-family:'Oswald',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:.1em;color:var(--muted);text-align:left;
+  padding:7px 10px;border-bottom:2px solid var(--ink);
+  background:var(--paper2);
+}
+.standings th:not(:first-child){text-align:center;}
+.standings td{
+  padding:9px 10px;border-bottom:1px solid var(--paper2);
+  font-family:'Inter',sans-serif;font-size:12px;color:var(--ink2);
+}
+.standings td:not(:first-child){text-align:center;}
+.standings tr:hover td{background:var(--paper2);}
+.st-team{font-weight:700;color:var(--ink);display:flex;align-items:center;gap:7px;}
+.st-flag{font-size:14px;}
+.st-pts{font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--ink);}
+.st-pos{font-family:'Oswald',sans-serif;font-size:12px;color:var(--muted);width:22px;flex-shrink:0;font-weight:600;}
+
+/* ── SEARCH ── */
+.search-bar{
+  background:var(--white);border:2px solid var(--rule);
+  border-radius:3px;padding:10px 14px;
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:14px;
+  transition:border-color .15s;
+}
+.search-bar:focus-within{border-color:var(--green);}
+.search-bar input{
+  flex:1;border:none;outline:none;
+  font-family:'Inter',sans-serif;font-size:14px;
+  color:var(--ink);background:transparent;
+}
+.search-bar input::placeholder{color:var(--muted);}
+.search-icon{font-size:16px;color:var(--muted);flex-shrink:0;}
+
+/* ── IST GUIDE BOX ── */
+.ist-guide{
+  background:var(--green);border-radius:3px;
+  padding:16px;color:#fff;
+}
+.ist-guide-title{
+  font-family:'Playfair Display',serif;font-size:16px;font-weight:700;
+  color:#fff;margin-bottom:10px;
+  padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.2);
+}
+.ist-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:6px 0;border-bottom:1px solid rgba(255,255,255,.1);
+}
+.ist-row:last-child{border:none;}
+.ist-from{font-family:'Inter',sans-serif;font-size:11px;color:rgba(255,255,255,.7);}
+.ist-to{font-family:'Oswald',sans-serif;font-size:14px;font-weight:700;color:#fff;letter-spacing:.04em;}
+
+/* ── FILTER TABS ── */
+.filter-tabs{
+  display:flex;gap:6px;flex-wrap:wrap;
+  margin-bottom:16px;
+}
+.ftab{
+  font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;
+  letter-spacing:.06em;padding:7px 14px;border-radius:2px;
+  border:1.5px solid var(--rule);background:var(--white);
+  color:var(--muted);cursor:pointer;transition:all .15s;
+}
+.ftab:hover{border-color:var(--green);color:var(--green);}
+.ftab.on{background:var(--green);color:#fff;border-color:var(--green);}
+
+/* ── ARTICLE PREVIEW ── */
+.article-preview{
+  background:var(--white);border:1px solid var(--rule);
+  border-radius:3px;overflow:hidden;
+  display:flex;gap:0;margin-bottom:10px;
+  transition:box-shadow .15s;
+}
+.article-preview:hover{box-shadow:0 4px 20px rgba(0,0,0,.08);}
+.ap-img{width:120px;flex-shrink:0;object-fit:cover;}
+.ap-body{padding:14px 16px;flex:1;}
+.ap-cat{
+  font-family:'Oswald',sans-serif;font-size:9px;font-weight:700;
+  color:var(--red);letter-spacing:.12em;margin-bottom:5px;
+}
+.ap-title{
+  font-family:'Playfair Display',serif;font-size:16px;font-weight:700;
+  color:var(--ink);line-height:1.3;margin-bottom:6px;
+}
+.ap-deck{
+  font-family:'Inter',sans-serif;font-size:12px;
+  color:var(--muted);line-height:1.6;
+}
+
+/* ── WATCH BOX ── */
+.watch-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:480px){.watch-grid{grid-template-columns:1fr;}}
+.watch-card{
+  background:var(--white);border:1px solid var(--rule);
+  border-radius:3px;padding:14px;
+  display:flex;align-items:flex-start;gap:12px;
+}
+.watch-icon{font-size:24px;flex-shrink:0;}
+.watch-name{
+  font-family:'Oswald',sans-serif;font-size:14px;font-weight:700;
+  color:var(--ink);margin-bottom:2px;
+}
+.watch-leagues{font-family:'Inter',sans-serif;font-size:11px;color:var(--muted);line-height:1.5;}
+
+/* ── BOTTOM NAV ── */
+.bnav{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:var(--ink);border-top:3px solid var(--red);
+  display:flex;box-shadow:0 -4px 20px rgba(0,0,0,.3);
+}
+.bnav-item{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:2px;padding:9px 4px;
+  color:rgba(255,255,255,.35);
+  cursor:pointer;transition:color .15s;
+  border-top:3px solid transparent;margin-top:-3px;
+  background:none;border-left:none;border-right:none;border-bottom:none;
+}
+.bnav-item.on{color:#fff;border-top-color:var(--red);}
+.bnav-item:hover{color:rgba(255,255,255,.7);}
+.bnav-ico{font-size:17px;line-height:1;}
+.bnav-lbl{
+  font-family:'Oswald',sans-serif;font-size:9px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;
+}
+
+/* ── PAGE SECTIONS ── */
+.pg{display:none;padding-top:20px;}
+.pg.on{display:block;}
+
+/* ── PRINT STYLES ── */
+@media print{
+  .masthead{background:#fff!important;border-bottom:3px solid #000;}
+  .mast-title{color:#000!important;}
+  .mast-title em{color:#C41E3A!important;}
+  .mast-tagline,.mast-clock,.mast-issue,.mast-edition,.mast-price{color:#666!important;}
+  .navbar,.ticker,.bnav,.fx-btn,.pg{display:none!important;}
+  .pg#pg-fixtures{display:block!important;}
+  .fixture{box-shadow:none!important;transform:none!important;border:1px solid #ccc!important;}
+  .fixture:hover{box-shadow:none!important;transform:none!important;}
+  body{background:#fff!important;font-size:12px;}
+  .day-header{margin-top:16px;}
+  @page{margin:1.5cm;size:A4;}
+}
+
+@media(max-width:600px){
+  .fixture-body{grid-template-columns:1fr 90px 1fr;padding:12px 10px;gap:4px;}
+  .fx-time{font-size:20px;}
+  .fx-name{font-size:13px;}
+  .mast-main{padding:12px 14px;}
+  .mast-meta,.mast-meta-left{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD — THE MAGAZINE COVER -->
+<header class="masthead">
+  <div class="mast-top">
+    INDIA'S FOOTBALL MAGAZINE · ALL TIMES IN INDIAN STANDARD TIME · JULY 2026 EDITION
+  </div>
+  <div class="mast-main">
+    <div class="mast-meta-left">
+      <div class="mast-edition">EST. 2026</div>
+      <div class="mast-price">Free · kickoffist.com</div>
+    </div>
+    <div class="mast-logo">
+      <div class="mast-title">Kickoff<em>IST</em></div>
+      <div class="mast-tagline">India's Football Magazine · World Cup · Premier League · UCL · ISL</div>
+    </div>
+    <div class="mast-meta">
+      <div class="mast-issue">ISSUE 1 · JUL 2026</div>
+      <div class="mast-clock" id="ist-clock">--:--:-- IST</div>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <button class="nlink on" onclick="show('fixtures',this)">⚽ FIXTURES</button>
+    <button class="nlink" onclick="show('results',this)">📋 RESULTS</button>
+    <button class="nlink" onclick="show('standings',this)">📊 TABLES</button>
+    <button class="nlink" onclick="show('boot',this)">👟 GOLDEN BOOT</button>
+    <button class="nlink" onclick="show('watch',this)">📺 WATCH IN INDIA</button>
+    <button class="nlink" onclick="window.print()">🖨️ PRINT</button>
+  </div>
+</nav>
+
+<!-- SCORE TICKER -->
+<div class="ticker" aria-label="Latest scores">
+  <div class="ticker-track">
+    <span class="ti">🏆 WC 2026 SEMI-FINALS</span><span class="ti-sep">·</span>
+    <span class="ti">🇫🇷 France vs Spain 🇪🇸 <span class="ti-score">TUE 15 JUL · 12:30 AM IST</span></span><span class="ti-sep">·</span>
+    <span class="ti">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England vs Argentina 🇦🇷 <span class="ti-score">WED 16 JUL · 12:30 AM IST</span></span><span class="ti-sep">·</span>
+    <span class="ti">🏆 FINAL: SUN 20 JUL · 12:30 AM IST · MetLife Stadium NJ</span><span class="ti-sep">·</span>
+    <span class="ti">🏴󠁧󠁢󠁥󠁮󠁧󠁿 EPL STARTS 21 AUG 2026 · Arsenal vs Coventry</span><span class="ti-sep">·</span>
+    <span class="ti">⭐ UCL STARTS 8 SEP 2026 · All games 12:30 AM IST</span><span class="ti-sep">·</span>
+    <span class="ti">📺 WC on Zee5 · EPL on Hotstar · UCL on Sony Sports</span><span class="ti-sep">·</span>
+    <span class="ti">🇮🇳 kickoffist.com · Football in Your Time</span><span class="ti-sep">·</span>
+    <span class="ti">🏆 WC 2026 SEMI-FINALS</span><span class="ti-sep">·</span>
+    <span class="ti">🇫🇷 France vs Spain 🇪🇸 <span class="ti-score">TUE 15 JUL · 12:30 AM IST</span></span><span class="ti-sep">·</span>
+    <span class="ti">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England vs Argentina 🇦🇷 <span class="ti-score">WED 16 JUL · 12:30 AM IST</span></span><span class="ti-sep">·</span>
+    <span class="ti">🏆 FINAL: SUN 20 JUL · 12:30 AM IST · MetLife Stadium NJ</span><span class="ti-sep">·</span>
+    <span class="ti">🏴󠁧󠁢󠁥󠁮󠁧󠁿 EPL STARTS 21 AUG 2026 · Arsenal vs Coventry</span><span class="ti-sep">·</span>
+    <span class="ti">⭐ UCL STARTS 8 SEP 2026 · All games 12:30 AM IST</span><span class="ti-sep">·</span>
+    <span class="ti">📺 WC on Zee5 · EPL on Hotstar · UCL on Sony Sports</span><span class="ti-sep">·</span>
+    <span class="ti">🇮🇳 kickoffist.com · Football in Your Time</span>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+<!-- ══════════════════════════════════
+     FIXTURES PAGE
+══════════════════════════════════ -->
+<div id="pg-fixtures" class="pg on">
+
+  <!-- COVER STORY -->
+  <div class="cover-story">
+    <div class="cover-bg"></div>
+    <div class="cover-gradient"></div>
+    <div class="cover-body">
+      <div class="cover-kicker">⚽ THE FINAL STRETCH</div>
+      <h1 class="cover-headline">
+        Football is coming<br>
+        home to <em>your screen</em>
+      </h1>
+      <p class="cover-deck">
+        The World Cup semi-finals. The Premier League starting August 21. Champions League from September 8. 
+        Every fixture. Every kickoff time. All in IST — built for India.
+      </p>
+      <div class="cover-byline">BY KICKOFFIST · INDIA'S FOOTBALL MAGAZINE · JULY 2026</div>
+    </div>
+  </div>
+
+  <div class="grid-65-35">
+    <div>
+
+      <!-- SEARCH -->
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" placeholder="Search team, tournament or date... France, Arsenal, UCL, July 15" oninput="doSearch(this.value)" autocomplete="off">
+      </div>
+      <div id="search-results"></div>
+
+      <!-- FILTER TABS -->
+      <div class="filter-tabs" id="filter-tabs">
+        <button class="ftab on" onclick="filter('all',this)">All Fixtures</button>
+        <button class="ftab" onclick="filter('wc',this)">🏆 World Cup</button>
+        <button class="ftab" onclick="filter('epl',this)">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</button>
+        <button class="ftab" onclick="filter('ucl',this)">⭐ Champions League</button>
+        <button class="ftab" onclick="filter('isl',this)">🇮🇳 ISL</button>
+      </div>
+
+      <!-- FIXTURE LIST -->
+      <div id="fixture-list"></div>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <!-- IST GUIDE -->
+      <div class="ist-guide">
+        <div class="ist-guide-title">🕐 Quick IST Guide</div>
+        <div class="ist-row"><span class="ist-from">8pm BST (UK)</span><span class="ist-to">12:30 AM IST</span></div>
+        <div class="ist-row"><span class="ist-from">12:30pm BST</span><span class="ist-to">6:00 PM IST</span></div>
+        <div class="ist-row"><span class="ist-from">3pm BST</span><span class="ist-to">8:30 PM IST</span></div>
+        <div class="ist-row"><span class="ist-from">5:30pm BST</span><span class="ist-to">11:00 PM IST</span></div>
+        <div class="ist-row"><span class="ist-from">2pm BST (Sun)</span><span class="ist-to">7:30 PM IST</span></div>
+        <div class="ist-row"><span class="ist-from">4:30pm BST (Sun)</span><span class="ist-to">10:00 PM IST</span></div>
+        <div class="ist-row"><span class="ist-from">8pm CET (UCL)</span><span class="ist-to">12:30 AM IST</span></div>
+      </div>
+
+      <!-- NEXT BIG MATCHES -->
+      <div class="widget">
+        <div class="widget-head widget-head-red">🔥 DON'T MISS THESE</div>
+        <div class="widget-body">
+          <div class="w-row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+            <div style="font-family:'Oswald',sans-serif;font-size:10px;font-weight:700;color:var(--red);letter-spacing:.1em;">SEMI-FINAL 1 · TUE 15 JUL</div>
+            <div style="font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--ink);">🇫🇷 France vs Spain 🇪🇸</div>
+            <div style="font-family:'Oswald',sans-serif;font-size:20px;font-weight:700;color:var(--green);">12:30 AM IST</div>
+            <div style="font-family:'Inter',sans-serif;font-size:10px;color:var(--muted);">AT&T Stadium · Dallas, Texas</div>
+          </div>
+          <div class="w-row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+            <div style="font-family:'Oswald',sans-serif;font-size:10px;font-weight:700;color:var(--red);letter-spacing:.1em;">SEMI-FINAL 2 · WED 16 JUL</div>
+            <div style="font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--ink);">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England vs Argentina 🇦🇷</div>
+            <div style="font-family:'Oswald',sans-serif;font-size:20px;font-weight:700;color:var(--green);">12:30 AM IST</div>
+            <div style="font-family:'Inter',sans-serif;font-size:10px;color:var(--muted);">Mercedes-Benz Stadium · Atlanta</div>
+          </div>
+          <div class="w-row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+            <div style="font-family:'Oswald',sans-serif;font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.1em;">🏆 THE FINAL · SUN 20 JUL</div>
+            <div style="font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--ink);">Winner SF1 vs Winner SF2</div>
+            <div style="font-family:'Oswald',sans-serif;font-size:20px;font-weight:700;color:var(--gold);">12:30 AM IST</div>
+            <div style="font-family:'Inter',sans-serif;font-size:10px;color:var(--muted);">MetLife Stadium · New Jersey</div>
+          </div>
+          <div class="w-row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+            <div style="font-family:'Oswald',sans-serif;font-size:10px;font-weight:700;color:var(--blue);letter-spacing:.1em;">EPL OPENER · FRI 21 AUG</div>
+            <div style="font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--ink);">🔴 Arsenal vs Coventry City</div>
+            <div style="font-family:'Oswald',sans-serif;font-size:20px;font-weight:700;color:var(--blue);">12:30 AM IST</div>
+            <div style="font-family:'Inter',sans-serif;font-size:10px;color:var(--muted);">Emirates Stadium · London</div>
+          </div>
+          <div class="w-row" style="flex-direction:column;align-items:flex-start;gap:4px;border:none;">
+            <div style="font-family:'Oswald',sans-serif;font-size:10px;font-weight:700;color:var(--blue);letter-spacing:.1em;">UCL MD1 · TUE 8 SEP</div>
+            <div style="font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--ink);">⭐ Champions League Returns</div>
+            <div style="font-family:'Oswald',sans-serif;font-size:20px;font-weight:700;color:var(--blue);">12:30 AM IST</div>
+            <div style="font-family:'Inter',sans-serif;font-size:10px;color:var(--muted);">Arsenal · Man City · Liverpool · Villa · Utd</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     RESULTS PAGE
+══════════════════════════════════ -->
+<div id="pg-results" class="pg">
+  <div class="sh"><span class="sh-label">RESULTS</span><span class="sh-title">Match Results — All Verified</span><div class="sh-rule"></div><span class="sh-sub">R32 · R16 · QF</span></div>
+  <div id="results-list"></div>
+</div>
+
+<!-- ══════════════════════════════════
+     STANDINGS PAGE
+══════════════════════════════════ -->
+<div id="pg-standings" class="pg">
+  <div class="sh"><span class="sh-label">TABLES</span><span class="sh-title">Tournament Standings</span><div class="sh-rule"></div></div>
+  <div class="grid-2">
+    <div>
+      <div class="widget">
+        <div class="widget-head widget-head-green">🏆 WC 2026 · SEMI-FINALISTS</div>
+        <div class="widget-body">
+          <table class="standings" style="width:100%;">
+            <tr><th>TEAM</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>PTS</th></tr>
+            <tr><td><div class="st-team"><span class="st-flag">🇫🇷</span>France</div></td><td>6</td><td>6</td><td>0</td><td>0</td><td>11</td><td>0</td><td class="st-pts">18</td></tr>
+            <tr><td><div class="st-team"><span class="st-flag">🇪🇸</span>Spain</div></td><td>6</td><td>6</td><td>0</td><td>0</td><td>9</td><td>2</td><td class="st-pts">18</td></tr>
+            <tr><td><div class="st-team"><span class="st-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span>England</div></td><td>6</td><td>4</td><td>0</td><td>0</td><td>12</td><td>6</td><td class="st-pts">14</td></tr>
+            <tr><td><div class="st-team"><span class="st-flag">🇦🇷</span>Argentina</div></td><td>6</td><td>4</td><td>0</td><td>0</td><td>14</td><td>7</td><td class="st-pts">14</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="widget">
+        <div class="widget-head" style="background:var(--blue);">🏴󠁧󠁢󠁥󠁮󠁧󠁿 PREMIER LEAGUE 2025-26 FINAL</div>
+        <div class="widget-body">
+          <table class="standings" style="width:100%;">
+            <tr><th>TEAM</th><th>P</th><th>GD</th><th>PTS</th></tr>
+            <tr><td><div class="st-team"><span class="st-flag">🔴</span>Arsenal 🏆</div></td><td>38</td><td>+51</td><td class="st-pts">89</td></tr>
+            <tr><td><div class="st-team"><span class="st-flag">🔵</span>Man City</div></td><td>38</td><td>+42</td><td class="st-pts">84</td></tr>
+            <tr><td><div class="st-team"><span class="st-flag">🔴</span>Liverpool</div></td><td>38</td><td>+38</td><td class="st-pts">79</td></tr>
+            <tr><td><div class="st-team"><span class="st-flag">🟣</span>Aston Villa</div></td><td>38</td><td>+22</td><td class="st-pts">67</td></tr>
+            <tr><td><div class="st-team"><span class="st-flag">🔴</span>Man United</div></td><td>38</td><td>+11</td><td class="st-pts">60</td></tr>
+            <tr><td><div class="st-team"><span class="st-flag">⚪</span>Spurs</div></td><td>38</td><td>+8</td><td class="st-pts">58</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     GOLDEN BOOT PAGE
+══════════════════════════════════ -->
+<div id="pg-boot" class="pg">
+  <div class="sh"><span class="sh-label">STATS</span><span class="sh-title">Golden Boot Race</span><div class="sh-rule"></div><span class="sh-sub">WC 2026 · Updated Jul 12</span></div>
+  <div class="grid-65-35">
+    <div>
+      <div class="widget">
+        <div class="widget-head widget-head-gold">⚽ TOP SCORERS · FIFA WORLD CUP 2026</div>
+        <div class="widget-body">
+          <div class="w-row"><div class="w-pos gold">1</div><div class="w-flag">🇫🇷</div><div class="w-info"><div class="w-name">Kylian Mbappé</div><div class="w-team">France · Semi-Final · Pen vs Paraguay · Goals vs Sweden ×2 · Morocco</div></div><div class="w-goals gold">9</div></div>
+          <div class="w-row"><div class="w-pos gold">1</div><div class="w-flag">🇳🇴</div><div class="w-info"><div class="w-name">Erling Haaland</div><div class="w-team">Norway — QF eliminated · ×2 vs Brazil · Golden Boot contender</div></div><div class="w-goals gold">9</div></div>
+          <div class="w-row"><div class="w-pos">3</div><div class="w-flag">🇦🇷</div><div class="w-info"><div class="w-name">Lionel Messi</div><div class="w-team">Argentina · SF · 19 career WC goals — all-time record · The GOAT</div></div><div class="w-goals">8</div></div>
+          <div class="w-row"><div class="w-pos">4</div><div class="w-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</div><div class="w-info"><div class="w-name">Harry Kane</div><div class="w-team">England · SF · England all-time WC record · Brace vs Mexico</div></div><div class="w-goals">6</div></div>
+          <div class="w-row"><div class="w-pos">5</div><div class="w-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</div><div class="w-info"><div class="w-name">Jude Bellingham</div><div class="w-team">England · SF · Scored in every knockout match · ×2 vs Norway AET</div></div><div class="w-goals">4</div></div>
+          <div class="w-row"><div class="w-pos">5</div><div class="w-flag">🇫🇷</div><div class="w-info"><div class="w-name">Ousmane Dembélé</div><div class="w-team">France · SF · Key in wide areas · 84' vs Morocco QF</div></div><div class="w-goals">4</div></div>
+          <div class="w-row"><div class="w-pos">7</div><div class="w-flag">🇲🇦</div><div class="w-info"><div class="w-name">Youssef En-Nesyri</div><div class="w-team">Morocco — QF eliminated · ×3 R16 vs Canada</div></div><div class="w-goals">4</div></div>
+          <div class="w-row"><div class="w-pos">8</div><div class="w-flag">🇧🇪</div><div class="w-info"><div class="w-name">Charles De Ketelaere</div><div class="w-team">Belgium — R16 eliminated · ×2 vs USA · Explosive tournament</div></div><div class="w-goals">3</div></div>
+          <div class="w-row" style="border:none;"><div class="w-pos">8</div><div class="w-flag">🇧🇷</div><div class="w-info"><div class="w-name">Vinicius Jr</div><div class="w-team">Brazil — R16 eliminated by Norway · 3 goals in group stage</div></div><div class="w-goals">3</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar">
+      <div class="widget">
+        <div class="widget-head widget-head-red">📊 GOLDEN BOOT HISTORY</div>
+        <div class="widget-body">
+          <div class="w-row"><div class="w-flag">🇫🇷</div><div class="w-info"><div class="w-name">Mbappé 2022</div><div class="w-team">8 goals · France · Runner-up</div></div><div class="w-goals" style="font-size:16px;">8</div></div>
+          <div class="w-row"><div class="w-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</div><div class="w-info"><div class="w-name">Kane 2018</div><div class="w-team">6 goals · England · SF</div></div><div class="w-goals" style="font-size:16px;">6</div></div>
+          <div class="w-row" style="border:none;"><div class="w-flag">🇦🇷</div><div class="w-info"><div class="w-name">Messi 2022</div><div class="w-team">7 goals · Argentina · Champion</div></div><div class="w-goals" style="font-size:16px;">7</div></div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-head">🌟 PLAYERS TO WATCH</div>
+        <div class="widget-body">
+          <div class="w-row"><div class="w-flag">🇪🇸</div><div class="w-info"><div class="w-name">Lamine Yamal</div><div class="w-team">Barcelona · 18 yrs · SF vs France</div></div></div>
+          <div class="w-row"><div class="w-flag">🇦🇷</div><div class="w-info"><div class="w-name">Julián Álvarez</div><div class="w-team">Atlético · Scored QF vs Switzerland</div></div></div>
+          <div class="w-row" style="border:none;"><div class="w-flag">🇪🇸</div><div class="w-info"><div class="w-name">Mikel Merino</div><div class="w-team">Spain · 2 SF-winning goals this WC</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     WATCH IN INDIA PAGE
+══════════════════════════════════ -->
+<div id="pg-watch" class="pg">
+  <div class="sh"><span class="sh-label">INDIA</span><span class="sh-title">Where to Watch Every Match</span><div class="sh-rule"></div></div>
+  <div class="watch-grid">
+    <div class="watch-card">
+      <div class="watch-icon">📱</div>
+      <div>
+        <div class="watch-name">Zee5</div>
+        <div class="watch-leagues">🏆 FIFA World Cup 2026<br>Exclusive Indian broadcast rights<br>All 104 matches · Live & On-demand<br>zee5.com · App available</div>
+      </div>
+    </div>
+    <div class="watch-card">
+      <div class="watch-icon">🔴</div>
+      <div>
+        <div class="watch-name">Star Sports / Disney+ Hotstar</div>
+        <div class="watch-leagues">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League 2026-27<br>All 380 matches · Live<br>Starts 21 August 2026<br>hotstar.com · Star Sports TV</div>
+      </div>
+    </div>
+    <div class="watch-card">
+      <div class="watch-icon">🎬</div>
+      <div>
+        <div class="watch-name">Sony Sports / LIV Sports</div>
+        <div class="watch-leagues">⭐ UEFA Champions League 2026-27<br>All matchdays from 8 Sep 2026<br>12:30 AM IST every Tue & Wed<br>sonylivsports.com</div>
+      </div>
+    </div>
+    <div class="watch-card">
+      <div class="watch-icon">🟠</div>
+      <div>
+        <div class="watch-name">GXR World / Voot</div>
+        <div class="watch-leagues">🇪🇸 La Liga 2026-27<br>Starts mid-August 2026<br>Yamal · Mbappé · Vinicius<br>gxrworld.com</div>
+      </div>
+    </div>
+    <div class="watch-card">
+      <div class="watch-icon">🆓</div>
+      <div>
+        <div class="watch-name">JioCinema / Sports18</div>
+        <div class="watch-leagues">🇮🇳 Indian Super League 2026-27<br>Completely FREE to watch<br>Starts ~September 2026<br>jiocinema.com · Sports18 TV</div>
+      </div>
+    </div>
+    <div class="watch-card">
+      <div class="watch-icon">📺</div>
+      <div>
+        <div class="watch-name">Sony Sports / LIV Sports</div>
+        <div class="watch-leagues">🇩🇪 Bundesliga 2026-27<br>🇮🇹 Serie A 2026-27<br>Both start August 2026<br>Fri 11:30 PM IST · Sat/Sun various</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="rule-red" style="margin-top:24px;">
+  <div class="sh"><span class="sh-label">IST GUIDE</span><span class="sh-title">Every Kickoff Time Converted</span><div class="sh-rule"></div></div>
+  <div class="grid-2">
+    <div class="widget">
+      <div class="widget-head widget-head-green">🏴󠁧󠁢󠁥󠁮󠁧󠁿 PREMIER LEAGUE IN IST</div>
+      <div class="widget-body">
+        <div class="w-row"><div class="w-info"><div class="w-name">Fri / Mon 8:00pm BST</div><div class="w-team">Monday Night / Friday Night Football</div></div><div style="font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--green);flex-shrink:0;">12:30AM IST</div></div>
+        <div class="w-row"><div class="w-info"><div class="w-name">Saturday 12:30pm BST</div><div class="w-team">Early Saturday kick-off</div></div><div style="font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--green);flex-shrink:0;">6:00PM IST</div></div>
+        <div class="w-row"><div class="w-info"><div class="w-name">Saturday 3:00pm BST</div><div class="w-team">Standard Saturday afternoon</div></div><div style="font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--green);flex-shrink:0;">8:30PM IST</div></div>
+        <div class="w-row"><div class="w-info"><div class="w-name">Saturday 5:30pm BST</div><div class="w-team">Late Saturday kick-off · Sky Sports</div></div><div style="font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--green);flex-shrink:0;">11:00PM IST</div></div>
+        <div class="w-row"><div class="w-info"><div class="w-name">Sunday 2:00pm BST</div><div class="w-team">Super Sunday early game</div></div><div style="font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--green);flex-shrink:0;">7:30PM IST</div></div>
+        <div class="w-row" style="border:none;"><div class="w-info"><div class="w-name">Sunday 4:30pm BST</div><div class="w-team">Super Sunday late game</div></div><div style="font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--green);flex-shrink:0;">10:00PM IST</div></div>
+      </div>
+    </div>
+    <div class="widget">
+      <div class="widget-head" style="background:var(--blue);">⭐ UCL · LA LIGA · BUNDESLIGA IN IST</div>
+      <div class="widget-body">
+        <div class="w-row"><div class="w-info"><div class="w-name">UCL 8:00pm CET (Tue/Wed)</div><div class="w-team">Champions League — all matchdays</div></div><div style="font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--blue);flex-shrink:0;">12:30AM IST</div></div>
+        <div class="w-row"><div class="w-info"><div class="w-name">La Liga Friday 9pm CET</div><div class="w-team">Spanish league Friday night</div></div><div style="font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--blue);flex-shrink:0;">1:30AM IST</div></div>
+        <div class="w-row"><div class="w-info"><div class="w-name">Bundesliga Fri 8:30pm CET</div><div class="w-team">German league Friday night</div></div><div style="font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--blue);flex-shrink:0;">1:00AM IST</div></div>
+        <div class="w-row"><div class="w-info"><div class="w-name">Serie A Sat 3pm CET</div><div class="w-team">Italian league Saturday</div></div><div style="font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--blue);flex-shrink:0;">7:30PM IST</div></div>
+        <div class="w-row" style="border:none;"><div class="w-info"><div class="w-name">ISL ~7:30pm (all days)</div><div class="w-team">Indian Super League — FREE on JioCinema</div></div><div style="font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--blue);flex-shrink:0;">7:30PM IST</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end page-wrap -->
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="bnav-item on" onclick="show('fixtures',this)"><span class="bnav-ico">⚽</span><span class="bnav-lbl">Fixtures</span></button>
+  <button class="bnav-item" onclick="show('results',this)"><span class="bnav-ico">📋</span><span class="bnav-lbl">Results</span></button>
+  <button class="bnav-item" onclick="show('standings',this)"><span class="bnav-ico">📊</span><span class="bnav-lbl">Tables</span></button>
+  <button class="bnav-item" onclick="show('boot',this)"><span class="bnav-ico">👟</span><span class="bnav-lbl">Boot</span></button>
+  <button class="bnav-item" onclick="show('watch',this)"><span class="bnav-ico">📺</span><span class="bnav-lbl">Watch</span></button>
+</nav>
+
+<script>
+// ── IST CLOCK ──
+function tick(){
+  const ist=new Date(new Date().toLocaleString("en-US",{timeZone:"Asia/Kolkata"}));
+  const el=document.getElementById("ist-clock");
+  if(el) el.textContent=`${String(ist.getHours()).padStart(2,"0")}:${String(ist.getMinutes()).padStart(2,"0")}:${String(ist.getSeconds()).padStart(2,"0")} IST`;
+}
+tick(); setInterval(tick,1000);
+
+// ── NAVIGATION ──
+function show(id, btn){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  document.querySelectorAll('.nlink,.bnav-item').forEach(b=>b.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  // sync both navs
+  const idx={fixtures:0,results:1,standings:2,boot:3,watch:4}[id]??0;
+  document.querySelectorAll('.nlink')[idx]?.classList.add('on');
+  document.querySelectorAll('.bnav-item')[idx]?.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── ALL FIXTURES DATA ──
+const FIXTURES = [
+  // WORLD CUP SEMI-FINALS
+  {t:"wc", round:"Semi-Final 1", home:"France", hf:"🇫🇷", away:"Spain", af:"🇪🇸",
+   day:"Tuesday", date:"15 July 2026", ist:"12:30 AM IST", venue:"AT&T Stadium · Dallas, Texas",
+   gcal:"https://calendar.google.com/calendar/render?action=TEMPLATE&text=⚽+France+vs+Spain+WC+SF1&dates=20260714T190000Z/20260714T210000Z"},
+  {t:"wc", round:"Semi-Final 2", home:"England", hf:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", away:"Argentina", af:"🇦🇷",
+   day:"Wednesday", date:"16 July 2026", ist:"12:30 AM IST", venue:"Mercedes-Benz Stadium · Atlanta, Georgia",
+   gcal:"https://calendar.google.com/calendar/render?action=TEMPLATE&text=⚽+England+vs+Argentina+WC+SF2&dates=20260715T190000Z/20260715T210000Z"},
+  {t:"wc", round:"3rd Place Play-off", home:"SF Loser 1", hf:"🏅", away:"SF Loser 2", af:"🏅",
+   day:"Saturday", date:"19 July 2026", ist:"10:30 PM IST", venue:"Hard Rock Stadium · Miami, Florida",
+   gcal:"https://calendar.google.com/calendar/render?action=TEMPLATE&text=WC+2026+Third+Place&dates=20260718T170000Z/20260718T190000Z"},
+  {t:"wc", round:"🏆 THE FINAL", home:"Winner SF1", hf:"🏆", away:"Winner SF2", af:"🏆",
+   day:"Sunday", date:"20 July 2026", ist:"12:30 AM IST", venue:"MetLife Stadium · East Rutherford, New Jersey",
+   gcal:"https://calendar.google.com/calendar/render?action=TEMPLATE&text=🏆+FIFA+World+Cup+2026+FINAL&dates=20260719T190000Z/20260719T210000Z"},
+  // PREMIER LEAGUE 2026-27
+  {t:"epl", round:"Community Shield", home:"Arsenal", hf:"🔴", away:"Man City", af:"🔵",
+   day:"Sunday", date:"16 August 2026", ist:"8:30 PM IST", venue:"Principality Stadium · Cardiff",
+   gcal:"https://calendar.google.com/calendar/render?action=TEMPLATE&text=Community+Shield+Arsenal+vs+Man+City&dates=20260816T150000Z/20260816T170000Z"},
+  {t:"epl", round:"EPL GW1 · Season Opener", home:"Arsenal", hf:"🔴", away:"Coventry City", af:"🩵",
+   day:"Friday", date:"21 August 2026", ist:"12:30 AM IST (Saturday)", venue:"Emirates Stadium · London · Sky Sports",
+   gcal:"https://calendar.google.com/calendar/render?action=TEMPLATE&text=Arsenal+vs+Coventry+EPL+Opener&dates=20260821T190000Z/20260821T210000Z"},
+  {t:"epl", round:"EPL GW1", home:"Hull City", hf:"🟡", away:"Man United", af:"🔴",
+   day:"Saturday", date:"22 August 2026", ist:"6:00 PM IST", venue:"MKM Stadium · Hull · TNT Sports",
+   gcal:""},
+  {t:"epl", round:"EPL GW1", home:"Everton", hf:"🔵", away:"Crystal Palace", af:"🔴",
+   day:"Saturday", date:"22 August 2026", ist:"8:30 PM IST", venue:"Goodison Park · Liverpool",
+   gcal:""},
+  {t:"epl", round:"EPL GW1", home:"Ipswich Town", hf:"🔵", away:"Sunderland", af:"🔴",
+   day:"Saturday", date:"22 August 2026", ist:"8:30 PM IST", venue:"Portman Road · Ipswich",
+   gcal:""},
+  {t:"epl", round:"EPL GW1", home:"Nottm Forest", hf:"🔴", away:"Leeds United", af:"⚪",
+   day:"Saturday", date:"22 August 2026", ist:"8:30 PM IST", venue:"City Ground · Nottingham",
+   gcal:""},
+  {t:"epl", round:"EPL GW1", home:"Brentford", hf:"🔴", away:"Tottenham", af:"⚪",
+   day:"Saturday", date:"22 August 2026", ist:"11:00 PM IST", venue:"Gtech Stadium · London · Sky Sports",
+   gcal:""},
+  {t:"epl", round:"EPL GW1", home:"Brighton", hf:"🔵", away:"Aston Villa", af:"🟣",
+   day:"Sunday", date:"23 August 2026", ist:"7:30 PM IST", venue:"Amex Stadium · Brighton · Sky Sports",
+   gcal:""},
+  {t:"epl", round:"EPL GW1 · Haaland returns!", home:"Man City", hf:"🔵", away:"Bournemouth", af:"🔴",
+   day:"Sunday", date:"23 August 2026", ist:"7:30 PM IST", venue:"Etihad Stadium · Manchester · Sky Sports",
+   gcal:""},
+  {t:"epl", round:"EPL GW1 · Salah returns!", home:"Newcastle United", hf:"⚫", away:"Liverpool", af:"🔴",
+   day:"Sunday", date:"23 August 2026", ist:"10:00 PM IST", venue:"St James' Park · Newcastle · Sky Sports",
+   gcal:""},
+  {t:"epl", round:"EPL GW1 · London Derby", home:"Fulham", hf:"⚪", away:"Chelsea", af:"🔵",
+   day:"Monday", date:"24 August 2026", ist:"12:30 AM IST (Tuesday)", venue:"Craven Cottage · London · Sky Sports",
+   gcal:"https://calendar.google.com/calendar/render?action=TEMPLATE&text=Fulham+vs+Chelsea+London+Derby+EPL&dates=20260824T190000Z/20260824T210000Z"},
+  // UCL 2026-27
+  {t:"ucl", round:"UCL League Phase · Matchday 1", home:"All 36 Clubs", hf:"⭐", away:"Tue & Wed nights", af:"🌍",
+   day:"Tuesday/Wednesday", date:"8–10 September 2026", ist:"12:30 AM IST", venue:"Various European Stadiums",
+   gcal:""},
+  {t:"ucl", round:"UCL Matchday 2", home:"All 36 Clubs", hf:"⭐", away:"Tue & Wed nights", af:"🌍",
+   day:"Tuesday/Wednesday", date:"13–14 October 2026", ist:"12:30 AM IST", venue:"Various",
+   gcal:""},
+  {t:"ucl", round:"UCL Matchday 3", home:"All 36 Clubs", hf:"⭐", away:"Tue & Wed nights", af:"🌍",
+   day:"Tuesday/Wednesday", date:"20–21 October 2026", ist:"12:30 AM IST", venue:"Various",
+   gcal:""},
+  {t:"ucl", round:"UCL Matchday 4", home:"All 36 Clubs", hf:"⭐", away:"Tue & Wed nights", af:"🌍",
+   day:"Tuesday/Wednesday", date:"3–4 November 2026", ist:"12:30 AM IST", venue:"Various",
+   gcal:""},
+  {t:"ucl", round:"UCL Matchday 5", home:"All 36 Clubs", hf:"⭐", away:"Tue & Wed nights", af:"🌍",
+   day:"Tuesday/Wednesday", date:"24–25 November 2026", ist:"12:30 AM IST", venue:"Various",
+   gcal:""},
+  {t:"ucl", round:"UCL Matchday 6", home:"All 36 Clubs", hf:"⭐", away:"Tue & Wed nights", af:"🌍",
+   day:"Tuesday/Wednesday", date:"8–9 December 2026", ist:"12:30 AM IST", venue:"Various",
+   gcal:""},
+  {t:"ucl", round:"UCL Matchday 7", home:"All 36 Clubs", hf:"⭐", away:"Tue & Wed nights", af:"🌍",
+   day:"Tuesday/Wednesday", date:"19–20 January 2027", ist:"12:30 AM IST", venue:"Various",
+   gcal:""},
+  {t:"ucl", round:"UCL Matchday 8 — Final league round", home:"All 36 Clubs", hf:"⭐", away:"Same time · all games", af:"🌍",
+   day:"Wednesday", date:"27 January 2027", ist:"12:30 AM IST", venue:"Various",
+   gcal:""},
+  {t:"ucl", round:"🏆 UCL FINAL", home:"TBD", hf:"⭐", away:"TBD", af:"⭐",
+   day:"Saturday", date:"5 June 2027", ist:"12:30 AM IST (Sunday)", venue:"Estadio Metropolitano · Madrid, Spain",
+   gcal:""},
+  // ISL
+  {t:"isl", round:"ISL 2026-27 Season Start (TBC)", home:"Mohun Bagan", hf:"🟢", away:"Mumbai City", af:"🔵",
+   day:"Expected September", date:"~September 2026", ist:"7:30 PM IST", venue:"India — exact dates TBC at indiansuperleague.com",
+   gcal:""},
+];
+
+// ── ALL RESULTS ──
+const RESULTS = [
+  // QF
+  {stage:"QF", home:"France", hf:"🇫🇷", away:"Morocco", af:"🇲🇦", hs:2, as:0, note:"Mbappé 60' · Dembélé 84'", date:"Thu 10 Jul · 1:30 AM IST"},
+  {stage:"QF", home:"Spain", hf:"🇪🇸", away:"Belgium", af:"🇧🇪", hs:2, as:1, note:"Cubarsí 34' · De Ketelaere 71' · Merino 88'", date:"Fri 11 Jul · 12:30 AM IST"},
+  {stage:"QF", home:"England", hf:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", away:"Norway", af:"🇳🇴", hs:2, as:1, note:"Bellingham ×2 AET · Haaland", date:"Sat 12 Jul · 2:30 AM IST"},
+  {stage:"QF", home:"Argentina", hf:"🇦🇷", away:"Switzerland", af:"🇨🇭", hs:3, as:1, note:"Álvarez · Messi · Lautaro AET", date:"Sat 12 Jul · 6:30 AM IST"},
+  // R16
+  {stage:"R16", home:"Morocco", hf:"🇲🇦", away:"Canada", af:"🇨🇦", hs:3, as:0, note:"Ounahi ×2 · En-Nesyri", date:"Sat 4 Jul · 10:30 PM IST"},
+  {stage:"R16", home:"France", hf:"🇫🇷", away:"Paraguay", af:"🇵🇾", hs:1, as:0, note:"Mbappé pen 34'", date:"Sun 5 Jul · 2:30 AM IST"},
+  {stage:"R16", home:"Norway", hf:"🇳🇴", away:"Brazil", af:"🇧🇷", hs:2, as:1, note:"Haaland ×2 · BIGGEST UPSET 2026", date:"Mon 6 Jul · 1:30 AM IST"},
+  {stage:"R16", home:"England", hf:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", away:"Mexico", af:"🇲🇽", hs:3, as:2, note:"Kane · Bellingham · Saka", date:"Mon 6 Jul · 5:30 AM IST"},
+  {stage:"R16", home:"Spain", hf:"🇪🇸", away:"Portugal", af:"🇵🇹", hs:1, as:0, note:"Merino 90+1'", date:"Tue 7 Jul · 12:30 AM IST"},
+  {stage:"R16", home:"Belgium", hf:"🇧🇪", away:"USA", af:"🇺🇸", hs:4, as:1, note:"De Ketelaere ×2 · Vanaken · Lukebakio", date:"Tue 7 Jul · 5:30 AM IST"},
+  {stage:"R16", home:"Argentina", hf:"🇦🇷", away:"Egypt", af:"🇪🇬", hs:3, as:2, note:"Messi brace from 0-2 down", date:"Tue 7 Jul · 9:30 PM IST"},
+  {stage:"R16", home:"Switzerland", hf:"🇨🇭", away:"Colombia", af:"🇨🇴", hs:0, as:0, note:"SUI win 4-3 on pens · Xhaka hero", date:"Wed 8 Jul · 1:30 AM IST"},
+  // R32 last 6
+  {stage:"R32", home:"Portugal", hf:"🇵🇹", away:"Croatia", af:"🇭🇷", hs:2, as:1, note:"Ronaldo 71' · G.Ramos 94'", date:"Thu 2 Jul · 12:30 AM IST"},
+  {stage:"R32", home:"Spain", hf:"🇪🇸", away:"Austria", af:"🇦🇹", hs:3, as:0, note:"Oyarzabal ×2 · Porro", date:"Thu 2 Jul · 6:30 AM IST"},
+  {stage:"R32", home:"Switzerland", hf:"🇨🇭", away:"Algeria", af:"🇩🇿", hs:2, as:0, note:"Embolo · Ndoye", date:"Thu 2 Jul · 10:30 PM IST"},
+  {stage:"R32", home:"Argentina", hf:"🇦🇷", away:"Cabo Verde", af:"🇨🇻", hs:3, as:2, note:"Messi · Lautaro AET", date:"Fri 3 Jul · 3:30 AM IST"},
+  {stage:"R32", home:"Colombia", hf:"🇨🇴", away:"Ghana", af:"🇬🇭", hs:1, as:0, note:"Díaz 71'", date:"Fri 3 Jul · 7:00 AM IST"},
+  {stage:"R32", home:"Australia", hf:"🇦🇺", away:"Egypt", af:"🇪🇬", hs:1, as:1, note:"EGY win 4-2 pens · Salah 78'", date:"Fri 3 Jul · 10:30 PM IST"},
+];
+
+// ── RENDER FIXTURES ──
+let currentFilter = 'all';
+
+function renderFixtures(f='all'){
+  currentFilter = f;
+  const list = document.getElementById('fixture-list');
+  const data = f==='all' ? FIXTURES : FIXTURES.filter(fx=>fx.t===f);
+  if(!data.length){list.innerHTML='<p style="color:var(--muted);padding:20px 0;font-family:Inter,sans-serif;font-size:13px;">No fixtures found for this filter.</p>';return;}
+  
+  // Group by date
+  const byDate = {};
+  data.forEach(fx=>{
+    if(!byDate[fx.date]) byDate[fx.date]=[];
+    byDate[fx.date].push(fx);
+  });
+
+  const tLabels = {wc:'🏆 World Cup',epl:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 EPL',ucl:'⭐ UCL',isl:'🇮🇳 ISL'};
+  const tClasses = {wc:'t-wc',epl:'t-epl',ucl:'t-ucl',isl:'t-isl'};
+
+  let html='';
+  Object.entries(byDate).forEach(([date, matches])=>{
+    const count = matches.length;
+    const dayName = matches[0].day;
+    html += `<div class="day-header">
+      <div class="day-label">${dayName}</div>
+      <div class="day-date">${date}</div>
+      <div class="day-rule"></div>
+      <div class="day-count">${count} MATCH${count>1?'ES':''}</div>
+    </div>`;
+    matches.forEach(fx=>{
+      const waText = `⚽ ${fx.hf} ${fx.home} vs ${fx.away} ${fx.af}\n${fx.round}\n📅 ${fx.day} ${fx.date} · ${fx.ist}\n📍 ${fx.venue}\n📺 kickoffist.com 🇮🇳`;
+      html += `<div class="fixture">
+        <div class="fixture-top">
+          <div class="fixture-tournament">
+            <span class="t-badge ${tClasses[fx.t]||'t-wc'}">${tLabels[fx.t]||'FOOTBALL'}</span>
+            ${fx.round}
+          </div>
+          <span class="fixture-round">${fx.ist}</span>
+        </div>
+        <div class="fixture-body">
+          <div class="fx-team home">
+            <div class="fx-flag">${fx.hf}</div>
+            <div class="fx-name">${fx.home}</div>
+          </div>
+          <div class="fx-centre">
+            <div class="fx-vs">VERSUS</div>
+            <div class="fx-date">${fx.day.toUpperCase().slice(0,3)} ${fx.date.split(' ').slice(0,2).join(' ').toUpperCase()}</div>
+            <div class="fx-time">${fx.ist.split(' ')[0]+' '+fx.ist.split(' ')[1]}</div>
+            <div class="fx-ist">INDIAN STD TIME</div>
+          </div>
+          <div class="fx-team away">
+            <div class="fx-flag">${fx.af}</div>
+            <div class="fx-name">${fx.away}</div>
+          </div>
+        </div>
+        <div class="fixture-footer">
+          <span class="fx-venue">📍 ${fx.venue}</span>
+          <div class="fx-actions">
+            ${fx.gcal?`<a href="${fx.gcal}" target="_blank" class="fx-btn fx-btn-alarm">⏰ ALARM</a>`:''}
+            <a href="https://wa.me/?text=${encodeURIComponent(waText)}" target="_blank" class="fx-btn fx-btn-wa">💬 WA</a>
+          </div>
+        </div>
+      </div>`;
+    });
+  });
+  list.innerHTML = html;
+}
+
+// ── RENDER RESULTS ──
+function renderResults(){
+  const list = document.getElementById('results-list');
+  const stageOrder = {'QF':0,'R16':1,'R32':2};
+  const sorted = [...RESULTS].sort((a,b)=>(stageOrder[a.stage]??9)-(stageOrder[b.stage]??9));
+  
+  let html='', lastStage='';
+  sorted.forEach(r=>{
+    if(r.stage!==lastStage){
+      const labels={'QF':'Quarter-Finals','R16':'Round of 16','R32':'Round of 32'};
+      html+=`<div class="sh" style="margin-top:${lastStage?'24px':'0'};">
+        <span class="sh-label">${r.stage}</span>
+        <span class="sh-title">${labels[r.stage]||r.stage}</span>
+        <div class="sh-rule"></div>
+      </div>`;
+      lastStage=r.stage;
+    }
+    const hw=r.hs>r.as, aw=r.as>r.hs, dr=r.hs===r.as;
+    html+=`<div class="fixture">
+      <div class="fixture-body" style="padding:14px;">
+        <div class="fx-team home">
+          <div class="fx-flag">${r.hf}</div>
+          <div class="fx-name ${hw?'winner':''}">${r.home}</div>
+        </div>
+        <div class="fx-centre">
+          <div class="fx-vs">FULL TIME</div>
+          <div class="fx-score">${r.hs}<span style="color:var(--rule);margin:0 6px;">–</span>${r.as}</div>
+          <div class="fx-ist">${r.date}</div>
+        </div>
+        <div class="fx-team away">
+          <div class="fx-flag">${r.af}</div>
+          <div class="fx-name ${aw?'winner':''}">${r.away}</div>
+        </div>
+      </div>
+      <div class="fixture-footer">
+        <span class="fx-venue">⚽ ${r.note}</span>
+      </div>
+    </div>`;
+  });
+  list.innerHTML=html;
+}
+
+// ── SEARCH ──
+function doSearch(q){
+  const res=document.getElementById('search-results');
+  if(!q||q.length<2){res.innerHTML='';renderFixtures(currentFilter);return;}
+  const ql=q.toLowerCase();
+  const matches=[...FIXTURES,...RESULTS.map(r=>({...r,t:'result'}))].filter(fx=>
+    (fx.home||'').toLowerCase().includes(ql)||
+    (fx.away||'').toLowerCase().includes(ql)||
+    (fx.round||'').toLowerCase().includes(ql)||
+    (fx.date||'').toLowerCase().includes(ql)||
+    (fx.note||'').toLowerCase().includes(ql)
+  );
+  if(!matches.length){res.innerHTML='<p style="font-family:Inter,sans-serif;font-size:13px;color:var(--muted);padding:10px 0;">No matches found for "'+q+'"</p>';document.getElementById('fixture-list').innerHTML='';return;}
+  
+  // Temporarily render search results
+  const temp=[...FIXTURES].filter(fx=>
+    (fx.home||'').toLowerCase().includes(ql)||
+    (fx.away||'').toLowerCase().includes(ql)||
+    (fx.round||'').toLowerCase().includes(ql)||
+    (fx.date||'').toLowerCase().includes(ql)||
+    (fx.venue||'').toLowerCase().includes(ql)
+  );
+  if(temp.length){
+    const tLabels={wc:'🏆 World Cup',epl:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 EPL',ucl:'⭐ UCL',isl:'🇮🇳 ISL'};
+    const tClasses={wc:'t-wc',epl:'t-epl',ucl:'t-ucl',isl:'t-isl'};
+    let html=`<div style="font-family:'Oswald',sans-serif;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.08em;margin-bottom:10px;">${temp.length} FIXTURE${temp.length>1?'S':''} FOUND</div>`;
+    temp.forEach(fx=>{
+      const waText=`⚽ ${fx.hf} ${fx.home} vs ${fx.away} ${fx.af}\n${fx.round}\n📅 ${fx.day} ${fx.date} · ${fx.ist}\nkickoffist.com 🇮🇳`;
+      html+=`<div class="fixture">
+        <div class="fixture-top">
+          <div class="fixture-tournament"><span class="t-badge ${tClasses[fx.t]||'t-wc'}">${tLabels[fx.t]||'FOOTBALL'}</span> ${fx.round}</div>
+          <span class="fixture-round">${fx.ist}</span>
+        </div>
+        <div class="fixture-body">
+          <div class="fx-team home"><div class="fx-flag">${fx.hf}</div><div class="fx-name">${fx.home}</div></div>
+          <div class="fx-centre">
+            <div class="fx-vs">VERSUS</div>
+            <div class="fx-date">${fx.day.toUpperCase().slice(0,3)} ${fx.date.split(' ').slice(0,2).join(' ').toUpperCase()}</div>
+            <div class="fx-time">${fx.ist.split(' ')[0]+' '+fx.ist.split(' ')[1]}</div>
+            <div class="fx-ist">INDIAN STD TIME</div>
+          </div>
+          <div class="fx-team away"><div class="fx-flag">${fx.af}</div><div class="fx-name">${fx.away}</div></div>
+        </div>
+        <div class="fixture-footer">
+          <span class="fx-venue">📍 ${fx.venue}</span>
+          <div class="fx-actions">
+            ${fx.gcal?`<a href="${fx.gcal}" target="_blank" class="fx-btn fx-btn-alarm">⏰ ALARM</a>`:''}
+            <a href="https://wa.me/?text=${encodeURIComponent(waText)}" target="_blank" class="fx-btn fx-btn-wa">💬 WA</a>
+          </div>
+        </div>
+      </div>`;
+    });
+    document.getElementById('fixture-list').innerHTML=html;
+  }
+  res.innerHTML='';
+}
+
+// ── FILTER ──
+function filter(f,btn){
+  document.querySelectorAll('#filter-tabs .ftab').forEach(b=>b.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  renderFixtures(f);
+}
+
+// ── INIT ──
+renderFixtures('all');
+renderResults();
+</script>
+</body>
+</html>
